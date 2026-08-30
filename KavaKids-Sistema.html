@@ -1,0 +1,3677 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kava Kids — Sistema de Vendas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Fira+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --laranja:#F47C1B; --laranja-2:#FF8C1E; --laranja-fraco:#FDEBD9;
+  --marrom:#994E11; --marrom-2:#7A3E0D;
+  --ciano:#4FC3D9; --amarelo:#F2B705; --coral:#F0736A; --verde:#8FC93A;
+  --texto:#474747; --texto-fraco:#7d7469;
+  --bg:#FBF6F0; --card:#FFFFFF; --linha:#EADFD2; --linha-2:#F3EBE1;
+  --sombra:0 1px 2px rgba(72,45,20,.06), 0 6px 18px rgba(72,45,20,.07);
+  --r:14px;
+  --sans:"Fira Sans","Segoe UI",system-ui,sans-serif;
+  --display:"Barlow","Segoe UI",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--texto); font-family:var(--sans);
+  font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--display); font-weight:700; margin:0; letter-spacing:-.01em}
+button,input,select,textarea{font:inherit; color:inherit}
+a{color:var(--marrom)}
+
+/* ---------- LOGO ---------- */
+.logo{display:flex; align-items:center; gap:10px; user-select:none}
+.logo .tatu{width:38px;height:38px;flex:none}
+.logo .wm{line-height:1}
+.logo .kava{font-family:var(--display); font-weight:800; font-size:23px; color:var(--laranja);
+  letter-spacing:-.5px; display:block; text-shadow:0 1px 0 #fff}
+.logo .kids{font-family:var(--display); font-weight:800; font-size:14px; letter-spacing:2.5px; display:block; margin-top:-2px}
+.logo .kids i{font-style:normal}
+.logo .kids i:nth-child(1){color:var(--ciano)}
+.logo .kids i:nth-child(2){color:var(--amarelo)}
+.logo .kids i:nth-child(3){color:var(--coral)}
+.logo .kids i:nth-child(4){color:var(--verde)}
+
+/* ---------- LAYOUT ---------- */
+.app{display:flex; min-height:100vh}
+.side{
+  width:224px; flex:none; background:var(--card); border-right:1px solid var(--linha);
+  display:flex; flex-direction:column; position:sticky; top:0; height:100vh
+}
+.side .top{padding:18px 16px 14px; border-bottom:1px solid var(--linha-2)}
+.nav{padding:10px; display:flex; flex-direction:column; gap:2px; overflow:auto; flex:1}
+.nav button{
+  display:flex; align-items:center; gap:10px; width:100%; text-align:left;
+  background:none; border:0; padding:10px 12px; border-radius:10px; cursor:pointer;
+  color:var(--texto-fraco); font-weight:500; font-size:14.5px
+}
+.nav button svg{width:19px;height:19px;flex:none;opacity:.8}
+.nav button:hover{background:var(--linha-2); color:var(--marrom)}
+.nav button.on{background:var(--laranja); color:#fff}
+.nav button.on svg{opacity:1}
+.side .foot{padding:12px 14px; border-top:1px solid var(--linha-2); font-size:11.5px; color:var(--texto-fraco)}
+
+.main{flex:1; min-width:0; padding:22px 26px 60px}
+.head{display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom:18px; flex-wrap:wrap}
+.head h1{font-size:25px; color:var(--marrom)}
+.head p{margin:2px 0 0; color:var(--texto-fraco); font-size:13.5px}
+
+/* ---------- COMPONENTES ---------- */
+.card{background:var(--card); border:1px solid var(--linha); border-radius:var(--r); box-shadow:var(--sombra)}
+.card>.ch{padding:14px 18px; border-bottom:1px solid var(--linha-2); display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
+.card>.ch h3{font-size:15.5px; color:var(--marrom)}
+.card>.cb{padding:18px}
+.grid{display:grid; gap:16px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.row{display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end}
+
+label.f{display:flex; flex-direction:column; gap:5px; font-size:12.5px; font-weight:600;
+  color:var(--texto-fraco); text-transform:uppercase; letter-spacing:.4px; flex:1 1 150px; min-width:0}
+input,select,textarea{
+  background:#fff; border:1.5px solid var(--linha); border-radius:9px; padding:9px 11px;
+  font-size:14.5px; font-weight:400; text-transform:none; letter-spacing:0; width:100%
+}
+input:focus,select:focus,textarea:focus{outline:none; border-color:var(--laranja); box-shadow:0 0 0 3px rgba(244,124,27,.15)}
+input[readonly]{background:var(--linha-2); color:var(--texto-fraco)}
+
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:7px; border:0; cursor:pointer;
+  background:var(--laranja); color:#fff; font-weight:600; font-size:14.5px; padding:10px 16px; border-radius:9px;
+  font-family:var(--sans); white-space:nowrap}
+.btn:hover{background:var(--laranja-2)}
+.btn:active{transform:translateY(1px)}
+.btn.sec{background:#fff; color:var(--marrom); border:1.5px solid var(--linha)}
+.btn.sec:hover{background:var(--linha-2)}
+.btn.gh{background:transparent; color:var(--texto-fraco); padding:7px 10px}
+.btn.gh:hover{background:var(--linha-2); color:var(--marrom)}
+.btn.dan{background:var(--coral)}
+.btn.dan:hover{background:#e2564c}
+.btn.ok{background:var(--verde); color:#2c4a08}
+.btn.big{font-size:16px; padding:13px 22px}
+.btn.sm{font-size:13px; padding:6px 11px; border-radius:8px}
+.btn:disabled{opacity:.45; cursor:not-allowed}
+
+table{width:100%; border-collapse:collapse; font-size:14px}
+th{text-align:left; font-size:11.5px; text-transform:uppercase; letter-spacing:.5px; color:var(--texto-fraco);
+  font-weight:700; padding:9px 10px; border-bottom:1.5px solid var(--linha); white-space:nowrap}
+td{padding:9px 10px; border-bottom:1px solid var(--linha-2); vertical-align:middle}
+tbody tr:hover{background:#FFFCF8}
+.num{text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap}
+.tw{overflow-x:auto}
+.mono{font-variant-numeric:tabular-nums}
+
+.tag{display:inline-block; padding:2px 9px; border-radius:999px; font-size:11.5px; font-weight:700;
+  background:var(--linha-2); color:var(--marrom); white-space:nowrap}
+.tag.m{background:#DFF1F7; color:#1d7f99}
+.tag.f{background:#FDE4E2; color:#c14a41}
+.tag.u{background:#EEF6DF; color:#5b8215}
+.tag.e{background:#EAF7DC; color:#4f7a10}
+.tag.s{background:#FDE9E7; color:#c14a41}
+.tag.c{background:#F0EAE3; color:#8a7a68; text-decoration:line-through}
+.tag.al{background:#FDECD5; color:#a25c07}
+
+.kpi{background:var(--card); border:1px solid var(--linha); border-radius:var(--r); padding:15px 17px; box-shadow:var(--sombra)}
+.kpi .k{font-size:11.5px; text-transform:uppercase; letter-spacing:.6px; color:var(--texto-fraco); font-weight:700}
+.kpi .v{font-family:var(--display); font-size:26px; font-weight:800; margin-top:5px; color:var(--marrom); letter-spacing:-.5px}
+.kpi .s{font-size:12.5px; color:var(--texto-fraco); margin-top:3px}
+.kpi.lar{border-top:3px solid var(--laranja)}
+.kpi.ver{border-top:3px solid var(--verde)}
+.kpi.cor{border-top:3px solid var(--coral)}
+.kpi.cia{border-top:3px solid var(--ciano)}
+.kpi.ama{border-top:3px solid var(--amarelo)}
+.pos{color:#4f7a10} .neg{color:#c14a41}
+
+.vazio{text-align:center; padding:38px 20px; color:var(--texto-fraco)}
+.vazio b{display:block; font-family:var(--display); font-size:16px; color:var(--marrom); margin-bottom:4px}
+
+.scan{display:flex; align-items:center; gap:12px; background:linear-gradient(100deg,var(--laranja),#ffa23f);
+  padding:16px 18px; border-radius:var(--r); box-shadow:var(--sombra)}
+.scan svg{width:30px;height:30px;color:#fff;flex:none}
+.scan .l{color:#fff; font-weight:700; font-family:var(--display); font-size:15px; line-height:1.25}
+.scan .l small{display:block; font-weight:500; font-size:12px; opacity:.9; font-family:var(--sans)}
+.scan input{border:0; font-size:19px; font-weight:700; padding:12px 14px; border-radius:10px; font-variant-numeric:tabular-nums}
+.scan input:focus{box-shadow:0 0 0 4px rgba(255,255,255,.45)}
+
+.modal{position:fixed; inset:0; background:rgba(60,36,12,.45); display:flex; align-items:flex-start;
+  justify-content:center; padding:40px 16px; overflow:auto; z-index:50; backdrop-filter:blur(2px)}
+.modal[hidden]{display:none}
+.modal .box{background:var(--card); border-radius:16px; width:100%; max-width:620px; box-shadow:0 20px 60px rgba(60,36,12,.3)}
+.modal .box.wide{max-width:840px}
+.modal .mh{padding:16px 20px; border-bottom:1px solid var(--linha-2); display:flex; justify-content:space-between; align-items:center}
+.modal .mh h3{font-size:17px; color:var(--marrom)}
+.modal .mb{padding:20px}
+.modal .mf{padding:14px 20px; border-top:1px solid var(--linha-2); display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap}
+
+.toast{position:fixed; right:18px; bottom:18px; z-index:99; display:flex; flex-direction:column; gap:8px}
+.toast div{background:var(--marrom); color:#fff; padding:11px 16px; border-radius:10px; font-size:14px;
+  box-shadow:0 8px 24px rgba(0,0,0,.2); animation:up .25s ease}
+.toast div.err{background:var(--coral)}
+.toast div.ok{background:#5b8215}
+@keyframes up{from{opacity:0; transform:translateY(8px)}}
+
+.bar{display:flex; align-items:flex-end; gap:10px; height:170px; padding-top:10px}
+.bar .b{flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; min-width:0}
+.bar .b .col{width:100%; max-width:52px; border-radius:6px 6px 0 0; background:var(--laranja); position:relative}
+.bar .b .col.c2{background:var(--marrom)}
+.bar .b .lb{font-size:11px; color:var(--texto-fraco); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%}
+.bar .b .vl{font-size:11px; font-weight:700; color:var(--marrom); font-variant-numeric:tabular-nums}
+.leg{display:flex; gap:14px; font-size:12px; color:var(--texto-fraco); margin-top:8px}
+.leg i{display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:5px}
+
+/* seletor entrada/saída do módulo de troca */
+.modo{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.modo button{
+  display:block; text-align:left; cursor:pointer; padding:14px 16px; border-radius:var(--r);
+  border:2.5px solid var(--linha); background:#fff; color:var(--texto-fraco);
+  font-family:var(--display); font-weight:800; font-size:17px; letter-spacing:-.2px; line-height:1.2
+}
+.modo button small{display:block; font-family:var(--sans); font-weight:500; font-size:12.5px;
+  letter-spacing:0; margin-top:3px; opacity:.85}
+.modo button:hover{border-color:var(--texto-fraco)}
+.modo button.ent.on{background:#EAF7DC; border-color:#7fae2b; color:#3f6b06}
+.modo button.sai.on{background:var(--laranja-fraco); border-color:var(--laranja); color:var(--marrom)}
+.modo button kbd{font-family:var(--sans); font-size:11px; font-weight:700; background:rgba(0,0,0,.09);
+  padding:1px 6px; border-radius:5px; margin-left:6px; vertical-align:middle}
+
+/* alerta de estoque insuficiente */
+.semEstoque{
+  display:flex; align-items:center; gap:12px; background:#c14a41; color:#fff;
+  padding:13px 16px; border-radius:var(--r); box-shadow:var(--sombra);
+  animation:up .2s ease; flex-wrap:wrap
+}
+.semEstoque .ic{font-size:24px; line-height:1; flex:none}
+.semEstoque .t{flex:1 1 240px; min-width:200px; font-family:var(--display);
+  font-weight:800; font-size:17px; line-height:1.2}
+.semEstoque .acoes{display:flex; gap:8px; flex:none; margin-left:auto}
+.semEstoque .t small{display:block; font-family:var(--sans); font-weight:500; font-size:12.5px; opacity:.92; margin-top:2px}
+.semEstoque button{background:rgba(255,255,255,.2); color:#fff; border:0; border-radius:8px;
+  padding:7px 12px; cursor:pointer; font-weight:600; font-size:13px; flex:none}
+.semEstoque button:hover{background:rgba(255,255,255,.32)}
+.semEstoque .codLido{font-family:ui-monospace,Consolas,monospace; font-size:15px;
+  letter-spacing:1px; background:rgba(255,255,255,.22); padding:1px 6px; border-radius:5px}
+.semEstoque .parecidos{margin-top:9px; display:flex; flex-direction:column; gap:6px}
+.semEstoque .pl{display:flex; align-items:center; justify-content:space-between; gap:10px;
+  background:rgba(255,255,255,.14); padding:7px 10px; border-radius:9px;
+  font-family:var(--sans); font-weight:500; font-size:12.5px; line-height:1.35}
+.semEstoque .pl i{font-style:normal; opacity:.85; font-size:11px}
+.semEstoque .pl button{flex:none}
+
+.faixaEnt{border-left:4px solid #7fae2b}
+.faixaSai{border-left:4px solid var(--laranja)}
+
+.pill{display:flex; gap:6px; flex-wrap:wrap}
+.pill button{background:#fff; border:1.5px solid var(--linha); color:var(--texto-fraco); padding:6px 13px;
+  border-radius:999px; cursor:pointer; font-size:13px; font-weight:600}
+.pill button:hover{border-color:var(--laranja); color:var(--marrom)}
+.pill button.on{background:var(--marrom); border-color:var(--marrom); color:#fff}
+
+.sep{height:1px; background:var(--linha-2); margin:16px 0}
+.hint{font-size:12.5px; color:var(--texto-fraco); line-height:1.45}
+.tot{display:flex; justify-content:space-between; padding:5px 0; font-size:14.5px}
+.tot.big{font-family:var(--display); font-size:24px; font-weight:800; color:var(--marrom); border-top:2px solid var(--linha); margin-top:8px; padding-top:12px}
+
+@media(max-width:860px){
+  .app{flex-direction:column}
+  .side{width:100%; height:auto; position:static; flex-direction:row; align-items:center; overflow-x:auto}
+  .side .top{border:0; padding:12px 14px}
+  .side .foot{display:none}
+  .nav{flex-direction:row; padding:8px}
+  .nav button span{display:none}
+  .main{padding:16px 14px 50px}
+}
+
+/* ---------- IMPRESSÃO ----------
+   Dois modos: com a classe "imp-recibo" sai SÓ o cupom (nunca a tela, que
+   mostra custo e lucro); sem ela, sai a tela — usado nos relatórios. */
+#recibo{display:none}
+
+/* Cupom para bobina térmica. Padrão 80 mm (área de impressão 72 mm).
+   Térmica é 203 dpi e imprime só preto: nada de cinza, sombra, fundo
+   colorido ou traço fino demais — tudo isso sai borrado ou não sai. */
+.recibo-doc{
+  width:var(--cupomW, 72mm); max-width:100%; margin:0 auto;
+  padding:2mm 0 14mm;                 /* folga no fim para a lâmina do cortador */
+  color:#000; background:#fff;
+  font-family:var(--sans); font-size:9.5pt; line-height:1.32;
+  -webkit-font-smoothing:none
+}
+.recibo-doc *{color:#000 !important; background:transparent !important; box-shadow:none !important}
+.recibo-doc .marca{font-family:var(--display); font-weight:800; font-size:19pt; letter-spacing:.6px; line-height:1.05}
+.recibo-doc .topo{text-align:center; margin-bottom:2.5mm}
+.recibo-doc .topo div{font-size:8pt; line-height:1.35}
+.recibo-doc .topo .doc{font-weight:700; font-size:9pt; margin-top:1.2mm}
+.recibo-doc .hr{border-top:.35mm solid #000; margin:2mm 0}
+.recibo-doc .hr.fina{border-top-width:.2mm; margin:1.2mm 0}
+.recibo-doc .tarja{border:.5mm solid #000; padding:1.6mm; text-align:center;
+  font-weight:800; font-size:10pt; margin-bottom:2.5mm; line-height:1.25}
+.recibo-doc .tarja span{display:block; font-weight:400; font-size:7.5pt; margin-top:.5mm}
+.recibo-doc .cab{display:flex; justify-content:space-between; font-size:7.5pt;
+  font-weight:700; text-transform:uppercase; letter-spacing:.3px; margin-bottom:.8mm}
+.recibo-doc .item{margin:1.6mm 0}
+.recibo-doc .item .d{font-size:9pt; line-height:1.25; word-break:break-word}
+.recibo-doc .item .q{display:flex; justify-content:space-between; gap:3mm; font-size:8.5pt; margin-top:.3mm}
+.recibo-doc .lin{display:flex; justify-content:space-between; gap:3mm; padding:.4mm 0; font-size:9pt}
+.recibo-doc .lin.forte{font-weight:700}
+.recibo-doc .lin.total{font-family:var(--display); font-weight:800; font-size:14pt; line-height:1.15; padding:1mm 0}
+.recibo-doc .rodape{text-align:center; font-size:7.5pt; margin-top:4mm; line-height:1.4}
+.recibo-doc .secao{font-weight:800; font-size:8.5pt; text-transform:uppercase;
+  letter-spacing:.6px; text-align:center; padding:.4mm 0}
+.recibo-doc .q.sub{font-size:7.5pt; padding-left:2.5mm}
+.recibo-doc.rel .item{margin:1.1mm 0}
+.recibo-doc.rel .lin{font-size:8.5pt}
+.recibo-doc.rel .lin.destaque{font-weight:800; font-size:10pt; padding:.8mm 0}
+.recibo-doc .vazio-cupom{text-align:center; font-size:8pt; padding:2mm 0}
+.recibo-doc .val{white-space:nowrap; font-variant-numeric:tabular-nums}
+
+@media print{
+  html,body{background:#fff !important; margin:0; padding:0}
+  .side,.head,.toast,.noprint,.modal,.semEstoque,.printhide{display:none !important}
+  .main{padding:0 !important}
+  .app{display:block !important; min-height:0 !important}
+
+  /* cupom: só ele na folha */
+  body.imp-recibo #view{display:none !important}
+  body.imp-recibo #recibo{display:block !important}
+
+  /* relatórios: a tela, sem o cupom */
+  body:not(.imp-recibo) #recibo{display:none !important}
+  body:not(.imp-recibo) .card{break-inside:avoid; box-shadow:none}
+  body:not(.imp-recibo) table{font-size:9pt}
+}
+
+</style>
+</head>
+<body>
+
+<div class="app">
+  <!-- ============ MENU ============ -->
+  <aside class="side">
+    <div class="top">
+      <div class="logo">
+        <svg class="tatu" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <ellipse cx="27" cy="36" rx="22" ry="21" fill="#E8842C" stroke="#8C4A10" stroke-width="2.2"/>
+          <path d="M13 20c10-6 24-4 30 6" stroke="#8C4A10" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M7 30c12-8 28-6 36 4" stroke="#8C4A10" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M6 42c12-6 28-5 37 4" stroke="#8C4A10" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M44 18c6 2 12 9 12 17 0 9-7 15-13 15-4 0-6-3-4-6 3-5 4-9 3-14-1-5-3-9-1-11 1-1 2-1 3-1z" fill="#F6A85F" stroke="#8C4A10" stroke-width="2.2" stroke-linejoin="round"/>
+          <path d="M45 12c3-4 8-5 9-2 1 3-2 7-5 9z" fill="#F6A85F" stroke="#8C4A10" stroke-width="2.2" stroke-linejoin="round"/>
+          <path d="M47 33c2 0 3 1 3 2" stroke="#8C4A10" stroke-width="2.2" stroke-linecap="round"/>
+          <circle cx="21" cy="32" r="1.7" fill="#8C4A10"/><circle cx="30" cy="27" r="1.7" fill="#8C4A10"/>
+          <circle cx="17" cy="45" r="1.7" fill="#8C4A10"/><circle cx="31" cy="46" r="1.7" fill="#8C4A10"/>
+        </svg>
+        <div class="wm">
+          <span class="kava">Kava</span>
+          <span class="kids"><i>K</i><i>I</i><i>D</i><i>S</i></span>
+        </div>
+      </div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="foot">
+      <div id="footInfo">—</div>
+      <div style="margin-top:4px">Dados salvos neste computador</div>
+    </div>
+  </aside>
+
+  <!-- ============ CONTEÚDO ============ -->
+  <main class="main">
+    <div class="head">
+      <div><h1 id="tTitulo">—</h1><p id="tSub"></p></div>
+      <div id="tAcoes" class="row" style="align-items:center"></div>
+    </div>
+    <div id="view"></div>
+    <div id="recibo"></div>
+  </main>
+</div>
+
+<div class="modal" id="modal" hidden><div class="box" id="modalBox"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* =======================================================================
+   KAVA KIDS — Sistema de Vendas e Gestão
+   Aplicativo local (roda no navegador, sem internet). Dados no navegador.
+   ======================================================================= */
+
+/* ---------- 1. BANCO DE DADOS ---------- */
+const VERSAO = "2.2 — 29/08/2026";
+const CHAVE = "kavakids_db_v1";
+const VAZIO = { produtos:[], clientes:[], vendas:[], movimentos:[], seqVenda:1,
+                config:{ loja:"Kava Kids", estoqueMinimo:2, cupom:"80mm" } };
+let DB = carregar();
+
+function carregar(){
+  try{
+    const raw = localStorage.getItem(CHAVE);
+    if(!raw) return structuredClone(VAZIO);
+    const d = JSON.parse(raw);
+    return Object.assign(structuredClone(VAZIO), d);
+  }catch(e){ console.error(e); return structuredClone(VAZIO); }
+}
+let armazenamentoOk = true;
+function salvar(){
+  try{ localStorage.setItem(CHAVE, JSON.stringify(DB)); armazenamentoOk = true; }
+  catch(e){
+    armazenamentoOk = false;
+    aviso("NÃO FOI POSSÍVEL SALVAR. Baixe um backup agora em Configurações.","err");
+  }
+}
+/** Dias desde o último backup baixado (null se nunca houve). */
+function diasSemBackup(){
+  if(!DB.config.ultimoBackup) return DB.vendas.length ? 999 : null;
+  return Math.floor((Date.now() - new Date(DB.config.ultimoBackup)) / 864e5);
+}
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+
+/* ---------- 2. UTILIDADES ---------- */
+const $  = (s,e=document)=>e.querySelector(s);
+const $$ = (s,e=document)=>[...e.querySelectorAll(s)];
+const esc = s => String(s??"").replace(/[&<>"']/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const brl = n => (Number(n)||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const nm  = (n,d=0) => (Number(n)||0).toLocaleString("pt-BR",{minimumFractionDigits:d,maximumFractionDigits:d});
+const pct = n => (Number.isFinite(n) ? (n*100).toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1})+"%" : "—");
+/* --- Datas sempre no fuso da LOJA ------------------------------------
+   As vendas sao gravadas com horario universal (toISOString). Ler o dia
+   cortando os 10 primeiros caracteres devolve a data UTC: depois das 21h
+   no Brasil isso ja e o dia seguinte, e a venda sumia do relatorio do dia.
+   Tudo que compara ou exibe data passa por aqui.                       */
+const soData = v => typeof v === "string" && v.length === 10;   // "2026-08-29"
+const hoje  = () => isoLocal(new Date());
+const diaDe = v => !v ? "" : (soData(v) ? v : isoLocal(new Date(v)));
+const dataBR = v => { if(!v) return "—"; const [a,m,d] = diaDe(v).split("-"); return `${d}/${m}/${a}`; };
+const horaBR = iso => new Date(iso).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+const numero = v => { const n = parseFloat(String(v??"").replace(/\./g,"").replace(",",".")); return Number.isFinite(n)?n:0; };
+
+function aviso(msg, tipo=""){
+  const d = document.createElement("div");
+  d.className = tipo; d.textContent = msg;
+  $("#toast").appendChild(d);
+  setTimeout(()=>{ d.style.transition="opacity .3s"; d.style.opacity=0; setTimeout(()=>d.remove(),300); }, 3200);
+}
+
+function modal(titulo, corpo, rodape, largo){
+  $("#modalBox").className = "box" + (largo?" wide":"");
+  $("#modalBox").innerHTML =
+    `<div class="mh"><h3>${esc(titulo)}</h3><button class="btn gh" onclick="fechar()">✕</button></div>
+     <div class="mb">${corpo}</div>` + (rodape ? `<div class="mf">${rodape}</div>` : "");
+  $("#modal").hidden = false;
+}
+function fechar(){
+  $("#modal").hidden = true; $("#modalBox").innerHTML="";
+  focarLeitor();                       // devolve o cursor ao campo do leitor
+}
+
+/* =====================================================================
+   LEITOR DE CÓDIGO DE BARRAS
+   O leitor USB se comporta como teclado. Se o foco não estiver no campo
+   certo na hora do disparo, os caracteres se perdem e o código chega
+   picotado. Por isso a tela que tem leitor registra o campo aqui, e todo
+   caractere digitado fora de um campo é desviado para ele.
+   ===================================================================== */
+let leitorAtivo = null;   // {campo, aoLer} da tela atual
+let ultimaTecla = 0;      // para separar uma bipada da outra
+
+/** Sobra de uma leitura interrompida não pode grudar na leitura seguinte. */
+function novaRajada(){
+  const agora = Date.now();
+  const gap = agora - ultimaTecla;
+  ultimaTecla = agora;
+  // leitor dispara os caracteres em milissegundos; pausa longa = leitura nova
+  if(gap > 800 && leitorAtivo && leitorAtivo.campo.value) leitorAtivo.campo.value = "";
+}
+
+function registrarLeitor(id, aoLer){
+  const campo = $("#"+id);
+  if(!campo) return;
+  leitorAtivo = {campo, aoLer};
+  campo.value = "";
+  campo.focus();
+  campo.addEventListener("keydown", e => {
+    if(e.key === "Escape"){ campo.value = ""; return; }
+    if(e.key.length === 1) novaRajada();
+    if(e.key !== "Enter") return;
+    e.preventDefault();
+    dispararLeitura();
+  });
+}
+
+function focarLeitor(){
+  if(leitorAtivo && document.body.contains(leitorAtivo.campo) && $("#modal").hidden)
+    setTimeout(()=>{ try{ leitorAtivo.campo.focus(); }catch(e){} }, 0);
+}
+
+function dispararLeitura(){
+  if(!leitorAtivo) return;
+  const cod = leitorAtivo.campo.value.trim();
+  leitorAtivo.campo.value = "";
+  if(cod) leitorAtivo.aoLer(cod);
+}
+
+/** Nenhum caractere se perde: o que for digitado fora de um campo entra no leitor. */
+document.addEventListener("keydown", e => {
+  if(e.altKey || e.ctrlKey || e.metaKey) return;
+  if(!leitorAtivo || !$("#modal").hidden) return;
+  if(!document.body.contains(leitorAtivo.campo)){ leitorAtivo = null; return; }
+  const alvo = e.target;
+  if(alvo && typeof alvo.matches === "function" &&
+     alvo.matches("input,select,textarea,[contenteditable]")) return;
+  if(e.key === "Enter"){ e.preventDefault(); dispararLeitura(); }
+  else if(e.key.length === 1){
+    e.preventDefault();
+    novaRajada();
+    leitorAtivo.campo.value += e.key;      // guarda o caractere antes de mover o foco
+    leitorAtivo.campo.focus();
+    const n = leitorAtivo.campo.value.length;
+    try{ leitorAtivo.campo.setSelectionRange(n,n); }catch(err){}
+  }
+}, true);
+$("#modal").addEventListener("mousedown", e => { if(e.target.id==="modal") fechar(); });
+document.addEventListener("keydown", e => { if(e.key==="Escape" && !$("#modal").hidden) fechar(); });
+
+function confirmar(titulo, texto, aoConfirmar, rotulo="Confirmar"){
+  window.__conf = () => { fechar(); aoConfirmar(); };
+  modal(titulo, `<p style="margin:0">${texto}</p>`,
+    `<button class="btn sec" onclick="fechar()">Voltar</button>
+     <button class="btn dan" onclick="__conf()">${esc(rotulo)}</button>`);
+}
+
+/* ---------- 3. REGRAS DE NEGÓCIO ---------- */
+const TAMANHOS = ["RN","P","M","G","GG","1","2","3","4","6","8","10","12","14","16"];
+
+const produto     = id  => DB.produtos.find(p=>p.id===id);
+/** Só dígitos/letras: o leitor às vezes manda espaço, tab ou caractere de controle. */
+const limpaCodigo = c => String(c ?? "").replace(/[^0-9A-Za-z]/g, "").toUpperCase();
+
+/**
+ * Localiza pelo código de barras sem implicar com detalhe de digitação:
+ * compara ignorando espaços, pontuação, maiúsculas e zeros à esquerda.
+ */
+function porCodigo(cod){
+  const alvo = limpaCodigo(cod);
+  if(!alvo) return undefined;
+  const vivos = DB.produtos.filter(p=>p.ativo!==false);
+  return vivos.find(p => limpaCodigo(p.codigo) === alvo)
+      || vivos.find(p => limpaCodigo(p.codigo).replace(/^0+/,"") === alvo.replace(/^0+/,""));
+}
+
+/** Peça EXCLUÍDA com este código. Fica fora da lista, mas o código segue ocupado. */
+function excluidoPorCodigo(cod){
+  const alvo = limpaCodigo(cod);
+  if(!alvo) return undefined;
+  return DB.produtos.find(p => p.ativo===false && limpaCodigo(p.codigo) === alvo);
+}
+
+/** Devolve uma peça excluída ao cadastro, preservando o histórico dela. */
+function reativarProduto(id, dados){
+  const p = produto(id); if(!p) return null;
+  p.ativo = true;
+  if(dados) Object.assign(p, dados);
+  salvar();
+  return p;
+}
+const descProduto = p   => p ? [p.marca,p.modelo,p.tamanho,p.cor].filter(Boolean).join(" · ") : "Produto excluído";
+const markup      = p   => (p && p.custo>0) ? (p.preco - p.custo)/p.custo : null;
+
+/* --- Clientes ---------------------------------------------------------- */
+const cliente = id => DB.clientes.find(c=>c.id===id);
+
+const soDigitos = v => String(v??"").replace(/\D/g,"");
+
+/** Formata CPF enquanto o usuário digita: 000.000.000-00 */
+const cpfFmt = v => soDigitos(v).slice(0,11)
+  .replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");
+
+/** Valida CPF pelos dois dígitos verificadores. */
+function cpfValido(v){
+  const s = soDigitos(v);
+  if(s.length !== 11 || /^(\d)\1{10}$/.test(s)) return false;
+  for(const [ate, pos] of [[9,9],[10,10]]){
+    let soma = 0;
+    for(let i=0;i<ate;i++) soma += (+s[i]) * (ate+1-i);
+    let d = (soma*10) % 11; if(d===10) d = 0;
+    if(d !== +s[pos]) return false;
+  }
+  return true;
+}
+
+/** Tira o código do país quando o número foi digitado ou colado com +55. */
+function semDDI(v){
+  let s = soDigitos(v);
+  if(s.startsWith("0055")) s = s.slice(4);
+  else if(s.length > 11 && s.startsWith("55")) s = s.slice(2);   // 5511988124471 -> 11988124471
+  if(s.length > 11 && s.startsWith("0")) s = s.slice(1);         // 0 de operadora
+  return s.slice(0,11);
+}
+
+/** Formata telefone: (11) 91234-5678 ou (11) 1234-5678 */
+const telFmt = v => {
+  const s = semDDI(v);
+  if(s.length<=2)  return s;
+  if(s.length<=6)  return `(${s.slice(0,2)}) ${s.slice(2)}`;
+  if(s.length<=10) return `(${s.slice(0,2)}) ${s.slice(2,6)}-${s.slice(6)}`;
+  return `(${s.slice(0,2)}) ${s.slice(2,7)}-${s.slice(7)}`;
+};
+
+/** Número no formato que o WhatsApp exige: 55 + DDD + número. null se incompleto. */
+function zapNumero(tel){
+  const s = semDDI(tel);
+  return (s.length === 10 || s.length === 11) ? "55" + s : null;
+}
+
+/** Link wa.me pronto, com mensagem opcional. */
+function zapLink(tel, msg){
+  const n = zapNumero(tel);
+  return n ? `https://wa.me/${n}${msg?`?text=${encodeURIComponent(msg)}`:""}` : null;
+}
+
+/** Próximo aniversário a partir de hoje: em quantos dias, e que idade completa. */
+function proxAniv(nascimento, ref = new Date()){
+  if(!nascimento) return null;
+  const [a,m,d] = nascimento.slice(0,10).split("-").map(Number);
+  if(!a || !m || !d) return null;
+  const hoje0 = new Date(ref.getFullYear(), ref.getMonth(), ref.getDate());
+  const montar = ano => {
+    const x = new Date(ano, m-1, d);
+    return x.getMonth() === m-1 ? x : new Date(ano, m, 0);   // 29/02 em ano comum -> 28/02
+  };
+  let alvo = montar(hoje0.getFullYear());
+  if(alvo < hoje0) alvo = montar(hoje0.getFullYear()+1);
+  return { data: alvo, iso: isoLocal(alvo), dias: Math.round((alvo-hoje0)/864e5),
+           idade: alvo.getFullYear() - a, nascimento };
+}
+
+/** Aniversários (comprador e crianças) nos próximos N dias. */
+function aniversarios(dentroDe = 7){
+  const out = [];
+  for(const c of DB.clientes.filter(c=>c.ativo!==false)){
+    const b = proxAniv(c.nascimento);
+    if(b && b.dias <= dentroDe) out.push({cliente:c, quem:c.nome, tipo:"Comprador", ...b});
+    for(const k of c.criancas||[]){
+      const kb = proxAniv(k.nascimento);
+      if(kb && kb.dias <= dentroDe) out.push({cliente:c, quem:k.nome||"Criança", tipo:"Criança", ...kb});
+    }
+  }
+  return out.sort((a,b)=> a.dias - b.dias || a.quem.localeCompare(b.quem));
+}
+
+const quandoAniv = d => d===0 ? "hoje" : d===1 ? "amanhã" : `em ${d} dias`;
+
+const MOTIVOS = {
+  compra:        {t:"entrada", r:"Compra de estoque"},
+  troca_entrada: {t:"entrada", r:"Troca / devolução do cliente"},
+  ajuste_ent:    {t:"entrada", r:"Ajuste / inventário (+)"},
+  venda:         {t:"saida",   r:"Venda"},
+  troca_saida:   {t:"saida",   r:"Troca (peça entregue)"},
+  perda:         {t:"saida",   r:"Perda / avaria"},
+  ajuste_sai:    {t:"saida",   r:"Ajuste / inventário (−)"},
+  estorno_ent:   {t:"entrada", r:"Estorno de venda excluída (+)"},
+  estorno_sai:   {t:"saida",   r:"Estorno de venda excluída (−)"}
+};
+
+function movimentar(produtoId, motivo, qtd, opts={}){
+  const p = produto(produtoId); if(!p) return null;
+  const m = MOTIVOS[motivo];
+  const delta = (m.t==="entrada" ? 1 : -1) * Math.abs(qtd);
+  p.estoque = (p.estoque||0) + delta;
+  const mov = {
+    id: uid(), produtoId, codigo:p.codigo, motivo, tipo:m.t,
+    qtd: Math.abs(qtd), delta, custoUnit: opts.custo ?? p.custo ?? 0,
+    data: opts.data || new Date().toISOString(), obs: opts.obs || "",
+    vendaId: opts.vendaId || null, saldo: p.estoque
+  };
+  DB.movimentos.push(mov);
+  return mov;
+}
+
+/**
+ * Verifica se ainda dá para tirar `qtd` peças do estoque, considerando o que já
+ * está no carrinho/troca em andamento. Devolve null quando pode; senão o motivo.
+ */
+function conferirEstoque(p, qtd, jaReservado){
+  const disp = p.estoque || 0;
+  if(disp <= 0)                    return {motivo:"sem",   disp, desc:descProduto(p), codigo:p.codigo};
+  if(jaReservado + qtd > disp)     return {motivo:"insuf", disp, desc:descProduto(p), codigo:p.codigo, jaReservado};
+  return null;
+}
+
+/** Faixa vermelha exibida no PDV e na Troca quando a peça não tem estoque. */
+function htmlSemEstoque(a, aoFechar){
+  if(!a) return "";
+  if(a.motivo === "excluido"){
+    return `<div class="semEstoque">
+      <div class="ic">🗑️</div>
+      <div class="t">PEÇA EXCLUÍDA DO CADASTRO
+        <small>O código <b class="codLido">${esc(a.codigo)}</b> é de <b>${esc(a.desc)}</b>,
+        que foi excluída. Ela some da lista mas continua no histórico das vendas, por isso
+        o código segue reservado.<br>Reative para voltar a vender.</small>
+      </div>
+      <div class="acoes">
+        <button onclick="reativarELer('${a.produtoId}')">Reativar e vender</button>
+        <button onclick="${aoFechar}">Fechar</button>
+      </div>
+    </div>`;
+  }
+  if(a.motivo === "naoCadastrado"){
+    const perto = codigosParecidos(a.codigo);
+    const diag = perto.length ? DIAGNOSTICO[perto[0].tipo] : null;
+    return `<div class="semEstoque">
+      <div class="ic">❓</div>
+      <div class="t">CÓDIGO NÃO CADASTRADO
+        <small>O leitor leu <b class="codLido">${esc(a.codigo)}</b> — ${limpaCodigo(a.codigo).length} caractere(s).
+        ${ diag
+          ? `<br><b>Provável causa: ${diag}.</b> Há peça cadastrada com código parecido:`
+          : `Nenhuma peça com esse código, nem parecido.<br>
+             Se esse número não é o da etiqueta, o leitor não leu direito: bipe de novo.` }</small>
+        ${ perto.length ? `<div class="parecidos">${perto.map(x=>`
+          <div class="pl">
+            <span><b class="codLido">${esc(x.p.codigo)}</b> <i>(${x.c.length} car.)</i><br>
+              ${esc(descProduto(x.p))} · estoque ${x.p.estoque||0}</span>
+            <button onclick="usarPecaParecida('${x.p.id}')">É esta</button>
+          </div>`).join("")}</div>` : "" }
+      </div>
+      <div class="acoes">
+        <button onclick="cadastrarLido('${esc(a.codigo).replace(/'/g,"")}')">Cadastrar como nova</button>
+        <button onclick="${aoFechar}">Fechar</button>
+      </div>
+    </div>`;
+  }
+  return `<div class="semEstoque">
+    <div class="ic">⛔</div>
+    <div class="t">SEM ESTOQUE
+      <small>${esc(a.desc)} — código ${esc(a.codigo)}.
+      ${a.motivo==="sem"
+        ? "Não há nenhuma peça dessa no estoque, então ela não pode ser vendida."
+        : `Só há <b>${a.disp}</b> peça(s) e você já tem <b>${a.jaReservado}</b> nesta operação.`}</small>
+    </div>
+    <div class="acoes"><button onclick="${aoFechar}">Entendi</button></div>
+  </div>`;
+}
+
+/* Períodos ------------------------------------------------------------- */
+function segunda(d){ const x=new Date(d); const w=(x.getDay()+6)%7; x.setDate(x.getDate()-w); return x; }
+function isoLocal(d){ return new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10); }
+
+function periodo(chave){
+  const h = new Date(); const f = isoLocal(h);
+  const menos = n => { const d=new Date(h); d.setDate(d.getDate()-n); return isoLocal(d); };
+  switch(chave){
+    case "hoje":     return {de:f, ate:f, nome:"Hoje"};
+    case "ontem":    return {de:menos(1), ate:menos(1), nome:"Ontem"};
+    case "7dias":    return {de:menos(6), ate:f, nome:"Últimos 7 dias"};
+    case "semana":   return {de:isoLocal(segunda(h)), ate:f, nome:"Esta semana"};
+    case "30dias":   return {de:menos(29), ate:f, nome:"Últimos 30 dias"};
+    case "mes":      return {de:f.slice(0,8)+"01", ate:f, nome:"Este mês"};
+    case "mespass":{ const d=new Date(h.getFullYear(),h.getMonth()-1,1), u=new Date(h.getFullYear(),h.getMonth(),0);
+                     return {de:isoLocal(d), ate:isoLocal(u), nome:"Mês passado"}; }
+    case "ano":      return {de:f.slice(0,4)+"-01-01", ate:f, nome:"Este ano"};
+    case "anopass":{ const a=h.getFullYear()-1; return {de:a+"-01-01", ate:a+"-12-31", nome:"Ano passado"}; }
+    default:         return {de:menos(29), ate:f, nome:"Últimos 30 dias"};
+  }
+}
+
+/** Vendas válidas (não canceladas) dentro do período. */
+function vendasNo(de, ate){
+  return DB.vendas.filter(v => !v.cancelada && diaDe(v.data) >= de && diaDe(v.data) <= ate)
+                  .sort((a,b)=> a.data < b.data ? 1 : -1);
+}
+
+/** Consolida receita, custo (CMV), lucro, margem e markup de um conjunto de vendas. */
+function resumo(vendas){
+  let receita=0, custo=0, desconto=0, pecas=0, devolvidas=0, trocas=0;
+  for(const v of vendas){
+    if(v.tipo==="troca") trocas++;
+    receita += v.total; desconto += v.desconto||0;
+    for(const i of v.itens){
+      custo += i.custo * i.qtd;
+      if(i.qtd>0) pecas += i.qtd; else devolvidas += -i.qtd;
+    }
+  }
+  const lucro = receita - custo;
+  return {
+    receita, custo, lucro, desconto, pecas, devolvidas, trocas,
+    vendas: vendas.length,
+    margem: receita ? lucro/receita : NaN,     // lucro sobre a venda
+    markup: custo   ? lucro/custo   : NaN,     // lucro sobre o custo
+    ticket: vendas.length ? receita/vendas.length : 0
+  };
+}
+
+/* ---------- 4. NAVEGAÇÃO ---------- */
+const IC = {
+  pdv:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>',
+  prod:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 14.5 16 10 4 20"/><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/></svg>',
+  est: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><rect x="1" y="3" width="22" height="5" rx="1"/><path d="M10 12h4"/></svg>',
+  ven: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 15h6M9 11h2"/></svg>',
+  rel: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>',
+  ges: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>',
+  tro: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>',
+  cli: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg>',
+  cfg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 7 19.4a1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0-1.2-2.9H1a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 2.6 7a1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 7 2.6h.1A1.7 1.7 0 0 0 8.3 1V1a2 2 0 1 1 4 0v.1A1.7 1.7 0 0 0 15 2.6a1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.6 1.2H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1.2z"/></svg>'
+};
+
+const TELAS = [
+  {id:"pdv",       nome:"Venda (PDV)",  ic:IC.pdv, t:"Ponto de Venda",           s:"Passe o código de barras para montar a venda"},
+  {id:"troca",     nome:"Troca",        ic:IC.tro, t:"Troca de Peças",           s:"Escolha entrada ou saída antes de bipar cada peça"},
+  {id:"produtos",  nome:"Produtos",     ic:IC.prod,t:"Cadastro de Produtos",     s:"Leia o código de barras para cadastrar ou localizar uma peça"},
+  {id:"clientes",  nome:"Clientes",     ic:IC.cli, t:"Cadastro de Clientes",     s:"Contato, CPF e aniversários do comprador e das crianças"},
+  {id:"estoque",   nome:"Estoque",      ic:IC.est, t:"Controle de Estoque",      s:"Entradas de compra e troca, saídas de venda, troca e perda"},
+  {id:"vendas",    nome:"Vendas",       ic:IC.ven, t:"Vendas Realizadas",        s:"Consulte, imprima ou exclua vendas"},
+  {id:"relatorios",nome:"Relatórios",   ic:IC.rel, t:"Relatórios de Vendas",     s:"Diário, semanal, mensal, anual ou por categoria"},
+  {id:"gestao",    nome:"Gestão",       ic:IC.ges, t:"Gestão do Negócio",        s:"Faturamento, custo de aquisição, markup e lucro"},
+  {id:"config",    nome:"Configurações",ic:IC.cfg, t:"Configurações e Backup",   s:"Segurança dos dados e preferências da loja"}
+];
+
+let tela = "pdv";
+function irPara(id){ tela = id; render(); }
+
+function render(){
+  $("#nav").innerHTML = TELAS.map(t =>
+    `<button class="${t.id===tela?"on":""}" onclick="irPara('${t.id}')">${t.ic}<span>${t.nome}</span></button>`).join("");
+  const t = TELAS.find(x=>x.id===tela);
+  $("#tTitulo").textContent = t.t;
+  $("#tSub").textContent = t.s;
+  $("#tAcoes").innerHTML = "";
+  leitorAtivo = null;                  // cada tela registra o seu, se tiver
+  ({pdv:telaPDV, troca:telaTroca, produtos:telaProdutos, clientes:telaClientes, estoque:telaEstoque, vendas:telaVendas,
+    relatorios:telaRelatorios, gestao:telaGestao, config:telaConfig})[tela]();
+  avisoBackup();
+  const bx = DB.produtos.filter(p=>p.ativo!==false && (p.estoque||0) <= (DB.config.estoqueMinimo||0)).length;
+  const an = aniversarios(7).length;
+  $("#footInfo").innerHTML =
+    `${DB.produtos.filter(p=>p.ativo!==false).length} produtos · ${DB.clientes.filter(c=>c.ativo!==false).length} clientes`
+    + `<br>${DB.vendas.filter(v=>!v.cancelada).length} vendas`
+    + (bx ? `<br><b style="color:#c14a41">${bx} com estoque baixo</b>` : "")
+    + (an ? `<br><b style="color:#a25c07">🎂 ${an} aniversário(s) em 7 dias</b>` : "")
+    + `<br><span style="opacity:.7">versão ${VERSAO}</span>`;
+}
+
+/** Faixa fixa no topo quando o armazenamento falha ou o backup está atrasado. */
+function avisoBackup(){
+  $("#faixa")?.remove();
+  let txt = "", grave = false;
+  const d = diasSemBackup();
+  if(!armazenamentoOk){
+    grave = true;
+    txt = `<b>Este navegador não está salvando os dados.</b> Tudo será perdido ao fechar a página.
+           Baixe um backup e abra o arquivo em outro navegador (Chrome ou Edge).`;
+  }else if(d !== null && d >= 7){
+    txt = `<b>Backup atrasado.</b> ${d===999?"Você ainda não baixou nenhum backup.":`Último backup há ${d} dias.`}
+           Os dados ficam só neste computador — baixe uma cópia agora.`;
+  }
+  if(!txt) return;
+  const el = document.createElement("div");
+  el.id = "faixa"; el.className = "noprint";
+  el.style.cssText = `background:${grave?"#c14a41":"#F2B705"};color:${grave?"#fff":"#4a3800"};
+    padding:11px 18px;border-radius:11px;margin-bottom:16px;font-size:14px;
+    display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap`;
+  el.innerHTML = `<span>${txt}</span>
+    <button class="btn sec sm" style="flex:none" onclick="baixarBackup()">Baixar backup</button>`;
+  $("#view").before(el);
+}
+
+/* =======================================================================
+   TELA 1 — PDV
+   ======================================================================= */
+let carrinho = [];   // {produtoId, codigo, desc, qtd, preco, custo}
+
+function telaPDV(){
+  $("#tAcoes").innerHTML = carrinho.length
+    ? `<button class="btn sec" onclick="imprimirPreviaVenda()">Imprimir prévia</button>
+       <button class="btn dan" onclick="cancelarVenda()">Cancelar venda</button>` : "";
+
+  $("#view").innerHTML = `
+  <div class="grid" style="grid-template-columns:minmax(0,1.65fr) minmax(300px,1fr); align-items:start">
+    <div class="grid">
+      <div class="scan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5v14M7 5v14M11 5v10M15 5v14M19 5v14M21 5v14"/></svg>
+        <div class="l">Código de barras<small>Passe o leitor ou digite e tecle Enter</small></div>
+        <div style="flex:1"><input id="pdvCod" placeholder="0000000000000" autocomplete="off"></div>
+      </div>
+      ${htmlSemEstoque(alertaPDV, "fecharAlertaPDV()")}
+
+      <div class="card">
+        <div class="ch">
+          <h3>Itens da venda</h3>
+          <div class="row" style="gap:8px">
+            <button class="btn sec sm" onclick="buscarProduto('pdv')">Buscar sem código</button>
+            <button class="btn sec sm" onclick="irPara('troca')">É uma troca? →</button>
+          </div>
+        </div>
+        <div class="cb" style="padding:0">${htmlCarrinho()}</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ch"><h3>Fechamento</h3></div>
+      <div class="cb">
+        ${htmlClientePDV()}
+        <div class="sep"></div>
+        ${totaisCarrinho()}
+        <div class="sep"></div>
+        <div class="row">
+          <label class="f" style="flex:1 1 120px">Desconto R$
+            <input id="pdvDesc" type="text" inputmode="decimal" value="${esc(carrinhoDesconto)}" placeholder="0,00"
+              oninput="carrinhoDesconto=this.value; atualizaTotais(); salvarEmAndamento()">
+          </label>
+          <label class="f" style="flex:1 1 130px">Pagamento
+            <select id="pdvPag" onchange="carrinhoPag=this.value; salvarEmAndamento()">
+              ${PAGAMENTOS.map(x=>`<option ${carrinhoPag===x?"selected":""}>${x}</option>`).join("")}
+            </select>
+          </label>
+        </div>
+        <label class="f">Cliente / observação (opcional)
+          <input id="pdvObs" value="${esc(carrinhoObs)}" placeholder="Ex.: Maria — presente"
+            oninput="carrinhoObs=this.value; salvarEmAndamento()">
+        </label>
+        <button class="btn big" style="width:100%;margin-top:14px" onclick="finalizarVenda()" ${carrinho.length?"":"disabled"}>
+          Finalizar venda
+        </button>
+        <button class="btn sec" style="width:100%;margin-top:8px" onclick="imprimirPreviaVenda()" ${carrinho.length?"":"disabled"}>
+          Imprimir prévia</button>
+        <p class="hint" style="margin:10px 0 0">A <b>prévia</b> imprime para conferência e <b>não</b> registra a venda.
+          Fechar a janela de impressão não mexe no carrinho — os itens continuam aqui.
+          A venda só é gravada, e o estoque só é baixado, ao clicar em <b>Finalizar venda</b>.</p>
+        <div class="sep"></div>
+        <button class="btn gh" style="width:100%;color:var(--coral)"
+          onclick="cancelarVenda()" ${carrinho.length?"":"disabled"}>Descartar esta venda</button>
+      </div>
+    </div>
+  </div>`;
+
+  salvarEmAndamento();
+  registrarLeitor("pdvCod", lerNoPDV);
+}
+let carrinhoDesconto = "";
+let carrinhoPag = "Dinheiro";   // guardados fora do HTML: a tela re-renderiza a cada
+let carrinhoObs = "";           // peça bipada e apagaria os campos digitados
+let vendaCliente = null;   // id do cliente selecionado para a venda em andamento
+let alertaPDV = null;      // peça recusada por falta de estoque
+
+/* --- Venda/troca em andamento guardada no navegador -------------------
+   Assim nada se perde se a página for fechada, recarregada por engano,
+   ou se algo interromper a operação no meio.                          */
+const CHAVE_TMP = "kavakids_emandamento_v1";
+const PAGAMENTOS = ["Dinheiro","PIX","Débito","Crédito","Crédito parcelado","Troca / crédito"];
+
+function salvarEmAndamento(){
+  try{
+    localStorage.setItem(CHAVE_TMP, JSON.stringify({
+      carrinho, carrinhoDesconto, carrinhoPag, carrinhoObs, vendaCliente, troca }));
+  }catch(e){ /* sem armazenamento: a faixa vermelha já avisa */ }
+}
+function limparEmAndamento(){ try{ localStorage.removeItem(CHAVE_TMP); }catch(e){} }
+
+function carregarEmAndamento(){
+  try{
+    const d = JSON.parse(localStorage.getItem(CHAVE_TMP) || "null");
+    if(!d) return 0;
+    if(Array.isArray(d.carrinho)) carrinho = d.carrinho.filter(i=>produto(i.produtoId));
+    carrinhoDesconto = d.carrinhoDesconto || "";
+    carrinhoPag = PAGAMENTOS.includes(d.carrinhoPag) ? d.carrinhoPag : "Dinheiro";
+    carrinhoObs = d.carrinhoObs || "";
+    vendaCliente = (d.vendaCliente && cliente(d.vendaCliente)) ? d.vendaCliente : null;
+    if(d.troca && Array.isArray(d.troca.entradas) && Array.isArray(d.troca.saidas)){
+      troca = Object.assign({modo:"entrada", entradas:[], saidas:[], desconto:"", cliente:null, pag:"", obs:""}, d.troca);
+      troca.entradas = troca.entradas.filter(i=>produto(i.produtoId));
+      troca.saidas   = troca.saidas.filter(i=>produto(i.produtoId));
+      if(troca.cliente && !cliente(troca.cliente)) troca.cliente = null;
+    }
+    return carrinho.length + troca.entradas.length + troca.saidas.length;
+  }catch(e){ return 0; }
+}
+
+function fecharAlertaPDV(){ alertaPDV = null; telaPDV(); }
+
+function htmlClientePDV(){
+  const c = vendaCliente ? cliente(vendaCliente) : null;
+  if(!c) return `
+    <div class="row" style="align-items:center;justify-content:space-between;gap:8px">
+      <span class="hint"><b>Cliente</b><br>Nenhum selecionado (venda anônima)</span>
+      <button class="btn sec sm" onclick="selecionarClientePDV()">Selecionar cliente</button>
+    </div>`;
+  const b = proxAniv(c.nascimento);
+  const avisos = [];
+  if(b && b.dias<=30) avisos.push(`Aniversário ${quandoAniv(b.dias)}`);
+  for(const k of c.criancas||[]){
+    const kb = proxAniv(k.nascimento);
+    if(kb && kb.dias<=30) avisos.push(`${esc(k.nome||"Criança")} faz ${kb.idade} anos ${quandoAniv(kb.dias)}`);
+  }
+  return `
+    <div style="background:var(--laranja-fraco);padding:11px 13px;border-radius:10px">
+      <div class="row" style="align-items:center;justify-content:space-between;gap:8px">
+        <div style="min-width:0">
+          <b>${esc(c.nome)}</b>
+          <div class="hint">${esc(c.telefone||"sem telefone")}${(c.criancas||[]).length?" · "+esc(c.criancas.map(k=>k.nome).filter(Boolean).join(", ")):""}</div>
+        </div>
+        <div style="flex:none">
+          ${htmlZap(c)}
+          <button class="btn gh sm" onclick="selecionarClientePDV()">Trocar</button>
+          <button class="btn gh sm" onclick="vendaCliente=null;telaPDV()" title="Remover">✕</button>
+        </div>
+      </div>
+      ${avisos.length?`<div class="hint" style="margin-top:7px;color:#a25c07"><b>🎂 ${avisos.join(" · ")}</b></div>`:""}
+    </div>`;
+}
+function selecionarClientePDV(){
+  escolherCliente(id => { vendaCliente = id; telaPDV(); }, "Cliente da venda");
+}
+
+function htmlCarrinho(){
+  if(!carrinho.length) return `<div class="vazio"><b>Nenhum item</b>Passe o código de barras da primeira peça.</div>`;
+  return `<div class="tw"><table><thead><tr>
+    <th>Código</th><th>Peça</th><th class="num">Qtd</th><th class="num">Unit.</th><th class="num">Total</th><th></th>
+  </tr></thead><tbody>` + carrinho.map((i,ix)=>`
+    <tr>
+      <td class="mono" style="font-size:12.5px">${esc(i.codigo)}</td>
+      <td>${esc(i.desc)}${i.qtd<0?' <span class="tag s">devolução</span>':""}</td>
+      <td class="num">
+        <button class="btn gh sm" onclick="mudarQtd(${ix},-1)">−</button>
+        <b style="padding:0 4px">${i.qtd}</b>
+        <button class="btn gh sm" onclick="mudarQtd(${ix},1)">+</button>
+      </td>
+      <td class="num"><input style="width:92px;text-align:right;padding:5px 7px" value="${nm(i.preco,2)}"
+           onchange="mudarPreco(${ix},this.value)"></td>
+      <td class="num"><b>${brl(i.preco*i.qtd)}</b></td>
+      <td class="num"><button class="btn gh sm" onclick="removerItem(${ix})" title="Remover">✕</button></td>
+    </tr>`).join("") + `</tbody></table></div>`;
+}
+
+/**
+ * Fechamento da venda: só o que o cliente pode ver junto.
+ * Custo, lucro, margem e markup ficam em Gestão e Relatórios.
+ */
+function totaisCarrinho(){
+  const sub = carrinho.reduce((s,i)=>s+i.preco*i.qtd,0);
+  const des = numero(carrinhoDesconto);
+  const tot = sub - des;
+  return `<div id="pdvTot">
+    <div class="tot"><span>Peças</span><b>${carrinho.reduce((s,i)=>s+i.qtd,0)}</b></div>
+    <div class="tot"><span>Subtotal</span><b>${brl(sub)}</b></div>
+    ${des?`<div class="tot"><span>Desconto</span><b class="neg">− ${brl(des)}</b></div>`:""}
+    <div class="tot big"><span>Total</span><span>${brl(tot)}</span></div>
+  </div>`;
+}
+function atualizaTotais(){
+  const el = $("#pdvTot"); if(el) el.outerHTML = totaisCarrinho();
+}
+
+function lerNoPDV(cod){
+  const morto = !porCodigo(cod) && excluidoPorCodigo(cod);
+  if(morto){
+    alertaPDV = {motivo:"excluido", codigo:String(cod), produtoId:morto.id, desc:descProduto(morto)};
+    aviso("Esta peça foi excluída do cadastro.","err");
+    telaPDV(); return;
+  }
+  const p = porCodigo(cod);
+  if(!p){
+    // Não troca de tela: mostra o código lido, para dar para conferir na hora
+    // se o leitor mandou o número certo.
+    alertaPDV = {motivo:"naoCadastrado", codigo:String(cod)};
+    aviso("Código não encontrado no cadastro.","err");
+    telaPDV(); return;
+  }
+  alertaPDV = null;
+  addCarrinho(p, 1);
+}
+
+/**
+ * Compara o código lido com os cadastrados e diz o que aconteceu.
+ * "termina" = a leitura perdeu o começo; "comeca" = perdeu o fim.
+ */
+function codigosParecidos(cod){
+  const alvo = limpaCodigo(cod);
+  if(alvo.length < 3) return [];
+  const achados = [];
+  for(const p of DB.produtos.filter(x=>x.ativo!==false)){
+    const c = limpaCodigo(p.codigo);
+    if(!c || c === alvo) continue;
+    let tipo = null;
+    if(c.endsWith(alvo))        tipo = "termina";        // faltou o começo
+    else if(c.startsWith(alvo)) tipo = "comeca";         // faltou o fim
+    else if(c.includes(alvo))   tipo = "meio";
+    else if(alvo.endsWith(c) || alvo.startsWith(c)) tipo = "sobrou";
+    if(tipo) achados.push({p, tipo, c, faltam: Math.abs(c.length - alvo.length)});
+  }
+  const ordem = {termina:0, comeca:1, meio:2, sobrou:3};
+  return achados.sort((a,b)=>ordem[a.tipo]-ordem[b.tipo] || a.faltam-b.faltam).slice(0,4);
+}
+
+const DIAGNOSTICO = {
+  termina: "a leitura perdeu o COMEÇO do código",
+  comeca:  "a leitura perdeu o FIM do código",
+  meio:    "a leitura pegou só um pedaço do meio",
+  sobrou:  "a leitura veio com caracteres a mais"
+};
+
+/** Reativa a peça excluída e já a coloca na operação em andamento. */
+function reativarELer(id){
+  const p = reativarProduto(id);
+  if(!p) return;
+  alertaPDV = null; alertaTroca = null;
+  aviso(`"${descProduto(p)}" voltou ao cadastro.`,"ok");
+  if(tela === "troca") addTroca(p, 1); else addCarrinho(p, 1);
+}
+
+/** Adiciona ao carrinho a peça que a usuária confirmou ser a certa. */
+function usarPecaParecida(id){
+  const p = produto(id); if(!p) return;
+  alertaPDV = null; alertaTroca = null;
+  if(tela === "troca") addTroca(p, 1); else addCarrinho(p, 1);
+}
+
+/** Abre o cadastro já com o código que o leitor mandou. */
+function cadastrarLido(cod){
+  alertaPDV = null; alertaTroca = null;
+  irPara("produtos");
+  setTimeout(()=>formProduto(null, cod), 60);
+}
+
+function addCarrinho(p, qtd){
+  if(qtd > 0){
+    const ja = carrinho.filter(i=>i.produtoId===p.id).reduce((s,i)=>s+Math.max(0,i.qtd),0);
+    const erro = conferirEstoque(p, qtd, ja);
+    if(erro){                                   // sem estoque: a venda não é permitida
+      alertaPDV = erro;
+      aviso(`SEM ESTOQUE — ${descProduto(p)}`,"err");
+      telaPDV(); return;
+    }
+  }
+  alertaPDV = null;
+  const ix = carrinho.findIndex(i => i.produtoId===p.id && Math.sign(i.qtd)===Math.sign(qtd));
+  if(ix>=0) carrinho[ix].qtd += qtd;
+  else carrinho.push({ produtoId:p.id, codigo:p.codigo, desc:descProduto(p), qtd, preco:p.preco||0, custo:p.custo||0 });
+  telaPDV();
+}
+function mudarQtd(ix,d){
+  const i = carrinho[ix];
+  if(d > 0 && i.qtd > 0){                       // aumentar quantidade também respeita o estoque
+    const p = produto(i.produtoId);
+    const ja = carrinho.filter(x=>x.produtoId===i.produtoId).reduce((s,x)=>s+Math.max(0,x.qtd),0);
+    const erro = p && conferirEstoque(p, d, ja);
+    if(erro){ alertaPDV = erro; aviso(`SEM ESTOQUE — ${erro.desc}`,"err"); telaPDV(); return; }
+  }
+  i.qtd += d;
+  if(i.qtd===0) carrinho.splice(ix,1);
+  telaPDV();
+}
+function mudarPreco(ix,v){ carrinho[ix].preco = numero(v); telaPDV(); }
+function removerItem(ix){ carrinho.splice(ix,1); telaPDV(); }
+function limparCarrinho(){
+  carrinho=[]; carrinhoDesconto=""; carrinhoPag="Dinheiro"; carrinhoObs="";
+  vendaCliente=null; alertaPDV=null;
+  salvarEmAndamento(); telaPDV();
+}
+
+/** Cancela a venda em andamento. Confirma antes, para não perder o que já foi bipado. */
+function cancelarVenda(){
+  if(!carrinho.length) return;
+  const n = carrinho.reduce((s,i)=>s+Math.abs(i.qtd),0);
+  confirmar("Cancelar venda",
+    `Descartar esta venda com <b>${n} peça(s)</b>?<br><br>Nada foi gravado ainda — o estoque não muda.
+     Se você só quis fechar a janela de impressão, clique em Voltar.`,
+    ()=>{ limparCarrinho(); aviso("Venda cancelada.","ok"); }, "Descartar venda");
+}
+
+/** Vincula (ou troca) o cliente de uma venda já concluída. */
+function vincularCliente(vendaId, reabrir){
+  const v = DB.vendas.find(x=>x.id===vendaId); if(!v) return;
+  escolherCliente(id => {
+    v.clienteId = id;
+    salvar(); render();
+    aviso(`Venda #${v.numero} vinculada a ${cliente(id).nome}.`,"ok");
+    if(reabrir) verVenda(vendaId);
+  }, `Vincular a venda #${v.numero} a um cliente`);
+}
+function desvincularCliente(vendaId, reabrir){
+  const v = DB.vendas.find(x=>x.id===vendaId); if(!v) return;
+  v.clienteId = null; salvar(); render();
+  aviso("Cliente desvinculado da venda.","ok");
+  if(reabrir) verVenda(vendaId);
+}
+
+/** Busca de produto reutilizada por PDV, devolução e estoque. */
+function buscarProduto(destino){
+  const lista = DB.produtos.filter(p=>p.ativo!==false);
+  window.__pick = id => {
+    const p = produto(id); fechar();
+    if(destino==="pdv") addCarrinho(p, 1);
+    else if(destino==="troca") addTroca(p, 1);
+    else if(destino==="mov") formMovimento(id);
+  };
+  window.__filtrar = q => {
+    q = q.toLowerCase().trim();
+    // bipou o código inteiro dentro da busca: seleciona a peça na hora
+    if(q.length >= 6){
+      const exato = porCodigo(q);
+      if(exato && exato.ativo!==false){ __pick(exato.id); return; }
+    }
+    const r = lista.filter(p => !q || (p.codigo+" "+descProduto(p)+" "+(p.genero||"")).toLowerCase().includes(q)).slice(0,60);
+    $("#bpRes").innerHTML = r.length ? r.map(p=>`
+      <tr style="cursor:pointer${(p.estoque||0)<=0?";opacity:.55":""}" onclick="__pick('${p.id}')">
+        <td class="mono" style="font-size:12.5px">${esc(p.codigo)}</td>
+        <td>${esc(descProduto(p))}</td>
+        <td>${tagGenero(p.genero)}</td>
+        <td class="num">${(p.estoque||0)<=0 ? `<span class="tag s">sem estoque</span>` : p.estoque}</td>
+        <td class="num">${brl(p.preco)}</td>
+      </tr>`).join("") : `<tr><td colspan="5" class="vazio">Nada encontrado</td></tr>`;
+  };
+  modal(destino==="troca" ? `Buscar peça — ${troca.modo==="entrada"?"ENTRADA (devolvida)":"SAÍDA (levada)"}` : "Buscar produto",
+   `<input id="bpQ" placeholder="Marca, modelo, cor, tamanho ou código…" oninput="__filtrar(this.value)" autocomplete="off">
+    ${destino==="troca"?`<p class="hint" style="margin:10px 0 0">${troca.modo==="entrada"?"A peça volta ao estoque e vira crédito para o cliente.":"A peça sai do estoque e conta como venda."}</p>`:""}
+    <div class="tw" style="max-height:420px;overflow:auto;margin-top:12px">
+      <table><thead><tr><th>Código</th><th>Peça</th><th>Gênero</th><th class="num">Est.</th><th class="num">Preço</th></tr></thead>
+      <tbody id="bpRes"></tbody></table></div>`, "", true);
+  __filtrar("");
+  setTimeout(()=>$("#bpQ").focus(),50);
+}
+
+/** Última conferência antes de gravar: nenhuma peça pode sair além do estoque. */
+function conferirCarrinho(itens){
+  const soma = new Map();
+  for(const i of itens) if(i.qtd > 0) soma.set(i.produtoId, (soma.get(i.produtoId)||0) + i.qtd);
+  for(const [pid, qtd] of soma){
+    const p = produto(pid); if(!p) continue;
+    const erro = conferirEstoque(p, qtd, 0);
+    if(erro) return erro;
+  }
+  return null;
+}
+
+/**
+ * Grava uma transação (venda ou troca) e movimenta o estoque.
+ * Itens com qtd positiva saem do estoque (venda); com qtd negativa voltam (devolução).
+ * Usado tanto pelo PDV quanto pelo módulo de Troca.
+ */
+function registrarVenda({itens, desconto=0, pagamento, obs="", clienteId=null, tipo="venda"}){
+  const sub = itens.reduce((s,i)=>s+i.preco*i.qtd,0);
+  const cus = itens.reduce((s,i)=>s+i.custo*i.qtd,0);
+  const tot = sub - desconto;
+  const v = {
+    id: uid(), numero: DB.seqVenda++, data: new Date().toISOString(),
+    itens: itens.map(i=>({...i})),
+    subtotal: sub, desconto, total: tot, custo: cus, lucro: tot-cus,
+    pagamento, obs, clienteId, tipo, cancelada:false
+  };
+  DB.vendas.push(v);
+  const rotulo = tipo==="troca" ? "troca" : "venda";
+  for(const i of v.itens){
+    if(i.qtd>0) movimentar(i.produtoId,"venda",        i.qtd, {vendaId:v.id, custo:i.custo,
+                             obs: tipo==="troca" ? `Peça levada na troca #${v.numero}` : ""});
+    else        movimentar(i.produtoId,"troca_entrada",-i.qtd,{vendaId:v.id, custo:i.custo,
+                             obs:`Peça devolvida na ${rotulo} #${v.numero}`});
+  }
+  salvar();
+  return v;
+}
+
+function finalizarVenda(){
+  if(!carrinho.length) return;
+  const falta = conferirCarrinho(carrinho);
+  if(falta){ alertaPDV = falta; aviso(`SEM ESTOQUE — ${falta.desc}`,"err"); telaPDV(); return; }
+  const v = registrarVenda({
+    itens: carrinho, desconto: numero(carrinhoDesconto),
+    pagamento: carrinhoPag, obs: carrinhoObs.trim(),
+    clienteId: vendaCliente, tipo:"venda"
+  });
+  limparCarrinho();
+  aviso(`Venda #${v.numero} registrada — ${brl(v.total)}`,"ok");
+  verVenda(v.id);
+}
+
+/* =======================================================================
+   TELA 2 — TROCA
+   Bipa-se cada peça escolhendo antes se ela ENTRA (devolvida, volta ao
+   estoque) ou SAI (levada pelo cliente, conta como venda). Compras avulsas
+   feitas no mesmo atendimento entram como saída, igual a uma venda normal.
+   ======================================================================= */
+let troca = { modo:"entrada", entradas:[], saidas:[], desconto:"", cliente:null, pag:"", obs:"" };
+let alertaTroca = null;    // peça recusada por falta de estoque no lado da saída
+
+function fecharAlertaTroca(){ alertaTroca = null; telaTroca(); }
+
+function setModoTroca(m){ troca.modo = m; telaTroca(); }
+
+/** Crédito da peça devolvida: o que o cliente realmente pagou, se der para saber. */
+function ultimoPrecoPago(clienteId, produtoId){
+  if(!clienteId) return null;
+  for(const v of comprasDe(clienteId)){             // já vem da mais recente
+    const it = v.itens.find(i=>i.produtoId===produtoId && i.qtd>0);
+    if(it) return it.preco;
+  }
+  return null;
+}
+
+function telaTroca(){
+  const temAlgo = troca.entradas.length || troca.saidas.length;
+  $("#tAcoes").innerHTML = temAlgo
+    ? `<button class="btn sec" onclick="imprimirPreviaTroca()">Imprimir prévia</button>
+       <button class="btn dan" onclick="cancelarTroca()">Cancelar troca</button>` : "";
+
+  const tEnt = troca.entradas.reduce((s,i)=>s+i.preco*i.qtd,0);
+  const tSai = troca.saidas.reduce((s,i)=>s+i.preco*i.qtd,0);
+  const des  = numero(troca.desconto);
+  const dif  = tSai - des - tEnt;
+
+  $("#view").innerHTML = `
+  <div class="grid" style="grid-template-columns:minmax(0,1.65fr) minmax(310px,1fr); align-items:start">
+    <div class="grid">
+      <div class="modo">
+        <button class="ent ${troca.modo==="entrada"?"on":""}" onclick="setModoTroca('entrada')">
+          ← ENTRADA <kbd>F2</kbd>
+          <small>Peça que o cliente devolve. Volta ao estoque e vira crédito.</small>
+        </button>
+        <button class="sai ${troca.modo==="saida"?"on":""}" onclick="setModoTroca('saida')">
+          SAÍDA → <kbd>F3</kbd>
+          <small>Peça que o cliente leva, ou compra a mais. Sai do estoque como venda.</small>
+        </button>
+      </div>
+
+      <div class="scan" style="${troca.modo==="entrada"
+          ? "background:linear-gradient(100deg,#7fae2b,#9BD24A)" : ""}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5v14M7 5v14M11 5v10M15 5v14M19 5v14M21 5v14"/></svg>
+        <div class="l">Bipando ${troca.modo==="entrada"?"ENTRADA":"SAÍDA"}
+          <small>${troca.modo==="entrada"?"A peça volta para o estoque":"A peça sai do estoque como venda"}</small></div>
+        <div style="flex:1"><input id="trocaCod" placeholder="Passe o leitor aqui" autocomplete="off"></div>
+      </div>
+      ${htmlSemEstoque(alertaTroca, "fecharAlertaTroca()")}
+
+      <div class="card faixaEnt">
+        <div class="ch">
+          <h3>Peças devolvidas <span class="tag e">entrada</span></h3>
+          <button class="btn sec sm" onclick="troca.modo='entrada';buscarProduto('troca')">Buscar sem código</button>
+        </div>
+        <div class="cb" style="padding:0">${htmlListaTroca("entradas")}</div>
+      </div>
+
+      <div class="card faixaSai">
+        <div class="ch">
+          <h3>Peças levadas e compras <span class="tag s">saída</span></h3>
+          <button class="btn sec sm" onclick="troca.modo='saida';buscarProduto('troca')">Buscar sem código</button>
+        </div>
+        <div class="cb" style="padding:0">${htmlListaTroca("saidas")}</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ch"><h3>Fechamento da troca</h3></div>
+      <div class="cb">
+        ${htmlClienteTroca()}
+        <div class="sep"></div>
+        <div class="tot"><span>Devolvido (crédito)</span><b class="pos">− ${brl(tEnt)}</b></div>
+        <div class="tot"><span>Levado / comprado</span><b>${brl(tSai)}</b></div>
+        ${des?`<div class="tot"><span>Desconto</span><b class="neg">− ${brl(des)}</b></div>`:""}
+        <div class="tot big" style="${dif<0?"color:#c14a41":""}">
+          <span>${dif>0?"Cliente paga":dif<0?"Crédito a devolver":"Diferença"}</span>
+          <span>${brl(Math.abs(dif))}</span>
+        </div>
+        <p class="hint" style="margin:8px 0 0">${
+          dif>0 ? "O cliente completa a diferença."
+          : dif<0 ? "A loja deve esse valor ao cliente (devolução em dinheiro ou vale-compra)."
+          : "Troca sem diferença de valor." }</p>
+
+        <div class="sep"></div>
+        <div class="row">
+          <label class="f" style="flex:1 1 120px">Desconto R$
+            <input value="${esc(troca.desconto)}" inputmode="decimal" placeholder="0,00"
+              oninput="troca.desconto=this.value; salvarEmAndamento(); telaTroca()">
+          </label>
+          <label class="f" style="flex:1 1 140px">${dif<0?"Forma de devolução":"Pagamento da diferença"}
+            <select id="trocaPag" onchange="troca.pag=this.value; salvarEmAndamento()">
+              ${(dif<0 ? ["Vale-compra","Dinheiro","PIX"] : ["Dinheiro","PIX","Débito","Crédito","Crédito parcelado","Sem diferença"])
+                .map(x=>`<option ${troca.pag===x?"selected":""}>${x}</option>`).join("")}
+            </select>
+          </label>
+        </div>
+        <label class="f">Observação
+          <input id="trocaObs" value="${esc(troca.obs)}" placeholder="Ex.: tamanho não serviu"
+            oninput="troca.obs=this.value; salvarEmAndamento()">
+        </label>
+        <button class="btn big" style="width:100%;margin-top:14px" onclick="finalizarTroca()" ${temAlgo?"":"disabled"}>
+          Finalizar troca
+        </button>
+        <button class="btn sec" style="width:100%;margin-top:8px" onclick="imprimirPreviaTroca()" ${temAlgo?"":"disabled"}>
+          Imprimir prévia</button>
+        <p class="hint" style="margin:10px 0 0">A <b>prévia</b> é só para conferência e fechar a janela de impressão
+          não mexe nas listas. O estoque só é corrigido nos dois sentidos ao clicar em <b>Finalizar troca</b>.</p>
+        <div class="sep"></div>
+        <button class="btn gh" style="width:100%;color:var(--coral)"
+          onclick="cancelarTroca()" ${temAlgo?"":"disabled"}>Descartar esta troca</button>
+      </div>
+    </div>
+  </div>`;
+
+  salvarEmAndamento();
+  registrarLeitor("trocaCod", lerNaTroca);
+}
+
+function htmlListaTroca(qual){
+  const lista = troca[qual];
+  const ent = qual==="entradas";
+  if(!lista.length) return `<div class="vazio" style="padding:22px">
+    ${ent ? "Nenhuma peça devolvida ainda." : "Nenhuma peça levada ainda."}</div>`;
+  return `<div class="tw"><table><thead><tr>
+    <th>Código</th><th>Peça</th><th class="num">Qtd</th><th class="num">${ent?"Crédito unit.":"Valor unit."}</th>
+    <th class="num">Total</th><th></th>
+  </tr></thead><tbody>` + lista.map((i,ix)=>{
+    const p = produto(i.produtoId);
+    const dif = p && Math.abs(i.preco - (p.preco||0)) > 0.005;
+    return `<tr>
+      <td class="mono" style="font-size:12.5px">${esc(i.codigo)}</td>
+      <td>${esc(i.desc)}${ent && dif ? `<br><span class="hint">preço atual ${brl(p.preco)}</span>`:""}</td>
+      <td class="num">
+        <button class="btn gh sm" onclick="qtdTroca('${qual}',${ix},-1)">−</button>
+        <b style="padding:0 4px">${i.qtd}</b>
+        <button class="btn gh sm" onclick="qtdTroca('${qual}',${ix},1)">+</button>
+      </td>
+      <td class="num"><input style="width:92px;text-align:right;padding:5px 7px" value="${nm(i.preco,2)}"
+           onchange="precoTroca('${qual}',${ix},this.value)"></td>
+      <td class="num"><b>${brl(i.preco*i.qtd)}</b></td>
+      <td class="num"><button class="btn gh sm" onclick="delTroca('${qual}',${ix})" title="Remover">✕</button></td>
+    </tr>`;}).join("") + `</tbody></table></div>`;
+}
+
+function htmlClienteTroca(){
+  const c = troca.cliente ? cliente(troca.cliente) : null;
+  if(!c) return `
+    <div class="row" style="align-items:center;justify-content:space-between;gap:8px">
+      <span class="hint"><b>Cliente</b><br>Selecione para creditar o preço que ela pagou</span>
+      <button class="btn sec sm" onclick="selecionarClienteTroca()">Selecionar</button>
+    </div>`;
+  return `
+    <div style="background:var(--laranja-fraco);padding:11px 13px;border-radius:10px">
+      <div class="row" style="align-items:center;justify-content:space-between;gap:8px">
+        <div style="min-width:0"><b>${esc(c.nome)}</b>
+          <div class="hint">${esc(c.telefone||"sem telefone")}</div></div>
+        <div style="flex:none">
+          ${htmlZap(c)}
+          <button class="btn gh sm" onclick="selecionarClienteTroca()">Trocar</button>
+          <button class="btn gh sm" onclick="troca.cliente=null;telaTroca()" title="Remover">✕</button>
+        </div>
+      </div>
+    </div>`;
+}
+function selecionarClienteTroca(){
+  escolherCliente(id => { troca.cliente = id; telaTroca(); }, "Cliente da troca");
+}
+
+function lerNaTroca(cod){
+  const morto = !porCodigo(cod) && excluidoPorCodigo(cod);
+  if(morto){
+    alertaTroca = {motivo:"excluido", codigo:String(cod), produtoId:morto.id, desc:descProduto(morto)};
+    aviso("Esta peça foi excluída do cadastro.","err");
+    telaTroca(); return;
+  }
+  const p = porCodigo(cod);
+  if(!p){
+    alertaTroca = {motivo:"naoCadastrado", codigo:String(cod)};
+    aviso("Código não encontrado no cadastro.","err");
+    telaTroca(); return;
+  }
+  alertaTroca = null;
+  addTroca(p, 1);
+}
+
+function addTroca(p, qtd){
+  const qual = troca.modo==="entrada" ? "entradas" : "saidas";
+  const lista = troca[qual];
+  if(qual === "saidas"){                        // peça levada sai do estoque: precisa existir
+    const ja = lista.filter(i=>i.produtoId===p.id).reduce((s,i)=>s+i.qtd,0);
+    const erro = conferirEstoque(p, qtd, ja);
+    if(erro){
+      alertaTroca = erro;
+      aviso(`SEM ESTOQUE — ${descProduto(p)}`,"err");
+      telaTroca(); return;
+    }
+  }
+  alertaTroca = null;
+  const ix = lista.findIndex(i=>i.produtoId===p.id);
+  if(ix>=0) lista[ix].qtd += qtd;
+  else{
+    const pago = troca.modo==="entrada" ? ultimoPrecoPago(troca.cliente, p.id) : null;
+    lista.push({ produtoId:p.id, codigo:p.codigo, desc:descProduto(p), qtd,
+                 preco: pago ?? (p.preco||0), custo:p.custo||0 });
+    if(pago !== null && Math.abs(pago-(p.preco||0)) > 0.005)
+      aviso(`Crédito de ${brl(pago)} — foi o que ${cliente(troca.cliente).nome.split(" ")[0]} pagou.`);
+  }
+  telaTroca();
+}
+function qtdTroca(qual, ix, d){
+  salvarEmAndamento();
+  const l = troca[qual];
+  if(qual==="saidas" && d > 0){
+    const p = produto(l[ix].produtoId);
+    const ja = l.filter(x=>x.produtoId===l[ix].produtoId).reduce((s,x)=>s+x.qtd,0);
+    const erro = p && conferirEstoque(p, d, ja);
+    if(erro){ alertaTroca = erro; aviso(`SEM ESTOQUE — ${erro.desc}`,"err"); telaTroca(); return; }
+  }
+  l[ix].qtd += d;
+  if(l[ix].qtd <= 0) l.splice(ix,1);
+  telaTroca();
+}
+function precoTroca(qual, ix, v){ troca[qual][ix].preco = numero(v); telaTroca(); }
+function delTroca(qual, ix){ troca[qual].splice(ix,1); telaTroca(); }
+function limparTroca(){
+  troca = {modo:"entrada", entradas:[], saidas:[], desconto:"", cliente:null, pag:"", obs:""};
+  alertaTroca=null; salvarEmAndamento(); telaTroca();
+}
+
+/** Cancela a troca em andamento, confirmando antes. */
+function cancelarTroca(){
+  const n = troca.entradas.reduce((s,i)=>s+i.qtd,0) + troca.saidas.reduce((s,i)=>s+i.qtd,0);
+  if(!n) return;
+  confirmar("Cancelar troca",
+    `Descartar esta troca com <b>${n} peça(s)</b>?<br><br>Nada foi gravado ainda — o estoque não muda.
+     Se você só quis fechar a janela de impressão, clique em Voltar.`,
+    ()=>{ limparTroca(); aviso("Troca cancelada.","ok"); }, "Descartar troca");
+}
+
+function finalizarTroca(){
+  if(!troca.entradas.length && !troca.saidas.length) return;
+  const falta = conferirCarrinho(troca.saidas);
+  if(falta){ alertaTroca = falta; aviso(`SEM ESTOQUE — ${falta.desc}`,"err"); telaTroca(); return; }
+  // entradas viram quantidade negativa: devolvem estoque e abatem do total
+  const itens = [
+    ...troca.saidas.map(i=>({...i})),
+    ...troca.entradas.map(i=>({...i, qtd:-i.qtd}))
+  ];
+  const v = registrarVenda({
+    itens, desconto: numero(troca.desconto),
+    pagamento: $("#trocaPag")?.value || troca.pag || "Dinheiro", obs: (troca.obs||"").trim(),
+    clienteId: troca.cliente, tipo:"troca"
+  });
+  limparTroca();
+  aviso(v.total >= 0
+    ? `Troca #${v.numero} registrada — cliente pagou ${brl(v.total)}`
+    : `Troca #${v.numero} registrada — crédito de ${brl(-v.total)} ao cliente`, "ok");
+  verVenda(v.id);
+}
+
+/* =======================================================================
+   TELA 3 — PRODUTOS
+   ======================================================================= */
+let filtroProd = {q:"", genero:"", tamanho:"", marca:"", estoque:"", excluidos:false};
+
+function tagGenero(g){
+  if(g==="Menino") return '<span class="tag m">Menino</span>';
+  if(g==="Menina") return '<span class="tag f">Menina</span>';
+  return '<span class="tag u">Unissex</span>';
+}
+
+function telaProdutos(){
+  $("#tAcoes").innerHTML = `<button class="btn" onclick="formProduto()">+ Novo produto</button>`;
+  const marcas = [...new Set(DB.produtos.filter(p=>p.ativo!==false).map(p=>p.marca).filter(Boolean))].sort();
+
+  $("#view").innerHTML = `
+  <div class="grid">
+    <div class="scan">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5v14M7 5v14M11 5v10M15 5v14M19 5v14M21 5v14"/></svg>
+      <div class="l">Cadastrar por código de barras<small>Peça nova abre o cadastro · peça já cadastrada abre a ficha</small></div>
+      <div style="flex:1"><input id="prodCod" placeholder="Passe o leitor aqui" autocomplete="off"></div>
+    </div>
+
+    <div class="card">
+      <div class="ch">
+        <h3>Produtos cadastrados <span class="tag">${DB.produtos.filter(p=>p.ativo!==false).length}</span>
+          ${ (filtroProd.q||filtroProd.genero||filtroProd.tamanho||filtroProd.marca||filtroProd.estoque)
+             ? `<button class="btn gh sm" onclick="limparFiltrosProd()" title="Remover busca e filtros">filtros ativos ✕</button>` : "" }</h3>
+        <div class="row" style="gap:8px">
+          <input id="fq" placeholder="Buscar…" value="${esc(filtroProd.q)}" style="width:180px" oninput="filtroProd.q=this.value; listaProdutos()">
+          <select style="width:auto" onchange="filtroProd.genero=this.value; listaProdutos()">
+            <option value="">Todos gêneros</option>
+            ${["Menino","Menina","Unissex"].map(g=>`<option ${filtroProd.genero===g?"selected":""}>${g}</option>`).join("")}
+          </select>
+          <select style="width:auto" onchange="filtroProd.tamanho=this.value; listaProdutos()">
+            <option value="">Todos tamanhos</option>
+            ${TAMANHOS.map(t=>`<option ${filtroProd.tamanho===t?"selected":""}>${t}</option>`).join("")}
+          </select>
+          <select style="width:auto" onchange="filtroProd.marca=this.value; listaProdutos()">
+            <option value="">Todas marcas</option>
+            ${marcas.map(m=>`<option ${filtroProd.marca===m?"selected":""}>${esc(m)}</option>`).join("")}
+          </select>
+          <select style="width:auto" onchange="filtroProd.estoque=this.value; listaProdutos()">
+            <option value="">Estoque: todos</option>
+            <option value="baixo" ${filtroProd.estoque==="baixo"?"selected":""}>Estoque baixo</option>
+            <option value="zero" ${filtroProd.estoque==="zero"?"selected":""}>Sem estoque</option>
+          </select>
+          <select style="width:auto" onchange="filtroProd.excluidos=this.value==='1'; listaProdutos()">
+            <option value="0">Cadastro ativo</option>
+            <option value="1" ${filtroProd.excluidos?"selected":""}>Peças excluídas (${DB.produtos.filter(p=>p.ativo===false).length})</option>
+          </select>
+        </div>
+      </div>
+      <div class="cb" style="padding:0" id="lp"></div>
+    </div>
+  </div>`;
+
+  listaProdutos();
+  registrarLeitor("prodCod", cod => {
+    const p = porCodigo(cod);
+    if(p && p.ativo!==false) fichaProduto(p.id); else formProduto(null, cod);
+  });
+}
+
+function produtosFiltrados(){
+  const q = filtroProd.q.toLowerCase().trim();
+  const min = DB.config.estoqueMinimo||0;
+  return DB.produtos.filter(p=>{
+    if(filtroProd.excluidos ? p.ativo!==false : p.ativo===false) return false;
+    if(q && !(p.codigo+" "+descProduto(p)).toLowerCase().includes(q)) return false;
+    if(filtroProd.genero  && p.genero  !== filtroProd.genero)  return false;
+    if(filtroProd.tamanho && p.tamanho !== filtroProd.tamanho) return false;
+    if(filtroProd.marca   && p.marca   !== filtroProd.marca)   return false;
+    if(filtroProd.estoque==="baixo" && (p.estoque||0) > min)   return false;
+    if(filtroProd.estoque==="zero"  && (p.estoque||0) > 0)     return false;
+    return true;
+  }).sort((a,b)=> (a.marca||"").localeCompare(b.marca||"") || (a.modelo||"").localeCompare(b.modelo||""));
+}
+
+function listaProdutos(){
+  const l = produtosFiltrados(); const min = DB.config.estoqueMinimo||0;
+  const ativos = DB.produtos.filter(p=>p.ativo!==false).length;
+  const filtrando = !!(filtroProd.q || filtroProd.genero || filtroProd.tamanho ||
+                       filtroProd.marca || filtroProd.estoque);
+  $("#lp").innerHTML = !l.length
+    ? ( filtrando && ativos
+        ? `<div class="vazio"><b>Nenhuma peça com esses filtros</b>
+             Há <b>${ativos}</b> produto(s) cadastrado(s), escondidos pela busca ou pelos filtros acima.
+             <div style="margin-top:12px"><button class="btn" onclick="limparFiltrosProd()">Limpar filtros e ver tudo</button></div>
+           </div>`
+        : `<div class="vazio"><b>${filtroProd.excluidos?"Nenhuma peça excluída":"Nenhum produto"}</b>${
+            filtroProd.excluidos ? "Tudo que foi excluído aparece aqui."
+                                 : "Passe um código de barras acima para cadastrar a primeira peça."}</div>` )
+    : `<div class="tw"><table><thead><tr>
+        <th>Código</th><th>Marca</th><th>Modelo</th><th>Tam.</th><th>Cor</th><th>Gênero</th>
+        <th class="num">Custo</th><th class="num">Venda</th><th class="num">Markup</th><th class="num">Estoque</th><th></th>
+      </tr></thead><tbody>` + l.map(p=>{
+        const mk = markup(p);
+        return `<tr>
+          <td class="mono" style="font-size:12.5px">${esc(p.codigo)}</td>
+          <td><b>${esc(p.marca)}</b></td><td>${esc(p.modelo)}</td>
+          <td><span class="tag">${esc(p.tamanho)}</span></td><td>${esc(p.cor)}</td><td>${tagGenero(p.genero)}</td>
+          <td class="num">${brl(p.custo)}</td><td class="num"><b>${brl(p.preco)}</b></td>
+          <td class="num ${mk!==null&&mk<0?"neg":"pos"}">${mk===null?"—":pct(mk)}</td>
+          <td class="num">${ (p.estoque||0) <= 0 ? `<span class="tag s">sem estoque</span>`
+             : (p.estoque||0) <= min ? `<span class="tag al">${p.estoque}</span>` : `<b>${p.estoque}</b>` }</td>
+          <td class="num" style="white-space:nowrap">
+            ${ p.ativo===false
+              ? `<button class="btn sm" onclick="restaurarProduto('${p.id}')">Restaurar</button>`
+              : `<button class="btn gh sm" onclick="fichaProduto('${p.id}')" title="Ficha">Ficha</button>
+                 <button class="btn gh sm" onclick="formProduto('${p.id}')" title="Editar">✎</button>
+                 <button class="btn gh sm" onclick="excluirProduto('${p.id}')" title="Excluir">🗑</button>` }
+          </td></tr>`;
+      }).join("") + `</tbody></table></div>`;
+}
+
+/** Zera busca e filtros da tela de Produtos. */
+function limparFiltrosProd(){
+  filtroProd = {q:"", genero:"", tamanho:"", marca:"", estoque:"", excluidos:false};
+  telaProdutos();
+}
+
+function formProduto(id, codigo){
+  const p = id ? produto(id) : null;
+  const marcas = [...new Set(DB.produtos.map(x=>x.marca).filter(Boolean))].sort();
+  const cores  = [...new Set(DB.produtos.map(x=>x.cor).filter(Boolean))].sort();
+  modal(p ? "Editar produto" : "Novo produto", `
+    <datalist id="dlMarcas">${marcas.map(m=>`<option value="${esc(m)}">`).join("")}</datalist>
+    <datalist id="dlCores">${cores.map(c=>`<option value="${esc(c)}">`).join("")}</datalist>
+    <div class="row">
+      <label class="f" style="flex:1 1 100%">Código de barras *
+        <input id="fCod" value="${esc(p?p.codigo:(codigo||""))}" placeholder="Passe o leitor ou digite" autocomplete="off">
+      </label>
+      <label class="f">Marca *   <input id="fMarca"  list="dlMarcas" value="${esc(p?.marca||"")}" placeholder="Ex.: Milon"></label>
+      <label class="f">Modelo *  <input id="fModelo" value="${esc(p?.modelo||"")}" placeholder="Ex.: Conjunto manga longa"></label>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <label class="f">Tamanho *
+        <select id="fTam">${TAMANHOS.map(t=>`<option ${p?.tamanho===t?"selected":""}>${t}</option>`).join("")}</select>
+      </label>
+      <label class="f">Cor * <input id="fCor" list="dlCores" value="${esc(p?.cor||"")}" placeholder="Ex.: Rosa"></label>
+      <label class="f">Gênero *
+        <select id="fGen">${["Menino","Menina","Unissex"].map(g=>`<option ${p?.genero===g?"selected":""}>${g}</option>`).join("")}</select>
+      </label>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <label class="f">Custo de compra (R$) *
+        <input id="fCusto" inputmode="decimal" value="${p?nm(p.custo,2):""}" placeholder="0,00" oninput="calcMk()">
+      </label>
+      <label class="f">Valor de venda (R$) *
+        <input id="fPreco" inputmode="decimal" value="${p?nm(p.preco,2):""}" placeholder="0,00" oninput="calcMk()">
+      </label>
+      <label class="f">${p?"Estoque atual":"Quantidade inicial"}
+        <input id="fQtd" type="number" min="0" step="1" value="${p?(p.estoque||0):1}" ${p?"readonly":""}>
+      </label>
+    </div>
+    <div id="mkBox" class="hint" style="margin-top:12px;padding:11px 13px;background:var(--laranja-fraco);border-radius:9px"></div>
+    ${p?'<p class="hint" style="margin:10px 0 0">O estoque só muda pela tela de Estoque ou por vendas, para manter o histórico correto.</p>':""}
+  `, `<button class="btn sec" onclick="fechar()">Cancelar</button>
+      <button class="btn" onclick="salvarProduto('${id||""}')">${p?"Salvar alterações":"Cadastrar produto"}</button>`);
+  calcMk();
+  setTimeout(()=>$(p||codigo ? "#fMarca" : "#fCod").focus(), 60);
+}
+
+function calcMk(){
+  const c = numero($("#fCusto")?.value), v = numero($("#fPreco")?.value);
+  const box = $("#mkBox"); if(!box) return;
+  if(!c || !v){ box.innerHTML = "Preencha custo e venda para ver o markup e o lucro da peça."; return; }
+  const l = v-c;
+  box.innerHTML = `<b>Markup ${pct(l/c)}</b> · Lucro por peça <b>${brl(l)}</b> · Margem sobre a venda <b>${pct(l/v)}</b>`;
+}
+
+function salvarProduto(id){
+  const cod = $("#fCod").value.trim();
+  const dados = {
+    codigo: cod, marca: $("#fMarca").value.trim(), modelo: $("#fModelo").value.trim(),
+    tamanho: $("#fTam").value, cor: $("#fCor").value.trim(), genero: $("#fGen").value,
+    custo: numero($("#fCusto").value), preco: numero($("#fPreco").value)
+  };
+  if(!cod)           return aviso("Informe o código de barras.","err");
+  if(!dados.marca)   return aviso("Informe a marca.","err");
+  if(!dados.modelo)  return aviso("Informe o modelo.","err");
+  if(!dados.cor)     return aviso("Informe a cor.","err");
+  if(dados.preco<=0) return aviso("Informe o valor de venda.","err");
+
+  const dup = porCodigo(cod);
+  if(dup && dup.id !== id){
+    // Mostra o conflito inteiro: qual peça, com que código, e como chegar nela.
+    window.__verConflito = () => {
+      fechar();
+      filtroProd = {q:dup.codigo, genero:"", tamanho:"", marca:"", estoque:"", excluidos:false};
+      irPara("produtos");
+    };
+    const igual = limpaCodigo(dup.codigo) === limpaCodigo(cod);
+    modal("Código de barras já usado", `
+      <p style="margin:0 0 12px">Já existe uma peça <b>ativa</b> com este código:</p>
+      <table style="margin-bottom:12px"><tbody>
+        <tr><th style="width:150px">Peça</th><td><b>${esc(descProduto(dup))}</b></td></tr>
+        <tr><th>Código cadastrado</th><td class="mono">${esc(dup.codigo)}</td></tr>
+        <tr><th>Código digitado</th><td class="mono">${esc(cod)}</td></tr>
+        <tr><th>Estoque</th><td>${dup.estoque||0} peça(s)</td></tr>
+      </tbody></table>
+      <p class="hint" style="margin:0">${ igual
+        ? "É o mesmo código. Se a peça na sua mão é outra, use um código diferente para ela."
+        : "Os códigos não são idênticos, mas o sistema os trata como iguais (ignora espaços, pontuação e zeros à esquerda). Se são peças diferentes mesmo, dê um código realmente distinto à nova." }</p>`,
+      `<button class="btn sec" onclick="fechar()">Voltar</button>
+       <button class="btn" onclick="__verConflito()">Ver esta peça no cadastro</button>`);
+    return;
+  }
+
+  // O código pode pertencer a uma peça excluída — que some da lista mas continua
+  // no histórico das vendas. Em vez de barrar sem explicação, oferece reativar.
+  const morto = excluidoPorCodigo(cod);
+  if(morto && morto.id !== id){
+    const estoqueReal = morto.estoque||0;
+    window.__reativar = () => {
+      // O estoque NAO e mexido aqui: a peca tem historico real. Ajuste, se
+      // precisar, e feito na tela de Estoque, que deixa rastro.
+      reativarProduto(morto.id, dados);
+      fechar(); render();
+      aviso(`"${descProduto(morto)}" voltou ao cadastro com ${estoqueReal} peça(s) e o histórico.`,"ok");
+    };
+    modal("Este código pertence a uma peça excluída", `
+      <p style="margin:0 0 12px">O código <b class="mono">${esc(cod)}</b> é de
+        <b>${esc(descProduto(morto))}</b>, que foi excluída do cadastro.</p>
+      <p class="hint" style="margin:0 0 12px">Ela não aparece na lista, mas continua no histórico das
+        vendas — por isso o código segue reservado. Dá para devolvê-la ao cadastro com os dados que
+        você acabou de preencher, mantendo todo o histórico.</p>
+      <p class="hint" style="margin:0;padding:10px 12px;background:var(--laranja-fraco);border-radius:9px">
+        O estoque dela volta como está hoje: <b>${estoqueReal} peça(s)</b>.
+        Se o número não confere com a arara, corrija depois em
+        <b>Estoque &gt; Movimentar &gt; Ajuste de inventário</b>.</p>`,
+      `<button class="btn sec" onclick="fechar()">Voltar</button>
+       <button class="btn" onclick="__reativar()">Reativar esta peça</button>`);
+    return;
+  }
+
+  if(id){
+    Object.assign(produto(id), dados);
+    aviso("Produto atualizado.","ok");
+  }else{
+    const p = {...dados, id:uid(), estoque:0, ativo:true, criadoEm:new Date().toISOString()};
+    DB.produtos.push(p);
+    const q = parseInt($("#fQtd").value)||0;
+    if(q>0) movimentar(p.id,"compra",q,{custo:p.custo, obs:"Cadastro inicial"});
+    aviso(`Produto cadastrado${q?` com ${q} peça(s) em estoque`:""}.`,"ok");
+  }
+  salvar(); fechar(); render();
+}
+
+function excluirProduto(id){
+  const p = produto(id);
+  const vendasComEle = DB.vendas.filter(v=>v.itens.some(i=>i.produtoId===id));
+  const movs = DB.movimentos.filter(m=>m.produtoId===id).length;
+
+  if(!vendasComEle.length){
+    confirmar("Excluir produto",
+      `Excluir <b>${esc(descProduto(p))}</b> (código ${esc(p.codigo)})?<br><br>
+       Não há vendas com este produto — ele e as ${movs} movimentação(ões) dele serão apagados
+       definitivamente.`,
+      ()=>{ apagarProdutoDeVez(id); aviso("Produto apagado.","ok"); }, "Excluir");
+    return;
+  }
+
+  // Com vendas no histórico há duas intenções possíveis: tirar da lista
+  // preservando os relatórios antigos, ou limpar um cadastro de teste.
+  window.__soDaLista = () => {
+    fechar(); p.ativo = false;
+    carrinho = carrinho.filter(i=>i.produtoId!==id);
+    salvar(); render();
+    aviso("Produto retirado da lista. O histórico foi preservado.","ok");
+  };
+  window.__apagarTudo = () => {
+    fechar();
+    confirmar("Apagar tudo desta peça",
+      `Isto apaga <b>${esc(descProduto(p))}</b>, as ${movs} movimentação(ões) dela e a retira de
+       <b>${vendasComEle.length} venda(s)</b>. Venda que ficar sem nenhum item é removida.<br><br>
+       Os relatórios do passado mudam. <b>Não há como desfazer</b> sem um backup.`,
+      ()=>{ const r = apagarProdutoDeVez(id);
+            aviso(`Peça apagada — ${r.movs} movimentação(ões) e ${r.vendas} venda(s) removidas.`,"ok"); },
+      "Apagar definitivamente");
+  };
+  modal("Excluir produto", `
+    <p style="margin:0 0 14px"><b>${esc(descProduto(p))}</b> — código ${esc(p.codigo)}<br>
+      <span class="hint">${vendasComEle.length} venda(s) e ${movs} movimentação(ões) ligadas a ela.</span></p>
+    <div style="background:var(--laranja-fraco);padding:12px 14px;border-radius:10px;margin-bottom:12px">
+      <b>Tirar da lista</b> <span class="hint">(recomendado)</span><br>
+      <span class="hint">Ela some do cadastro e do "precisa repor", mas continua no histórico —
+      seus relatórios de faturamento e lucro do passado ficam iguais. Dá para restaurar depois.</span>
+    </div>
+    <div style="background:#FDE9E7;padding:12px 14px;border-radius:10px">
+      <b>Apagar definitivamente</b><br>
+      <span class="hint">Some tudo: a peça, as movimentações e a participação dela nas vendas.
+      Use quando o cadastro foi só teste. Os números do passado mudam.</span>
+    </div>`,
+    `<button class="btn sec" onclick="fechar()">Voltar</button>
+     <button class="btn dan" onclick="__apagarTudo()">Apagar definitivamente</button>
+     <button class="btn" onclick="__soDaLista()">Tirar da lista</button>`);
+}
+
+/** Remove a peça e todo rastro dela: movimentações, itens de venda e o cadastro. */
+function apagarProdutoDeVez(id){
+  const movs = DB.movimentos.filter(m=>m.produtoId===id).length;
+  const remover = new Set();
+  for(const v of DB.vendas){
+    if(!v.itens.some(i=>i.produtoId===id)) continue;
+    v.itens = v.itens.filter(i=>i.produtoId!==id);
+    if(!v.itens.length){ remover.add(v.id); continue; }
+    v.subtotal = v.itens.reduce((s,x)=>s+x.preco*x.qtd,0);
+    v.custo    = v.itens.reduce((s,x)=>s+x.custo*x.qtd,0);
+    v.total    = v.subtotal - (v.desconto||0);
+    v.lucro    = v.total - v.custo;
+  }
+  DB.vendas     = DB.vendas.filter(v=>!remover.has(v.id));
+  DB.movimentos = DB.movimentos.filter(m=>m.produtoId!==id);
+  DB.produtos   = DB.produtos.filter(x=>x.id!==id);
+  carrinho        = carrinho.filter(i=>i.produtoId!==id);
+  troca.entradas  = troca.entradas.filter(i=>i.produtoId!==id);
+  troca.saidas    = troca.saidas.filter(i=>i.produtoId!==id);
+  salvarEmAndamento(); salvar(); render();
+  return {movs, vendas: remover.size};
+}
+
+/** Devolve uma peça excluída à lista, com o histórico dela. */
+function restaurarProduto(id){
+  const p = produto(id); if(!p) return;
+  confirmar("Restaurar peça",
+    `Devolver <b>${esc(descProduto(p))}</b> ao cadastro?<br><br>
+     Ela volta a aparecer na lista e pode ser vendida. O histórico e o estoque
+     (${p.estoque||0} peça(s)) são preservados.`,
+    ()=>{ reativarProduto(id); render(); aviso("Peça restaurada.","ok"); }, "Restaurar");
+}
+
+function fichaProduto(id){
+  const p = produto(id); if(!p) return;
+  const movs = DB.movimentos.filter(m=>m.produtoId===id).sort((a,b)=>a.data<b.data?1:-1).slice(0,40);
+  const vend = DB.vendas.filter(v=>!v.cancelada && v.itens.some(i=>i.produtoId===id));
+  const qtdV = vend.reduce((s,v)=>s+v.itens.filter(i=>i.produtoId===id).reduce((x,i)=>x+i.qtd,0),0);
+  const recV = vend.reduce((s,v)=>s+v.itens.filter(i=>i.produtoId===id).reduce((x,i)=>x+i.preco*i.qtd,0),0);
+  const mk = markup(p);
+  modal(descProduto(p), `
+    <div class="grid g4" style="margin-bottom:16px">
+      <div class="kpi lar"><div class="k">Estoque</div><div class="v">${p.estoque||0}</div></div>
+      <div class="kpi ver"><div class="k">Vendidas</div><div class="v">${qtdV}</div><div class="s">${brl(recV)}</div></div>
+      <div class="kpi cia"><div class="k">Markup</div><div class="v">${mk===null?"—":pct(mk)}</div><div class="s">Lucro ${brl(p.preco-p.custo)}/peça</div></div>
+      <div class="kpi ama"><div class="k">Preço</div><div class="v" style="font-size:21px">${brl(p.preco)}</div><div class="s">Custo ${brl(p.custo)}</div></div>
+    </div>
+    <table style="margin-bottom:16px"><tbody>
+      <tr><th style="width:130px">Código</th><td class="mono">${esc(p.codigo)}</td></tr>
+      <tr><th>Marca / Modelo</th><td>${esc(p.marca)} — ${esc(p.modelo)}</td></tr>
+      <tr><th>Tamanho / Cor</th><td>${esc(p.tamanho)} · ${esc(p.cor)}</td></tr>
+      <tr><th>Gênero</th><td>${tagGenero(p.genero)}</td></tr>
+      <tr><th>Cadastrado em</th><td>${dataBR(p.criadoEm)}</td></tr>
+    </tbody></table>
+    <h3 style="font-size:14px;color:var(--marrom);margin-bottom:8px">Movimentações</h3>
+    <div class="tw" style="max-height:280px;overflow:auto">
+      <table><thead><tr><th>Data</th><th>Movimento</th><th class="num">Qtd</th><th class="num">Saldo</th><th>Obs.</th></tr></thead>
+      <tbody>${ movs.length ? movs.map(m=>`<tr>
+          <td>${dataBR(m.data)}</td>
+          <td><span class="tag ${m.tipo==="entrada"?"e":"s"}">${MOTIVOS[m.motivo].r}</span></td>
+          <td class="num ${m.delta>0?"pos":"neg"}"><b>${m.delta>0?"+":""}${m.delta}</b></td>
+          <td class="num">${m.saldo}</td><td class="hint">${esc(m.obs)}</td></tr>`).join("")
+        : `<tr><td colspan="5" class="vazio">Sem movimentações</td></tr>` }</tbody></table>
+    </div>`,
+    `<button class="btn sec" onclick="fechar();formMovimento('${id}')">Movimentar estoque</button>
+     <button class="btn sec" onclick="fechar();formProduto('${id}')">Editar</button>
+     <button class="btn" onclick="fechar()">Fechar</button>`, true);
+}
+
+/* =======================================================================
+   TELA 3 — CLIENTES
+   ======================================================================= */
+let filtroCli = {q:"", aniv:""};
+
+/** Compras de um cliente (vendas válidas), da mais recente para a mais antiga. */
+const comprasDe = id => DB.vendas.filter(v=>!v.cancelada && v.clienteId===id).sort((a,b)=>a.data<b.data?1:-1);
+
+function resumoCliente(id){
+  const c = comprasDe(id);
+  const r = resumo(c);
+  return {...r, ultima: c[0]?.data || null, primeira: c.at(-1)?.data || null};
+}
+
+function telaClientes(){
+  $("#tAcoes").innerHTML =
+    `<button class="btn sec" onclick="imprimirRelatorio('clientes')">Imprimir relatório</button>
+     <button class="btn sec" onclick="popupAniversarios(true)">🎂 Ver avisos</button>
+     <button class="btn" onclick="formCliente()">+ Novo cliente</button>`;
+  const proximos = aniversarios(30);
+  const q = filtroCli.q.toLowerCase().trim();
+
+  let lista = DB.clientes.filter(c=>{
+    if(c.ativo===false) return false;
+    if(q && !((c.nome+" "+(c.telefone||"")+" "+(c.email||"")+" "+(c.cpf||"")+" "+
+              (c.criancas||[]).map(k=>k.nome).join(" ")).toLowerCase().includes(q))) return false;
+    if(filtroCli.aniv==="7"  && !aniversarios(7).some(a=>a.cliente.id===c.id))  return false;
+    if(filtroCli.aniv==="30" && !aniversarios(30).some(a=>a.cliente.id===c.id)) return false;
+    return true;
+  }).sort((a,b)=>a.nome.localeCompare(b.nome));
+
+  $("#view").innerHTML = `
+  <div class="grid">
+    ${ proximos.length ? `
+    <div class="card">
+      <div class="ch"><h3>Próximos aniversários (30 dias)</h3>
+        <span class="hint">O sistema avisa sozinho com 7 dias de antecedência</span></div>
+      <div class="cb" style="padding:0"><div class="tw"><table><thead><tr>
+        <th>Quem</th><th>Tipo</th><th>Cliente</th><th>Data</th><th>Quando</th><th>Idade</th><th>Contato</th><th></th>
+      </tr></thead><tbody>${proximos.slice(0,25).map(a=>`<tr ${a.dias<=7?'style="background:#FFF8EC"':""}>
+        <td><b>${esc(a.quem)}</b></td>
+        <td><span class="tag ${a.tipo==="Criança"?"f":"m"}">${a.tipo}</span></td>
+        <td>${esc(a.cliente.nome)}</td>
+        <td>${dataBR(a.iso)}</td>
+        <td>${a.dias<=7?`<b class="neg">${quandoAniv(a.dias)}</b>`:quandoAniv(a.dias)}</td>
+        <td>${a.idade} anos</td>
+        <td class="hint">${esc(a.cliente.telefone||"—")}</td>
+        <td class="num">${htmlZap(a.cliente, a)}</td>
+      </tr>`).join("")}</tbody></table></div></div>
+    </div>` : "" }
+
+    <div class="card">
+      <div class="ch">
+        <h3>Clientes <span class="tag">${DB.clientes.filter(c=>c.ativo!==false).length}</span></h3>
+        <div class="row" style="gap:8px">
+          <input placeholder="Nome, telefone, e-mail, CPF, criança…" value="${esc(filtroCli.q)}" style="width:250px"
+            oninput="filtroCli.q=this.value; telaClientes()">
+          <select style="width:auto" onchange="filtroCli.aniv=this.value; telaClientes()">
+            <option value="">Todos</option>
+            <option value="7"  ${filtroCli.aniv==="7"?"selected":""}>Aniversário em 7 dias</option>
+            <option value="30" ${filtroCli.aniv==="30"?"selected":""}>Aniversário em 30 dias</option>
+          </select>
+          <button class="btn sec sm" onclick="exportarCSV('clientes')">Exportar CSV</button>
+        </div>
+      </div>
+      <div class="cb" style="padding:0">
+      ${ lista.length ? `<div class="tw"><table><thead><tr>
+        <th>Nome</th><th>Aniversário</th><th>Crianças</th><th>Telefone</th><th>E-mail</th><th>CPF</th>
+        <th class="num">Compras</th><th class="num">Total gasto</th><th>Última</th><th></th>
+      </tr></thead><tbody>${lista.map(c=>{
+        const r = resumoCliente(c.id);
+        const b = proxAniv(c.nascimento);
+        return `<tr>
+          <td><b>${esc(c.nome)}</b></td>
+          <td>${c.nascimento ? dataBR(c.nascimento) + (b && b.dias<=7 ? ` <span class="tag al">${quandoAniv(b.dias)}</span>`:"") : "—"}</td>
+          <td>${ (c.criancas||[]).length
+              ? c.criancas.map(k=>{ const kb=proxAniv(k.nascimento);
+                  return `${esc(k.nome||"—")}${k.nascimento?` <span class="hint">(${dataBR(k.nascimento)})</span>`:""}`
+                    + (kb && kb.dias<=7 ? ` <span class="tag al">${quandoAniv(kb.dias)}</span>`:""); }).join("<br>")
+              : '<span class="hint">—</span>' }</td>
+          <td>${esc(c.telefone||"—")}</td>
+          <td class="hint">${esc(c.email||"—")}</td>
+          <td class="mono" style="font-size:12.5px">${esc(c.cpf||"—")}</td>
+          <td class="num"><b>${r.vendas}</b></td>
+          <td class="num"><b>${brl(r.receita)}</b></td>
+          <td>${r.ultima?dataBR(r.ultima):'<span class="hint">nunca</span>'}</td>
+          <td class="num" style="white-space:nowrap">
+            ${htmlZap(c)}
+            <button class="btn gh sm" onclick="fichaCliente('${c.id}')">Ficha</button>
+            <button class="btn gh sm" onclick="formCliente('${c.id}')" title="Editar">✎</button>
+            <button class="btn gh sm" onclick="excluirCliente('${c.id}')" title="Excluir">🗑</button>
+          </td></tr>`;
+      }).join("")}</tbody></table></div>`
+      : `<div class="vazio"><b>Nenhum cliente cadastrado</b>Clique em "Novo cliente" ou cadastre direto na tela de Venda.</div>` }
+      </div>
+    </div>
+  </div>`;
+}
+
+/** Botão de WhatsApp com mensagem de parabéns pronta. */
+function htmlZap(c, aniv, rotulo){
+  if(!c) return "";
+  const msg = aniv
+    ? `Oi, ${c.nome.split(" ")[0]}! A Kava Kids passou para desejar um feliz aniversário ${aniv.tipo==="Criança"?"para "+aniv.quem:""}! 🧡`
+    : `Oi, ${c.nome.split(" ")[0]}! Aqui é da Kava Kids. 🧡`;
+  const href = zapLink(c.telefone, msg);
+  if(!href) return "";
+  const n = zapNumero(c.telefone);
+  return `<a class="btn gh sm" style="text-decoration:none" target="_blank" rel="noopener"
+    href="${href}" title="Abrir conversa no WhatsApp (+${n})">${rotulo || "WhatsApp"}</a>`;
+}
+
+function formCliente(id, aoSalvar){
+  const c = id ? cliente(id) : null;
+  window.__aoSalvarCliente = aoSalvar || null;
+  modal(c ? "Editar cliente" : "Novo cliente", `
+    <div class="row">
+      <label class="f" style="flex:1 1 100%">Nome do comprador *
+        <input id="cNome" value="${esc(c?.nome||"")}" placeholder="Nome completo">
+      </label>
+      <label class="f">Aniversário do comprador
+        <input id="cNasc" type="date" value="${esc(c?.nascimento||"")}">
+      </label>
+      <label class="f">Telefone / WhatsApp
+        <input id="cTel" value="${esc(c?.telefone||"")}" placeholder="(11) 91234-5678"
+          oninput="this.value=telFmt(this.value)">
+      </label>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <label class="f">E-mail
+        <input id="cMail" type="email" value="${esc(c?.email||"")}" placeholder="nome@email.com">
+      </label>
+      <label class="f">CPF
+        <input id="cCpf" value="${esc(c?.cpf||"")}" placeholder="000.000.000-00" inputmode="numeric"
+          oninput="this.value=cpfFmt(this.value); avisaCpf()">
+      </label>
+    </div>
+    <div id="cpfAviso" class="hint" style="margin-top:6px"></div>
+
+    <div class="sep"></div>
+    <div class="row" style="justify-content:space-between;align-items:center">
+      <h4 style="font-size:14px;color:var(--marrom);margin:0">Crianças</h4>
+      <button class="btn sec sm" onclick="addCrianca()">+ Adicionar criança</button>
+    </div>
+    <div id="criancas" style="margin-top:10px"></div>
+
+    <label class="f" style="margin-top:14px">Observações
+      <input id="cObs" value="${esc(c?.obs||"")}" placeholder="Ex.: prefere tons neutros, indicada pela Ana">
+    </label>`,
+    `<button class="btn sec" onclick="fechar()">Cancelar</button>
+     <button class="btn" onclick="salvarCliente('${id||""}')">${c?"Salvar alterações":"Cadastrar cliente"}</button>`, true);
+
+  window.__criancas = (c?.criancas||[]).map(k=>({...k}));
+  if(!window.__criancas.length) window.__criancas.push({nome:"",nascimento:""});
+  pintaCriancas(); avisaCpf();
+  setTimeout(()=>$("#cNome").focus(), 60);
+}
+
+function pintaCriancas(){
+  $("#criancas").innerHTML = window.__criancas.map((k,i)=>`
+    <div class="row" style="margin-bottom:8px">
+      <label class="f">Nome da criança
+        <input value="${esc(k.nome)}" placeholder="Nome" onchange="__criancas[${i}].nome=this.value">
+      </label>
+      <label class="f" style="flex:0 1 190px">Data de nascimento
+        <input type="date" value="${esc(k.nascimento)}" onchange="__criancas[${i}].nascimento=this.value">
+      </label>
+      <button class="btn gh" style="flex:none;margin-bottom:2px" onclick="delCrianca(${i})" title="Remover">✕</button>
+    </div>`).join("");
+}
+function addCrianca(){ window.__criancas.push({nome:"",nascimento:""}); pintaCriancas(); }
+function delCrianca(i){ window.__criancas.splice(i,1); if(!window.__criancas.length) window.__criancas.push({nome:"",nascimento:""}); pintaCriancas(); }
+
+function avisaCpf(){
+  const el = $("#cpfAviso"); if(!el) return;
+  const v = $("#cCpf").value;
+  if(!soDigitos(v)){ el.innerHTML = "O CPF é opcional."; el.style.color = ""; return; }
+  const ok = cpfValido(v);
+  el.innerHTML = ok ? "CPF válido." : "CPF inválido — confira os números.";
+  el.style.color = ok ? "#5b8215" : "#c14a41";
+}
+
+function salvarCliente(id){
+  const nome = $("#cNome").value.trim();
+  if(!nome) return aviso("Informe o nome do comprador.","err");
+  const cpf = $("#cCpf").value.trim();
+  if(soDigitos(cpf) && !cpfValido(cpf)) return aviso("CPF inválido. Corrija ou deixe em branco.","err");
+  const email = $("#cMail").value.trim();
+  if(email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return aviso("E-mail inválido.","err");
+
+  const dup = DB.clientes.find(c => c.ativo!==false && c.id!==id && soDigitos(cpf) &&
+                                    soDigitos(c.cpf)===soDigitos(cpf));
+  if(dup) return aviso(`Este CPF já está cadastrado para ${dup.nome}.`,"err");
+
+  const dados = {
+    nome, nascimento: $("#cNasc").value || "", telefone: $("#cTel").value.trim(),
+    email, cpf: cpf ? cpfFmt(cpf) : "", obs: $("#cObs").value.trim(),
+    criancas: window.__criancas.filter(k=>k.nome.trim() || k.nascimento).map(k=>({nome:k.nome.trim(), nascimento:k.nascimento}))
+  };
+
+  let alvo;
+  if(id){ alvo = cliente(id); Object.assign(alvo, dados); aviso("Cliente atualizado.","ok"); }
+  else  { alvo = {...dados, id:uid(), ativo:true, criadoEm:new Date().toISOString()};
+          DB.clientes.push(alvo); aviso("Cliente cadastrado.","ok"); }
+
+  salvar(); fechar();
+  const cb = window.__aoSalvarCliente; window.__aoSalvarCliente = null;
+  if(cb) cb(alvo.id); else render();
+}
+
+function excluirCliente(id){
+  const c = cliente(id);
+  const compras = DB.vendas.filter(v=>v.clienteId===id).length;
+  confirmar("Excluir cliente",
+    `Excluir <b>${esc(c.nome)}</b>?` + (compras
+      ? `<br><br>Este cliente tem <b>${compras} compra(s)</b> registradas. Ele sai da lista, mas as vendas continuam no histórico.`
+      : `<br><br>Não há compras vinculadas — o cadastro será removido definitivamente.`),
+    ()=>{
+      if(compras) c.ativo = false;
+      else DB.clientes = DB.clientes.filter(x=>x.id!==id);
+      if(vendaCliente===id) vendaCliente = null;
+      salvar(); render(); aviso("Cliente excluído.","ok");
+    },"Excluir");
+}
+
+function fichaCliente(id){
+  const c = cliente(id); if(!c) return;
+  const r = resumoCliente(id);
+  const compras = comprasDe(id);
+  const bComp = proxAniv(c.nascimento);
+  const favoritas = categorias(compras,"marca").slice(0,4);
+
+  modal(c.nome, `
+    <div class="grid g4" style="margin-bottom:16px">
+      <div class="kpi lar"><div class="k">Compras</div><div class="v">${r.vendas}</div>
+        <div class="s">${r.pecas} peça(s)</div></div>
+      <div class="kpi ver"><div class="k">Total gasto</div><div class="v" style="font-size:21px">${brl(r.receita)}</div>
+        <div class="s">Ticket ${brl(r.ticket)}</div></div>
+      <div class="kpi cia"><div class="k">Última compra</div><div class="v" style="font-size:19px">${r.ultima?dataBR(r.ultima):"—"}</div>
+        <div class="s">${r.primeira?"Cliente desde "+dataBR(r.primeira):"Sem compras"}</div></div>
+      <div class="kpi ama"><div class="k">Lucro gerado</div><div class="v" style="font-size:21px">${brl(r.lucro)}</div>
+        <div class="s">Margem ${pct(r.margem)}</div></div>
+    </div>
+
+    <table style="margin-bottom:16px"><tbody>
+      <tr><th style="width:150px">Aniversário</th><td>${ c.nascimento
+        ? dataBR(c.nascimento) + ` <span class="hint">— faz ${bComp.idade} anos ${quandoAniv(bComp.dias)}</span>` : "—" }</td></tr>
+      <tr><th>Telefone</th><td>${esc(c.telefone||"—")} ${htmlZap(c)}</td></tr>
+      <tr><th>E-mail</th><td>${esc(c.email||"—")}</td></tr>
+      <tr><th>CPF</th><td class="mono">${esc(c.cpf||"—")}</td></tr>
+      <tr><th>Crianças</th><td>${ (c.criancas||[]).length ? c.criancas.map(k=>{
+          const kb = proxAniv(k.nascimento);
+          return `<b>${esc(k.nome||"—")}</b>` + (kb
+            ? ` — ${dataBR(k.nascimento)} <span class="hint">(faz ${kb.idade} anos ${quandoAniv(kb.dias)})</span>` : "");
+        }).join("<br>") : "—" }</td></tr>
+      ${c.obs?`<tr><th>Observações</th><td>${esc(c.obs)}</td></tr>`:""}
+    </tbody></table>
+
+    ${ favoritas.length ? `<p class="hint" style="margin:0 0 14px">Marcas que mais compra:
+       ${favoritas.map(f=>`<b>${esc(f.chave)}</b> (${f.qtd})`).join(" · ")}</p>` : "" }
+
+    <h3 style="font-size:14px;color:var(--marrom);margin-bottom:8px">Histórico de compras</h3>
+    <div class="tw" style="max-height:280px;overflow:auto">
+      <table><thead><tr><th>#</th><th>Data</th><th>Peças</th><th class="num">Total</th><th></th></tr></thead>
+      <tbody>${ compras.length ? compras.map(v=>`<tr>
+        <td><b>#${v.numero}</b></td><td>${dataBR(v.data)}</td>
+        <td>${v.itens.map(i=>esc(i.desc)).join("<br>")}</td>
+        <td class="num"><b>${brl(v.total)}</b></td>
+        <td class="num" style="white-space:nowrap">
+          <button class="btn gh sm" onclick="fechar();verVenda('${v.id}')">Ver</button>
+          <button class="btn gh sm" onclick="imprimirVenda('${v.id}')" title="Imprimir recibo">🖨</button></td>
+      </tr>`).join("") : `<tr><td colspan="5" class="vazio">Nenhuma compra vinculada ainda</td></tr>` }</tbody></table>
+    </div>`,
+    `<button class="btn sec" onclick="fechar();formCliente('${id}')">Editar</button>
+     <button class="btn" onclick="fechar()">Fechar</button>`, true);
+}
+
+/** Seletor de cliente reutilizado pelo PDV e pela vinculação posterior. */
+function escolherCliente(aoEscolher, titulo){
+  window.__pickCli = id => { fechar(); aoEscolher(id); };
+  window.__novoCli = () => { fechar(); formCliente(null, id => aoEscolher(id)); };
+  window.__filtraCli = q => {
+    q = q.toLowerCase().trim();
+    const r = DB.clientes.filter(c=>c.ativo!==false)
+      .filter(c => !q || (c.nome+" "+(c.telefone||"")+" "+(c.email||"")+" "+(c.cpf||"")+" "+
+                          (c.criancas||[]).map(k=>k.nome).join(" ")).toLowerCase().includes(q))
+      .sort((a,b)=>a.nome.localeCompare(b.nome)).slice(0,60);
+    $("#cliRes").innerHTML = r.length ? r.map(c=>{
+      const rc = resumoCliente(c.id);
+      return `<tr style="cursor:pointer" onclick="__pickCli('${c.id}')">
+        <td><b>${esc(c.nome)}</b>${(c.criancas||[]).length?`<br><span class="hint">${esc(c.criancas.map(k=>k.nome).filter(Boolean).join(", "))}</span>`:""}</td>
+        <td>${esc(c.telefone||"—")} ${htmlZap(c,null,"↗")}</td>
+        <td class="mono" style="font-size:12.5px">${esc(c.cpf||"—")}</td>
+        <td class="num">${rc.vendas}</td>
+        <td class="num">${brl(rc.receita)}</td></tr>`;
+    }).join("") : `<tr><td colspan="5" class="vazio">Nenhum cliente encontrado</td></tr>`;
+  };
+  modal(titulo || "Selecionar cliente", `
+    <div class="row">
+      <input id="cliQ" placeholder="Nome, telefone, CPF ou nome da criança…" oninput="__filtraCli(this.value)" autocomplete="off">
+      <button class="btn" style="flex:none" onclick="__novoCli()">+ Cadastrar novo</button>
+    </div>
+    <div class="tw" style="max-height:400px;overflow:auto;margin-top:12px">
+      <table><thead><tr><th>Cliente</th><th>Telefone</th><th>CPF</th><th class="num">Compras</th><th class="num">Total</th></tr></thead>
+      <tbody id="cliRes"></tbody></table></div>`, "", true);
+  __filtraCli("");
+  setTimeout(()=>$("#cliQ").focus(), 50);
+}
+
+/* =======================================================================
+   TELA 4 — ESTOQUE
+   ======================================================================= */
+let filtroMov = {motivo:"", periodo:"30dias"};
+
+function telaEstoque(){
+  $("#tAcoes").innerHTML =
+    `<button class="btn sec" onclick="imprimirRelatorio('estoque')">Imprimir posição</button>
+     <button class="btn sec" onclick="buscarProduto('mov')">+ Movimentar estoque</button>`;
+
+  const ativos = DB.produtos.filter(p=>p.ativo!==false);
+  const min = DB.config.estoqueMinimo||0;
+  // Saldo negativo é erro de cadastro, não patrimônio: não entra na conta do dinheiro.
+  const emCaixa = p => Math.max(0, p.estoque||0);
+  const pecas = ativos.reduce((s,p)=>s+emCaixa(p),0);
+  const valorCusto = ativos.reduce((s,p)=>s+emCaixa(p)*(p.custo||0),0);
+  const valorVenda = ativos.reduce((s,p)=>s+emCaixa(p)*(p.preco||0),0);
+  const baixos = ativos.filter(p=>(p.estoque||0)<=min);
+  const negativos = ativos.filter(p=>(p.estoque||0)<0);
+
+  const per = periodo(filtroMov.periodo);
+  const movs = DB.movimentos
+    .filter(m => diaDe(m.data)>=per.de && diaDe(m.data)<=per.ate && (!filtroMov.motivo || m.motivo===filtroMov.motivo))
+    .sort((a,b)=>a.data<b.data?1:-1);
+
+  $("#view").innerHTML = `
+  <div class="grid">
+    <div class="scan">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5v14M7 5v14M11 5v10M15 5v14M19 5v14M21 5v14"/></svg>
+      <div class="l">Movimentar por código de barras<small>Bipe a peça para dar entrada, baixa ou ajuste</small></div>
+      <div style="flex:1"><input id="estCod" placeholder="Passe o leitor aqui" autocomplete="off"></div>
+    </div>
+
+    <div class="grid g4">
+      <div class="kpi lar"><div class="k">Peças em estoque</div><div class="v">${nm(pecas)}</div><div class="s">${ativos.length} produtos</div></div>
+      <div class="kpi cia"><div class="k">Investido (custo)</div><div class="v" style="font-size:22px">${brl(valorCusto)}</div></div>
+      <div class="kpi ver"><div class="k">Potencial de venda</div><div class="v" style="font-size:22px">${brl(valorVenda)}</div>
+        <div class="s pos">Lucro potencial ${brl(valorVenda-valorCusto)}</div></div>
+      <div class="kpi cor"><div class="k">Estoque baixo</div><div class="v">${baixos.length}</div><div class="s">≤ ${min} peça(s)</div></div>
+    </div>
+
+    ${ negativos.length ? `
+    <div class="semEstoque" style="background:#a8392f">
+      <div class="ic">⚠️</div>
+      <div class="t">ESTOQUE NEGATIVO EM ${negativos.length} PEÇA(S)
+        <small>Saldo negativo não existe na prática — normalmente vem de uma entrada apagada
+        depois das vendas. Enquanto durar, essas peças ficam de fora do cálculo de custo e
+        de potencial de venda.<br>Conte as peças na arara e corrija.</small>
+      </div>
+      <div class="acoes"><button onclick="corrigirNegativos()">Zerar os saldos negativos</button></div>
+    </div>` : "" }
+
+    ${ baixos.length ? `
+    <div class="card">
+      <div class="ch"><h3>Precisa repor</h3><span class="hint">Ajuste o limite em Configurações</span></div>
+      <div class="cb" style="padding:0"><div class="tw"><table><thead><tr>
+        <th>Código</th><th>Peça</th><th>Gênero</th><th class="num">Estoque</th><th></th></tr></thead><tbody>
+        ${baixos.map(p=>`<tr>
+          <td class="mono" style="font-size:12.5px">${esc(p.codigo)}</td>
+          <td>${esc(descProduto(p))}</td><td>${tagGenero(p.genero)}</td>
+          <td class="num">${ (p.estoque||0) < 0
+            ? `<span class="tag s">${p.estoque} — negativo</span>`
+            : `<span class="tag al">${p.estoque||0}</span>` }</td>
+          <td class="num" style="white-space:nowrap">
+            <button class="btn sm sec" onclick="formMovimento('${p.id}','compra')">Dar entrada</button>
+            <button class="btn gh sm" onclick="excluirProduto('${p.id}')" title="Excluir esta peça">🗑</button>
+          </td>
+        </tr>`).join("")}</tbody></table></div></div>
+    </div>` : "" }
+
+    <div class="card">
+      <div class="ch">
+        <h3>Movimentações</h3>
+        <div class="row" style="gap:8px">
+          <select style="width:auto" onchange="filtroMov.periodo=this.value; telaEstoque()">
+            ${["hoje","7dias","semana","30dias","mes","mespass","ano"].map(k=>{
+              const p=periodo(k); return `<option value="${k}" ${filtroMov.periodo===k?"selected":""}>${p.nome}</option>`}).join("")}
+          </select>
+          <select style="width:auto" onchange="filtroMov.motivo=this.value; telaEstoque()">
+            <option value="">Todos os movimentos</option>
+            ${Object.entries(MOTIVOS).map(([k,v])=>`<option value="${k}" ${filtroMov.motivo===k?"selected":""}>${v.r}</option>`).join("")}
+          </select>
+        </div>
+      </div>
+      <div class="cb" style="padding:0">
+        ${ movs.length ? `<div class="tw" style="max-height:520px;overflow:auto"><table><thead><tr>
+          <th>Data</th><th>Peça</th><th>Movimento</th><th class="num">Qtd</th><th class="num">Saldo</th><th>Observação</th><th></th>
+        </tr></thead><tbody>${movs.map(m=>{
+          const p = produto(m.produtoId);
+          return `<tr>
+            <td style="white-space:nowrap">${dataBR(m.data)} <span class="hint">${horaBR(m.data)}</span></td>
+            <td>${esc(p?descProduto(p):"(produto excluído)")}<br><span class="hint mono">${esc(m.codigo||"")}</span></td>
+            <td><span class="tag ${m.tipo==="entrada"?"e":"s"}">${MOTIVOS[m.motivo].r}</span></td>
+            <td class="num ${m.delta>0?"pos":"neg"}"><b>${m.delta>0?"+":""}${m.delta}</b></td>
+            <td class="num">${m.saldo}</td>
+            <td class="hint">${esc(m.obs)}${m.vendaId?" (venda)":""}</td>
+            <td class="num">${ m.vendaId
+              ? `<button class="btn gh sm" onclick="movimentoDeVenda('${m.vendaId}')" title="Veio de uma venda">🔗</button>`
+              : `<button class="btn gh sm" onclick="excluirMovimento('${m.id}')" title="Excluir movimento">🗑</button>`}</td>
+          </tr>`}).join("")}</tbody></table></div>`
+        : `<div class="vazio"><b>Nenhuma movimentação no período</b>Use "Movimentar estoque" para dar entrada ou baixa.</div>` }
+      </div>
+    </div>
+  </div>`;
+
+  registrarLeitor("estCod", cod => {
+    const p = porCodigo(cod);
+    if(p && p.ativo!==false) formMovimento(p.id, "compra");
+    else{
+      aviso("Código não cadastrado — abrindo cadastro.","err");
+      irPara("produtos"); setTimeout(()=>formProduto(null, cod), 60);
+    }
+  });
+}
+
+/** Movimentação gerada por venda/troca: só some se a venda for excluída. */
+function movimentoDeVenda(vendaId){
+  const v = DB.vendas.find(x=>x.id===vendaId);
+  if(!v) return aviso("A venda desta movimentação não existe mais.","err");
+  window.__verVendaMov = () => { fechar(); verVenda(vendaId); };
+  modal("Movimentação gerada por uma venda", `
+    <p style="margin:0 0 12px">Esta movimentação veio da
+      <b>${v.tipo==="troca"?"troca":"venda"} #${v.numero}</b>, de ${dataBR(v.data)}.</p>
+    <p class="hint" style="margin:0">Ela não é excluída sozinha, senão o estoque e a venda ficariam
+      contando coisas diferentes. Para desfazer, exclua a ${v.tipo==="troca"?"troca":"venda"}: as peças
+      voltam ao estoque automaticamente.</p>`,
+    `<button class="btn sec" onclick="fechar()">Voltar</button>
+     <button class="btn" onclick="__verVendaMov()">Abrir a ${v.tipo==="troca"?"troca":"venda"} #${v.numero}</button>`);
+}
+
+/** Traz para zero, com rastro, todo saldo que ficou negativo. */
+function corrigirNegativos(){
+  const negativos = DB.produtos.filter(p=>p.ativo!==false && (p.estoque||0) < 0);
+  if(!negativos.length) return;
+  confirmar("Zerar saldos negativos",
+    `${negativos.length} peça(s) estão com estoque negativo:<br><br>` +
+    negativos.map(p=>`• <b>${esc(descProduto(p))}</b>: ${p.estoque}`).join("<br>") +
+    `<br><br>Cada uma recebe um <b>ajuste de inventário</b> que leva o saldo a <b>zero</b>,
+     registrado no histórico. Depois, dê entrada da quantidade que você realmente tem.`,
+    ()=>{
+      for(const p of negativos)
+        movimentar(p.id, "ajuste_ent", -(p.estoque||0), {custo:p.custo, obs:"Correção de estoque negativo"});
+      salvar(); render();
+      aviso(`${negativos.length} saldo(s) corrigido(s) para zero.`,"ok");
+    }, "Zerar saldos");
+}
+
+function formMovimento(produtoId, motivoPadrao){
+  const p = produto(produtoId); if(!p) return;
+  modal("Movimentar estoque", `
+    <div style="background:var(--laranja-fraco);padding:12px 14px;border-radius:10px;margin-bottom:16px">
+      <b>${esc(descProduto(p))}</b><br>
+      <span class="hint mono">${esc(p.codigo)} · estoque atual <b>${p.estoque||0}</b> · custo ${brl(p.custo)}</span>
+    </div>
+    <div class="row">
+      <label class="f">Tipo de movimento
+        <select id="mMotivo" onchange="mvCustoVis()">
+          <optgroup label="Entradas">
+            ${["compra","troca_entrada","ajuste_ent"].map(k=>`<option value="${k}" ${motivoPadrao===k?"selected":""}>${MOTIVOS[k].r}</option>`).join("")}
+          </optgroup>
+          <optgroup label="Saídas">
+            ${["troca_saida","perda","ajuste_sai"].map(k=>`<option value="${k}" ${motivoPadrao===k?"selected":""}>${MOTIVOS[k].r}</option>`).join("")}
+          </optgroup>
+        </select>
+      </label>
+      <label class="f" style="flex:0 1 120px">Quantidade
+        <input id="mQtd" type="number" min="1" step="1" value="1">
+      </label>
+      <label class="f" style="flex:0 1 150px">Data
+        <input id="mData" type="date" value="${hoje()}">
+      </label>
+    </div>
+    <div class="row" id="mCustoBox" style="margin-top:12px">
+      <label class="f">Custo unitário desta entrada (R$)
+        <input id="mCusto" inputmode="decimal" value="${nm(p.custo,2)}">
+      </label>
+      <label class="f" style="flex:0 1 100%;flex-direction:row;align-items:center;gap:8px;text-transform:none;font-size:13.5px">
+        <input type="checkbox" id="mAtualiza" style="width:auto"> Atualizar o custo cadastrado do produto
+      </label>
+    </div>
+    <label class="f" style="margin-top:12px">Observação
+      <input id="mObs" placeholder="Ex.: Nota 1234 — fornecedor X">
+    </label>`,
+    `<button class="btn sec" onclick="fechar()">Cancelar</button>
+     <button class="btn" onclick="salvarMovimento('${produtoId}')">Registrar movimento</button>`);
+  mvCustoVis();
+  // o leitor já identificou a peça: o foco vai direto para a quantidade
+  const q = $("#mQtd");
+  setTimeout(()=>{ q.focus(); q.select(); }, 60);
+  q.addEventListener("keydown", e => { if(e.key==="Enter"){ e.preventDefault(); salvarMovimento(produtoId); } });
+}
+function mvCustoVis(){
+  const ent = MOTIVOS[$("#mMotivo").value].t === "entrada";
+  $("#mCustoBox").style.display = ent ? "flex" : "none";
+}
+
+function salvarMovimento(id){
+  const motivo = $("#mMotivo").value;
+  const qtd = parseInt($("#mQtd").value)||0;
+  if(qtd<1) return aviso("Informe a quantidade.","err");
+  const p = produto(id);
+  const ent = MOTIVOS[motivo].t==="entrada";
+  if(!ent && qtd > (p.estoque||0))
+    return aviso(`Só há ${p.estoque||0} peça(s) de "${descProduto(p)}". O estoque não pode ficar negativo.`,"err");
+  const custo = ent ? numero($("#mCusto").value) : p.custo;
+  if(ent && $("#mAtualiza").checked) p.custo = custo;
+  const d = $("#mData").value || hoje();
+  const dt = new Date(d + "T" + new Date().toTimeString().slice(0,8)).toISOString();
+  movimentar(id, motivo, qtd, {custo, obs:$("#mObs").value.trim(), data:dt});
+  salvar(); fechar(); render();
+  aviso(`${MOTIVOS[motivo].r}: ${ent?"+":"−"}${qtd} peça(s).`,"ok");
+}
+
+function excluirMovimento(movId){
+  const m = DB.movimentos.find(x=>x.id===movId); if(!m) return;
+  const p = produto(m.produtoId);
+  const resultado = (p?.estoque||0) - m.delta;
+
+  const apagar = () => {
+    if(p) p.estoque = resultado;
+    DB.movimentos = DB.movimentos.filter(x=>x.id!==movId);
+    salvar(); render(); aviso("Movimentação excluída.","ok");
+  };
+
+  // Deixar negativo é permitido, mas nunca por descuido: o aviso mostra o
+  // resultado e oferece o ajuste de inventário, que é o caminho limpo.
+  if(p && resultado < 0){
+    window.__apagarMov = () => { fechar(); apagar(); };
+    window.__ajustar   = () => { fechar(); formMovimento(p.id, "ajuste_ent"); };
+    modal("Esta exclusão deixa o estoque negativo", `
+      <p style="margin:0 0 12px">Excluir <b>${MOTIVOS[m.motivo].r}</b> de
+        ${m.delta>0?"+":""}${m.delta} peça(s) deixa <b>${esc(descProduto(p))}</b> com
+        <b>${resultado} peça(s)</b>, porque parte delas já saiu em vendas.</p>
+      <p class="hint" style="margin:0 0 12px">Se isto é limpeza de teste, pode seguir — o aviso de
+        saldo negativo aparece na tela de Estoque com o botão de zerar. Se a intenção é só corrigir
+        a quantidade, o <b>Ajuste de inventário</b> é melhor: acerta o número sem apagar histórico.</p>`,
+      `<button class="btn sec" onclick="fechar()">Voltar</button>
+       <button class="btn sec" onclick="__ajustar()">Fazer ajuste</button>
+       <button class="btn dan" onclick="__apagarMov()">Excluir mesmo assim</button>`);
+    return;
+  }
+
+  confirmar("Excluir movimentação",
+    `Excluir <b>${MOTIVOS[m.motivo].r}</b> de ${m.delta>0?"+":""}${m.delta} peça(s)?<br><br>
+     O estoque de <b>${esc(descProduto(p))}</b> passa de ${p?.estoque||0} para <b>${resultado}</b>.`,
+    apagar, "Excluir");
+}
+
+/* =======================================================================
+   TELA 4 — VENDAS
+   ======================================================================= */
+let filtroVenda = {periodo:"30dias", q:"", pag:"", tipo:"", mostrarCanceladas:false};
+
+function telaVendas(){
+  const per = periodo(filtroVenda.periodo);
+  const q = filtroVenda.q.toLowerCase().trim();
+  let lista = DB.vendas.filter(v => diaDe(v.data)>=per.de && diaDe(v.data)<=per.ate);
+  if(!filtroVenda.mostrarCanceladas) lista = lista.filter(v=>!v.cancelada);
+  if(filtroVenda.pag) lista = lista.filter(v=>v.pagamento===filtroVenda.pag);
+  if(filtroVenda.tipo==="troca") lista = lista.filter(v=>v.tipo==="troca");
+  if(filtroVenda.tipo==="venda") lista = lista.filter(v=>v.tipo!=="troca");
+  if(q) lista = lista.filter(v => ("#"+v.numero+" "+(v.obs||"")+" "+v.itens.map(i=>i.desc+" "+i.codigo).join(" ")).toLowerCase().includes(q));
+  lista.sort((a,b)=>a.data<b.data?1:-1);
+  const r = resumo(lista.filter(v=>!v.cancelada));
+
+  $("#view").innerHTML = `
+  <div class="grid">
+    <div class="card"><div class="cb" style="padding:14px 18px">
+      <div class="row" style="justify-content:space-between">
+        <div class="pill">
+          ${["hoje","ontem","7dias","semana","30dias","mes","mespass","ano","anopass"].map(k=>{
+            const p=periodo(k);
+            return `<button class="${filtroVenda.periodo===k?"on":""}" onclick="filtroVenda.periodo='${k}';telaVendas()">${p.nome}</button>`}).join("")}
+        </div>
+        <div class="row" style="gap:8px">
+          <input placeholder="Buscar venda, peça…" value="${esc(filtroVenda.q)}" style="width:200px"
+            oninput="filtroVenda.q=this.value; telaVendas()">
+          <select style="width:auto" onchange="filtroVenda.tipo=this.value;telaVendas()">
+            <option value="">Vendas e trocas</option>
+            <option value="venda" ${filtroVenda.tipo==="venda"?"selected":""}>Só vendas</option>
+            <option value="troca" ${filtroVenda.tipo==="troca"?"selected":""}>Só trocas</option>
+          </select>
+          <select style="width:auto" onchange="filtroVenda.pag=this.value;telaVendas()">
+            <option value="">Todos pagamentos</option>
+            ${["Dinheiro","PIX","Débito","Crédito","Crédito parcelado","Troca / crédito"].map(x=>`<option ${filtroVenda.pag===x?"selected":""}>${x}</option>`).join("")}
+          </select>
+          <label class="f" style="flex-direction:row;align-items:center;gap:6px;text-transform:none;font-size:13px;flex:none">
+            <input type="checkbox" style="width:auto" ${filtroVenda.mostrarCanceladas?"checked":""}
+              onchange="filtroVenda.mostrarCanceladas=this.checked;telaVendas()"> ver canceladas
+          </label>
+        </div>
+      </div>
+    </div></div>
+
+    <div class="grid g4">
+      <div class="kpi lar"><div class="k">Faturamento</div><div class="v" style="font-size:23px">${brl(r.receita)}</div><div class="s">${per.de===per.ate?dataBR(per.de):dataBR(per.de)+" a "+dataBR(per.ate)}</div></div>
+      <div class="kpi cia"><div class="k">Vendas</div><div class="v">${r.vendas}</div>
+        <div class="s">Ticket médio ${brl(r.ticket)}${r.trocas?` · ${r.trocas} troca(s)`:""}</div></div>
+      <div class="kpi ama"><div class="k">Peças vendidas</div><div class="v">${r.pecas}</div>${r.devolvidas?`<div class="s">${r.devolvidas} devolvida(s)</div>`:""}</div>
+      <div class="kpi ver"><div class="k">Lucro</div><div class="v" style="font-size:23px">${brl(r.lucro)}</div><div class="s">Margem ${pct(r.margem)}</div></div>
+    </div>
+
+    <div class="card">
+      <div class="ch"><h3>Vendas do período</h3><button class="btn sec sm" onclick="exportarCSV('vendas')">Exportar CSV</button></div>
+      <div class="cb" style="padding:0">
+      ${ lista.length ? `<div class="tw"><table><thead><tr>
+        <th>#</th><th>Data</th><th>Cliente</th><th>Peças</th><th>Pagamento</th>
+        <th class="num">Total</th><th class="num">Custo</th><th class="num">Lucro</th><th></th>
+      </tr></thead><tbody>${lista.map(v=>{
+        const c = v.clienteId ? cliente(v.clienteId) : null;
+        return `
+        <tr style="${v.cancelada?"opacity:.5":""}">
+          <td><b>#${v.numero}</b>${v.tipo==="troca"?' <span class="tag al">troca</span>':""}${v.cancelada?' <span class="tag c">cancelada</span>':""}</td>
+          <td style="white-space:nowrap">${dataBR(v.data)}<br><span class="hint">${horaBR(v.data)}</span></td>
+          <td>${ c ? `<b>${esc(c.nome)}</b> ${htmlZap(c,null,"↗")}`
+                   : `<button class="btn gh sm" onclick="vincularCliente('${v.id}')" title="Vincular cliente">+ vincular</button>` }</td>
+          <td>${v.itens.map(i=>esc(i.desc)+(i.qtd!==1?` <b>(${i.qtd})</b>`:"")).join("<br>")}
+              ${v.obs?`<br><span class="hint">${esc(v.obs)}</span>`:""}</td>
+          <td><span class="tag">${esc(v.pagamento)}</span></td>
+          <td class="num"><b>${brl(v.total)}</b></td>
+          <td class="num hint">${brl(v.custo)}</td>
+          <td class="num ${v.lucro>=0?"pos":"neg"}"><b>${brl(v.lucro)}</b></td>
+          <td class="num" style="white-space:nowrap">
+            <button class="btn gh sm" onclick="verVenda('${v.id}')">Ver</button>
+            <button class="btn gh sm" onclick="imprimirVenda('${v.id}')" title="Imprimir recibo">🖨</button>
+            <button class="btn gh sm" onclick="excluirVenda('${v.id}')" title="Excluir venda">🗑</button>
+          </td></tr>`;}).join("")}</tbody></table></div>`
+      : `<div class="vazio"><b>Nenhuma venda no período</b>Escolha outro período acima.</div>` }
+      </div>
+    </div>
+  </div>`;
+}
+
+function verVenda(id){
+  const v = DB.vendas.find(x=>x.id===id); if(!v) return;
+  const c = v.clienteId ? cliente(v.clienteId) : null;
+  modal(`${v.tipo==="troca"?"Troca":"Venda"} #${v.numero}`, `
+    <div class="row" style="justify-content:space-between;margin-bottom:14px">
+      <div><span class="hint">Data</span><br><b>${dataBR(v.data)} às ${horaBR(v.data)}</b></div>
+      <div><span class="hint">Pagamento</span><br><b>${esc(v.pagamento)}</b></div>
+      <div><span class="hint">Peças</span><br><b>${v.itens.reduce((s,i)=>s+Math.abs(i.qtd),0)}</b></div>
+    </div>
+    <div style="background:var(--laranja-fraco);padding:11px 13px;border-radius:10px;margin-bottom:14px">
+      <div class="row" style="align-items:center;justify-content:space-between;gap:8px">
+        <div style="min-width:0">
+          <span class="hint">Cliente</span><br>
+          ${ c ? `<b>${esc(c.nome)}</b> <span class="hint">${esc(c.telefone||"")}</span>`
+               : `<b>Venda sem cliente identificado</b>` }
+        </div>
+        <div style="flex:none">
+          ${ c ? `${htmlZap(c)}
+                  <button class="btn gh sm" onclick="fechar();fichaCliente('${c.id}')">Ficha</button>
+                  <button class="btn gh sm" onclick="fechar();vincularCliente('${v.id}',true)">Trocar</button>
+                  <button class="btn gh sm" onclick="fechar();desvincularCliente('${v.id}',true)" title="Desvincular">✕</button>`
+               : `<button class="btn sm" onclick="fechar();vincularCliente('${v.id}',true)">Vincular cliente</button>` }
+        </div>
+      </div>
+    </div>
+    ${v.obs?`<p class="hint" style="margin:0 0 12px">${esc(v.obs)}</p>`:""}
+    <div class="tw"><table><thead><tr><th>Código</th><th>Peça</th><th class="num">Qtd</th><th class="num">Unit.</th><th class="num">Total</th><th></th></tr></thead>
+    <tbody>${v.itens.map((i,ix)=>`<tr>
+      <td class="mono" style="font-size:12.5px">${esc(i.codigo)}</td><td>${esc(i.desc)}</td>
+      <td class="num">${i.qtd}</td><td class="num">${brl(i.preco)}</td><td class="num"><b>${brl(i.preco*i.qtd)}</b></td>
+      <td class="num">${v.cancelada?"":`<button class="btn gh sm" onclick="excluirItemVenda('${v.id}',${ix})" title="Excluir item">🗑</button>`}</td>
+    </tr>`).join("")}</tbody></table></div>
+    <div style="margin-top:14px;max-width:280px;margin-left:auto">
+      <div class="tot"><span>Subtotal</span><b>${brl(v.subtotal)}</b></div>
+      ${v.desconto?`<div class="tot"><span>Desconto</span><b class="neg">− ${brl(v.desconto)}</b></div>`:""}
+      <div class="tot big"><span>Total</span><span>${brl(v.total)}</span></div>
+    </div>`,
+    `<button class="btn sec" onclick="imprimirVenda('${v.id}')">Imprimir recibo</button>
+     ${v.cancelada?"":`<button class="btn dan" onclick="fechar();excluirVenda('${v.id}')">Excluir ${v.tipo==="troca"?"troca":"venda"}</button>`}
+     <button class="btn" onclick="fechar()">Fechar</button>`, true);
+}
+
+function excluirVenda(id){
+  const v = DB.vendas.find(x=>x.id===id); if(!v || v.cancelada) return;
+  confirmar("Excluir venda",
+    `Excluir a venda <b>#${v.numero}</b> de ${brl(v.total)}?<br><br>As peças voltam ao estoque e a venda deixa de contar nos relatórios.`,
+    ()=>{
+      // O movimento original NÃO é apagado: fica no histórico com o estorno ao lado,
+      // senão o saldo do produto deixa de bater com a soma das movimentações.
+      for(const i of v.itens){
+        if(i.qtd>0) movimentar(i.produtoId,"estorno_ent", i.qtd,{custo:i.custo, vendaId:v.id,
+                      obs:`Estorno da ${v.tipo==="troca"?"troca":"venda"} #${v.numero}`});
+        else        movimentar(i.produtoId,"estorno_sai",-i.qtd,{custo:i.custo, vendaId:v.id,
+                      obs:`Estorno da ${v.tipo==="troca"?"troca":"venda"} #${v.numero}`});
+      }
+      v.cancelada = true; v.canceladaEm = new Date().toISOString();
+      salvar(); render(); aviso(`Venda #${v.numero} excluída e estoque devolvido.`,"ok");
+    },"Excluir venda");
+}
+
+function excluirItemVenda(vendaId, ix){
+  const v = DB.vendas.find(x=>x.id===vendaId); if(!v) return;
+  const i = v.itens[ix];
+  confirmar("Excluir item da venda",
+    `Remover <b>${esc(i.desc)}</b> da venda #${v.numero}?<br><br>A peça volta ao estoque e o total da venda é recalculado.`,
+    ()=>{
+      if(i.qtd>0) movimentar(i.produtoId,"estorno_ent", i.qtd,{custo:i.custo, vendaId:v.id,
+                    obs:`Item removido da venda #${v.numero}`});
+      else        movimentar(i.produtoId,"estorno_sai",-i.qtd,{custo:i.custo, vendaId:v.id,
+                    obs:`Item removido da venda #${v.numero}`});
+      v.itens.splice(ix,1);
+      v.subtotal = v.itens.reduce((s,x)=>s+x.preco*x.qtd,0);
+      v.custo    = v.itens.reduce((s,x)=>s+x.custo*x.qtd,0);
+      v.total    = v.subtotal - (v.desconto||0);
+      v.lucro    = v.total - v.custo;
+      if(!v.itens.length){ v.cancelada = true; v.canceladaEm = new Date().toISOString(); }
+      salvar(); render(); aviso("Item removido da venda.","ok");
+      if(!v.cancelada) verVenda(v.id); else fechar();
+    },"Excluir item");
+}
+
+/**
+ * Monta o papel do recibo. Serve tanto para uma venda já gravada quanto para a
+ * PRÉVIA do que está na tela — a prévia não grava nada e não baixa estoque.
+ */
+/**
+ * Monta o cupom e manda imprimir SOMENTE ele. O documento traz apenas o preço
+ * de venda — custo e lucro nunca entram, é papel que vai para o cliente.
+ */
+function montarRecibo(v, previa){
+  const c = v.clienteId ? cliente(v.clienteId) : null;
+  const cab = previa ? `${v.tipo==="troca"?"TROCA":"VENDA"} EM ANDAMENTO`
+                     : `${v.tipo==="troca"?"TROCA":"VENDA"} Nº ${v.numero}`;
+  // os dois lados são somados separadamente: numa troca eles não podem se anular no papel
+  const levadas    = v.itens.filter(i=>i.qtd>0);
+  const devolvidas = v.itens.filter(i=>i.qtd<0);
+  const vLevado    = levadas.reduce((s,i)=>s+i.preco*i.qtd,0);
+  const vDevolvido = devolvidas.reduce((s,i)=>s+i.preco*-i.qtd,0);
+  const nLevadas   = levadas.reduce((s,i)=>s+i.qtd,0);
+  const nDevolv    = devolvidas.reduce((s,i)=>s-i.qtd,0);
+  const plural = (n,a,b) => `${n} ${n===1?a:b}`;
+
+  const item = i => {
+    const q = Math.abs(i.qtd), tot = i.preco*q;
+    return `<div class="item">
+      <div class="d">${esc(i.desc)}${i.qtd<0?" <b>[DEVOLVIDA]</b>":""}</div>
+      <div class="q"><span>${q} x ${nm(i.preco,2)}</span>
+        <span class="val">${i.qtd<0?"-":""}${nm(tot,2)}</span></div>
+    </div>`;
+  };
+
+  $("#recibo").innerHTML = `<div class="recibo-doc">
+    ${previa ? `<div class="tarja">PRÉVIA — NÃO FINALIZADA
+        <span>Confira os valores antes de fechar</span></div>` : ""}
+    ${(!previa && v.cancelada) ? `<div class="tarja">${v.tipo==="troca"?"TROCA":"VENDA"} CANCELADA
+        <span>Este comprovante não é válido</span></div>` : ""}
+
+    <div class="topo">
+      <div class="marca">KAVA KIDS</div>
+      <div>www.kavakids.com.br</div>
+      <div class="doc">${cab}</div>
+      <div>${dataBR(v.data)} às ${horaBR(v.data)}</div>
+      ${c ? `<div>Cliente: ${esc(c.nome)}</div>` : ""}
+      ${(!previa && v.reimpressao) ? `<div>2ª VIA — impressa em ${dataBR(hoje())}</div>` : ""}
+    </div>
+
+    <div class="hr"></div>
+    <div class="cab"><span>Item</span><span>Valor R$</span></div>
+    <div class="hr fina"></div>
+    ${v.itens.map(item).join('<div class="hr fina"></div>')}
+    <div class="hr"></div>
+
+    ${ devolvidas.length ? `
+      <div class="lin"><span>${plural(nLevadas,"peça levada","peças levadas")}</span>
+        <span class="val">${nm(vLevado,2)}</span></div>
+      <div class="lin"><span>${plural(nDevolv,"peça devolvida","peças devolvidas")}</span>
+        <span class="val">- ${nm(vDevolvido,2)}</span></div>`
+    : `<div class="lin"><span>${plural(nLevadas,"peça","peças")}</span>
+        <span class="val">${nm(v.subtotal,2)}</span></div>` }
+    ${v.desconto?`<div class="lin"><span>Desconto</span><span class="val">- ${nm(v.desconto,2)}</span></div>`:""}
+
+    <div class="hr"></div>
+    <div class="lin total"><span>${v.total<0?"CRÉDITO":v.total===0?"SEM DIFERENÇA":"TOTAL"}</span>
+      <span class="val">${brl(Math.abs(v.total))}</span></div>
+    <div class="hr"></div>
+    <div class="lin forte"><span>${v.total<0?"Devolução por":"Pagamento"}</span><span>${esc(v.pagamento)}</span></div>
+    ${v.total<0?`<div class="lin"><span>Valor a receber da loja</span><span></span></div>`:""}
+
+    <div class="rodape">${
+      previa ? "PRÉVIA — esta venda ainda não foi registrada.<br>Clique em Finalizar para concluir."
+             : "Documento sem valor fiscal.<br>Não substitui NFC-e.<br><br>Obrigado pela preferência!"}</div>
+  </div>`;
+
+  imprimirSomenteRecibo();
+}
+
+/* --- Papel do cupom ---------------------------------------------------
+   80 mm é o padrão das térmicas de cupom; a área que a cabeça imprime é
+   de 72 mm. 58 mm e A4 ficam disponíveis para quem usa outro papel.    */
+const CUPONS = {
+  "80mm": {pagina:"80mm auto", margem:"0",    conteudo:"72mm", nome:"Térmica 80 mm (bobina)"},
+  "58mm": {pagina:"58mm auto", margem:"0",    conteudo:"50mm", nome:"Térmica 58 mm (bobina)"},
+  "a4":   {pagina:"A4",        margem:"12mm", conteudo:"72mm", nome:"Folha A4 comum"}
+};
+const papelCupom = () => CUPONS[DB.config.cupom] || CUPONS["80mm"];
+
+/** Troca a regra @page conforme o que está sendo impresso. */
+function definirPagina(css){
+  let st = document.getElementById("estiloPagina");
+  if(!st){ st = document.createElement("style"); st.id = "estiloPagina"; document.head.appendChild(st); }
+  st.textContent = `@media print{ @page{ ${css} } }`;
+}
+
+/** Isola o cupom na folha: a tela, que mostra custo e lucro, não vai ao papel. */
+function imprimirSomenteRecibo(){
+  const c = papelCupom();
+  document.documentElement.style.setProperty("--cupomW", c.conteudo);
+  definirPagina(`size:${c.pagina}; margin:${c.margem}`);
+  document.body.classList.add("imp-recibo");
+  const limpar = () => document.body.classList.remove("imp-recibo");
+  window.addEventListener("afterprint", limpar, {once:true});
+  setTimeout(()=>{
+    try{ window.print(); } finally { limpar(); focarLeitor(); }
+  }, 120);
+}
+
+/* =====================================================================
+   RELATÓRIOS EM BOBINA
+   As telas usam tabelas largas que não cabem em 72 mm. Aqui os mesmos
+   números são remontados em coluna única, para a mesma impressora.
+   ===================================================================== */
+const cL   = (a,b,cls="") => `<div class="lin ${cls}"><span>${a}</span><span class="val">${b}</span></div>`;
+const cSec = t => `<div class="hr"></div><div class="secao">${esc(t)}</div><div class="hr fina"></div>`;
+const cItem = (esq, dir, sub) => `<div class="item">
+  <div class="q"><span>${esq}</span><span class="val">${dir}</span></div>
+  ${sub ? `<div class="q sub"><span>${sub[0]}</span><span class="val">${sub[1]}</span></div>` : ""}</div>`;
+
+function cupomTopo(titulo, sub){
+  return `<div class="topo">
+    <div class="marca">${esc((DB.config.loja||"Kava Kids").toUpperCase())}</div>
+    <div class="doc">${esc(titulo)}</div>
+    ${sub ? `<div>${sub}</div>` : ""}
+    <div>emitido em ${dataBR(hoje())} às ${horaBR(new Date().toISOString())}</div>
+  </div>`;
+}
+
+/** Envia um relatório para a mesma impressora do cupom. */
+function montarRelatorio(html){
+  $("#recibo").innerHTML = `<div class="recibo-doc rel">${html}
+    <div class="hr"></div>
+    <div class="rodape"><b>DOCUMENTO INTERNO</b><br>
+      Contém custo e lucro — não entregar ao cliente.</div>
+  </div>`;
+  imprimirSomenteRecibo();
+}
+
+/** Bloco de resultado reaproveitado pelos relatórios. */
+function blocoResultado(r){
+  return cL("Faturamento", brl(r.receita), "destaque")
+       + cL("Custo das peças", brl(r.custo))
+       + cL("Lucro", brl(r.lucro), "forte")
+       + cL("Margem", pct(r.margem))
+       + cL("Markup", pct(r.markup))
+       + `<div class="hr fina"></div>`
+       + cL("Vendas", r.vendas + (r.trocas ? ` (${r.trocas} troca${r.trocas>1?"s":""})` : ""))
+       + cL("Peças vendidas", r.pecas)
+       + (r.devolvidas ? cL("Peças devolvidas", r.devolvidas) : "")
+       + cL("Ticket médio", brl(r.ticket))
+       + (r.desconto ? cL("Descontos dados", brl(r.desconto)) : "");
+}
+
+const NOMES_CAT = {marca:"Marca", modelo:"Modelo", tamanho:"Tamanho", cor:"Cor",
+                   genero:"Gênero", pagamento:"Pagamento"};
+const NOMES_GRAN = {dia:"Por dia", semana:"Por semana", mes:"Por mês", ano:"Por ano"};
+
+/** Relatório de vendas: usa exatamente o período e os cortes escolhidos na tela. */
+function cupomRelVendas(){
+  const per = relPeriodo();
+  const vendas = vendasNo(per.de, per.ate);
+  const r = resumo(vendas);
+  const linhas = serie(vendas, rel.agrupar);
+  const cats = categorias(vendas, rel.categoria);
+  const totCat = cats.reduce((s,x)=>s+x.receita,0) || 1;
+
+  let h = cupomTopo("Relatório de Vendas",
+    `${per.nome}<br>${dataBR(per.de)} a ${dataBR(per.ate)}`);
+  h += cSec("Resumo do período") + blocoResultado(r);
+
+  h += cSec(NOMES_GRAN[rel.agrupar] || "Evolução");
+  h += linhas.length
+    ? linhas.map(l => cItem(`<b>${esc(l.nome)}</b> · ${l.vendas}v · ${l.pecas}pç`,
+                            brl(l.receita), ["lucro", brl(l.lucro)])).join("")
+    : `<div class="vazio-cupom">Sem vendas no período</div>`;
+
+  h += cSec("Por " + (NOMES_CAT[rel.categoria]||rel.categoria));
+  h += cats.length
+    ? cats.map(x => cItem(`<b>${esc(x.chave)}</b> · ${x.qtd}pç · ${pct(x.receita/totCat)}`,
+                          brl(x.receita), ["lucro", brl(x.lucro)])).join("")
+    : `<div class="vazio-cupom">Sem vendas no período</div>`;
+  return h;
+}
+
+/** Relatório gerencial: faturamento, custo de aquisição, markup e lucro. */
+function cupomRelGestao(){
+  const pHoje=periodo("hoje"), pSem=periodo("semana"), pMes=periodo("mes"),
+        pMesP=periodo("mespass"), pAno=periodo("ano");
+  const rHoje=resumo(vendasNo(pHoje.de,pHoje.ate)), rSem=resumo(vendasNo(pSem.de,pSem.ate)),
+        rMes=resumo(vendasNo(pMes.de,pMes.ate)), rMesP=resumo(vendasNo(pMesP.de,pMesP.ate)),
+        rAno=resumo(vendasNo(pAno.de,pAno.ate));
+  const varia = rMesP.receita ? (rMes.receita-rMesP.receita)/rMesP.receita : NaN;
+  const ativos = DB.produtos.filter(p=>p.ativo!==false);
+  const investido = ativos.reduce((s,p)=>s+Math.max(0,p.estoque||0)*(p.custo||0),0);
+  const potencial = ativos.reduce((s,p)=>s+Math.max(0,p.estoque||0)*(p.preco||0),0);
+  const top = categorias(vendasNo(pMes.de,pMes.ate),"modelo").slice(0,10);
+
+  let h = cupomTopo("Relatório Gerencial", pMes.nome + " — " + dataBR(pMes.de) + " a " + dataBR(pMes.ate));
+
+  h += cSec("Faturamento")
+     + cL("Hoje", brl(rHoje.receita))
+     + cL("Esta semana", brl(rSem.receita))
+     + cL("Este mês", brl(rMes.receita))
+     + cL("Mês passado", brl(rMesP.receita))
+     + cL("Este ano", brl(rAno.receita))
+     + (Number.isFinite(varia) ? cL("Mês x mês passado",
+         (varia>=0?"+":"-") + pct(Math.abs(varia)), "forte") : "");
+
+  h += cSec("Resultado do mês")
+     + cL("Faturamento bruto", brl(rMes.receita + rMes.desconto))
+     + cL("Descontos", "- " + brl(rMes.desconto))
+     + cL("Faturamento líquido", brl(rMes.receita), "forte")
+     + cL("Custo de aquisição", brl(rMes.custo))
+     + cL("LUCRO BRUTO", brl(rMes.lucro), "destaque")
+     + cL("Margem s/ venda", pct(rMes.margem))
+     + cL("Markup praticado", pct(rMes.markup))
+     + cL("Ticket médio", brl(rMes.ticket))
+     + cL("Vendas / peças", `${rMes.vendas} / ${rMes.pecas}`);
+
+  h += cSec("Capital em estoque")
+     + cL("Peças", ativos.reduce((s,p)=>s+Math.max(0,p.estoque||0),0))
+     + cL("Investido (custo)", brl(investido))
+     + cL("Potencial de venda", brl(potencial))
+     + cL("Lucro a realizar", brl(potencial-investido), "forte")
+     + cL("Markup do estoque", pct(investido ? (potencial-investido)/investido : NaN));
+
+  h += cSec("Mais vendidos no mês");
+  h += top.length
+    ? top.map(x => cItem(`<b>${esc(x.chave)}</b> · ${x.qtd}pç`, brl(x.receita),
+                         ["lucro", brl(x.lucro)])).join("")
+    : `<div class="vazio-cupom">Sem vendas no mês</div>`;
+  return h;
+}
+
+/** Relatório de clientes: quem comprou no período e aniversariantes. */
+function cupomRelClientes(){
+  const per = relPeriodo();
+  const vendas = vendasNo(per.de, per.ate);
+  const rank = rankingClientes(vendas);
+  const ident = vendas.filter(v=>v.clienteId);
+  const recIdent = ident.reduce((s,v)=>s+v.total,0);
+  const recTot = vendas.reduce((s,v)=>s+v.total,0);
+  const novos = DB.clientes.filter(c=>c.ativo!==false && c.criadoEm &&
+    diaDe(c.criadoEm)>=per.de && diaDe(c.criadoEm)<=per.ate);
+  const nivers = aniversariantesEm(per);
+
+  let h = cupomTopo("Relatório de Clientes",
+    `${per.nome}<br>${dataBR(per.de)} a ${dataBR(per.ate)}`);
+
+  h += cSec("Resumo")
+     + cL("Cadastrados (total)", DB.clientes.filter(c=>c.ativo!==false).length)
+     + cL("Cadastros novos", novos.length)
+     + cL("Clientes que compraram", rank.length)
+     + cL("Vendas identificadas", `${ident.length} · ${brl(recIdent)}`)
+     + cL("Sem identificação", `${vendas.length-ident.length} · ${brl(recTot-recIdent)}`)
+     + cL("% do faturamento", pct(recTot ? recIdent/recTot : NaN), "forte")
+     + cL("Gasto médio/cliente", brl(rank.length ? recIdent/rank.length : 0));
+
+  h += cSec("Ranking do período");
+  h += rank.length
+    ? rank.map(l => { const c = cliente(l.id);
+        return cItem(`<b>${esc(c ? c.nome : "(excluído)")}</b> · ${l.compras}x · ${l.pecas}pç`,
+                     brl(l.receita), ["lucro gerado", brl(l.lucro)]); }).join("")
+    : `<div class="vazio-cupom">Nenhuma venda vinculada a cliente</div>`;
+
+  h += cSec("Aniversariantes do período");
+  h += nivers.length
+    ? nivers.map(a => cItem(`<b>${esc(a.quem)}</b> · ${a.tipo}<br>${esc(a.cliente.nome)} · ${esc(a.cliente.telefone||"sem tel.")}`,
+                            dataBR(a.iso))).join("")
+    : `<div class="vazio-cupom">Nenhum aniversário no período</div>`;
+  return h;
+}
+
+/** Relatório de estoque: posição atual e o que precisa repor. */
+function cupomRelEstoque(){
+  const ativos = DB.produtos.filter(p=>p.ativo!==false)
+    .sort((a,b)=>(a.marca||"").localeCompare(b.marca||"") || (a.modelo||"").localeCompare(b.modelo||""));
+  const min = DB.config.estoqueMinimo||0;
+  const baixos = ativos.filter(p=>(p.estoque||0)<=min);
+  const investido = ativos.reduce((s,p)=>s+Math.max(0,p.estoque||0)*(p.custo||0),0);
+  const potencial = ativos.reduce((s,p)=>s+Math.max(0,p.estoque||0)*(p.preco||0),0);
+
+  let h = cupomTopo("Posição de Estoque");
+  h += cSec("Resumo")
+     + cL("Produtos", ativos.length)
+     + cL("Peças", ativos.reduce((s,p)=>s+Math.max(0,p.estoque||0),0))
+     + cL("Investido (custo)", brl(investido))
+     + cL("Potencial de venda", brl(potencial))
+     + cL("Lucro a realizar", brl(potencial-investido), "forte");
+
+  h += cSec(`Repor (${min} peça(s) ou menos)`);
+  h += baixos.length
+    ? baixos.map(p => cItem(`<b>${esc(descProduto(p))}</b><br>${esc(p.codigo)}`,
+                            (p.estoque||0)===0 ? "ZERADO" : String(p.estoque))).join("")
+    : `<div class="vazio-cupom">Nenhuma peça em falta</div>`;
+
+  h += cSec("Estoque completo");
+  h += ativos.map(p => cItem(`<b>${esc(descProduto(p))}</b><br>venda ${nm(p.preco,2)} · custo ${nm(p.custo,2)}`,
+                             String(p.estoque||0))).join("");
+  return h;
+}
+
+/**
+ * Imprime um relatório. Com papel térmico sai em coluna única na bobina;
+ * com A4 escolhido nas Configurações, sai a tela cheia, com as tabelas.
+ */
+function imprimirRelatorio(tipo){
+  if((DB.config.cupom||"80mm") === "a4") return imprimirTela();
+  const montar = {vendas:cupomRelVendas, gestao:cupomRelGestao,
+                  clientes:cupomRelClientes, estoque:cupomRelEstoque}[tipo];
+  if(!montar) return;
+  montarRelatorio(montar());
+}
+
+/** Cupom de exemplo, para acertar a impressora sem precisar fazer uma venda. */
+function cupomTeste(){
+  montarRecibo({
+    numero: 999, data: new Date().toISOString(), tipo:"venda", cancelada:false,
+    itens: [
+      {codigo:"7891000100011", desc:"Milon · Conjunto moletom · 4 · Azul", qtd:1, preco:109.90, custo:0},
+      {codigo:"7891000100028", desc:"Alenice · Vestido floral manga longa · 2 · Rosa", qtd:2, preco:99.90, custo:0}
+    ],
+    subtotal: 309.70, desconto: 9.70, total: 300.00, pagamento:"PIX", clienteId:null
+  }, false);
+  aviso("Cupom de teste enviado para a impressora.","ok");
+}
+
+function imprimirTela(){
+  document.body.classList.remove("imp-recibo");
+  definirPagina("size:A4; margin:10mm");
+  setTimeout(()=>window.print(), 60);
+}
+
+/**
+ * Imprime o recibo de uma venda já gravada, a qualquer momento.
+ * `viaOriginal` só é verdadeiro no recibo tirado logo após finalizar.
+ */
+function imprimirVenda(id, viaOriginal){
+  const v = DB.vendas.find(x=>x.id===id); if(!v) return;
+  // A janela da venda NAO e fechada: o CSS de impressao ja esconde .modal no
+  // papel, e assim quem cancela a impressao continua vendo a venda na tela.
+  montarRecibo({...v, reimpressao: !viaOriginal}, false);
+}
+
+/** Imprime a prévia do PDV sem gravar nada. */
+function imprimirPreviaVenda(){
+  if(!carrinho.length) return aviso("Não há itens para imprimir.","err");
+  const sub = carrinho.reduce((s,i)=>s+i.preco*i.qtd,0);
+  const des = numero(carrinhoDesconto);
+  montarRecibo({ numero:null, data:new Date().toISOString(), itens:carrinho,
+    subtotal:sub, desconto:des, total:sub-des,
+    pagamento:carrinhoPag, clienteId:vendaCliente, tipo:"venda" }, true);
+}
+
+/** Imprime a prévia da troca sem gravar nada. */
+function imprimirPreviaTroca(){
+  if(!troca.entradas.length && !troca.saidas.length) return aviso("Não há itens para imprimir.","err");
+  const itens = [...troca.saidas.map(i=>({...i})), ...troca.entradas.map(i=>({...i, qtd:-i.qtd}))];
+  const sub = itens.reduce((s,i)=>s+i.preco*i.qtd,0);
+  const des = numero(troca.desconto);
+  montarRecibo({ numero:null, data:new Date().toISOString(), itens,
+    subtotal:sub, desconto:des, total:sub-des,
+    pagamento:$("#trocaPag")?.value || troca.pag || "—", clienteId:troca.cliente, tipo:"troca" }, true);
+}
+
+/* =======================================================================
+   TELA 5 — RELATÓRIOS
+   ======================================================================= */
+let rel = {periodo:"mes", de:"", ate:"", agrupar:"dia", categoria:"marca"};
+
+function relPeriodo(){
+  if(rel.periodo==="custom") return {de: rel.de||hoje(), ate: rel.ate||hoje(), nome:"Período personalizado"};
+  return periodo(rel.periodo);
+}
+
+function telaRelatorios(){
+  const per = relPeriodo();
+  const vendas = vendasNo(per.de, per.ate);
+  const r = resumo(vendas);
+
+  $("#tAcoes").innerHTML =
+    `<button class="btn sec" onclick="imprimirRelatorio('vendas')">Imprimir vendas</button>
+     <button class="btn sec" onclick="imprimirRelatorio('clientes')">Imprimir clientes</button>
+     <button class="btn sec" onclick="exportarCSV('relatorio')">Exportar CSV</button>`;
+
+  $("#view").innerHTML = `
+  <div class="grid">
+    <div class="card noprint"><div class="cb" style="padding:14px 18px">
+      <div class="row" style="justify-content:space-between">
+        <div class="pill">
+          ${["hoje","ontem","7dias","semana","30dias","mes","mespass","ano","anopass"].map(k=>
+            `<button class="${rel.periodo===k?"on":""}" onclick="rel.periodo='${k}';telaRelatorios()">${periodo(k).nome}</button>`).join("")}
+          <button class="${rel.periodo==="custom"?"on":""}" onclick="rel.periodo='custom';telaRelatorios()">Personalizado</button>
+        </div>
+        ${rel.periodo==="custom" ? `<div class="row" style="gap:8px">
+          <label class="f" style="flex:none">De <input type="date" value="${rel.de||hoje()}" onchange="rel.de=this.value;telaRelatorios()"></label>
+          <label class="f" style="flex:none">Até <input type="date" value="${rel.ate||hoje()}" onchange="rel.ate=this.value;telaRelatorios()"></label>
+        </div>`:""}
+      </div>
+    </div></div>
+
+    <div class="grid g4">
+      <div class="kpi lar"><div class="k">Faturamento</div><div class="v" style="font-size:23px">${brl(r.receita)}</div>
+        <div class="s">${dataBR(per.de)} a ${dataBR(per.ate)}</div></div>
+      <div class="kpi cia"><div class="k">Vendas / Peças</div><div class="v">${r.vendas} / ${r.pecas}</div>
+        <div class="s">Ticket médio ${brl(r.ticket)}</div></div>
+      <div class="kpi cor"><div class="k">Custo das peças</div><div class="v" style="font-size:23px">${brl(r.custo)}</div>
+        <div class="s">Descontos ${brl(r.desconto)}</div></div>
+      <div class="kpi ver"><div class="k">Lucro</div><div class="v" style="font-size:23px">${brl(r.lucro)}</div>
+        <div class="s">Margem ${pct(r.margem)} · Markup ${pct(r.markup)}</div></div>
+    </div>
+
+    <div class="card">
+      <div class="ch">
+        <h3>Evolução do faturamento</h3>
+        <div class="pill noprint">
+          ${[["dia","Por dia"],["semana","Por semana"],["mes","Por mês"],["ano","Por ano"]].map(([k,n])=>
+            `<button class="${rel.agrupar===k?"on":""}" onclick="rel.agrupar='${k}';telaRelatorios()">${n}</button>`).join("")}
+        </div>
+      </div>
+      <div class="cb">${htmlSerie(vendas, rel.agrupar)}</div>
+    </div>
+
+    <div class="card">
+      <div class="ch">
+        <h3>Vendas por categoria</h3>
+        <div class="pill noprint">
+          ${[["marca","Marca"],["modelo","Modelo"],["tamanho","Tamanho"],["cor","Cor"],["genero","Gênero"],["pagamento","Pagamento"]].map(([k,n])=>
+            `<button class="${rel.categoria===k?"on":""}" onclick="rel.categoria='${k}';telaRelatorios()">${n}</button>`).join("")}
+        </div>
+      </div>
+      <div class="cb" style="padding:0">${htmlCategoria(vendas, rel.categoria)}</div>
+    </div>
+
+    <div class="card">
+      <div class="ch"><h3>Clientes no período</h3>
+        <button class="btn sec sm noprint" onclick="exportarCSV('relclientes')">Exportar CSV</button></div>
+      <div class="cb" style="padding:0">${htmlRelClientes(vendas, per)}</div>
+    </div>
+
+    <div class="card">
+      <div class="ch"><h3>Aniversariantes do período</h3></div>
+      <div class="cb" style="padding:0">${htmlRelAniversarios(per)}</div>
+    </div>
+  </div>`;
+}
+
+/** Ranking de clientes dentro do período, com identificadas x anônimas. */
+function rankingClientes(vendas){
+  const mapa = new Map();
+  for(const v of vendas){
+    if(!v.clienteId) continue;
+    if(!mapa.has(v.clienteId)) mapa.set(v.clienteId,{id:v.clienteId, receita:0, custo:0, pecas:0, compras:0, ultima:null});
+    const l = mapa.get(v.clienteId);
+    l.receita += v.total; l.compras++;
+    for(const i of v.itens){ l.custo += i.custo*i.qtd; l.pecas += i.qtd; }
+    if(!l.ultima || v.data > l.ultima) l.ultima = v.data;
+  }
+  return [...mapa.values()].map(l=>({...l, lucro:l.receita-l.custo, ticket:l.receita/l.compras}))
+    .sort((a,b)=>b.receita-a.receita);
+}
+
+function htmlRelClientes(vendas, per){
+  const rank = rankingClientes(vendas);
+  const ident = vendas.filter(v=>v.clienteId);
+  const anon  = vendas.filter(v=>!v.clienteId);
+  const recIdent = ident.reduce((s,v)=>s+v.total,0);
+  const recTotal = vendas.reduce((s,v)=>s+v.total,0);
+  const novos = DB.clientes.filter(c=>c.ativo!==false && c.criadoEm &&
+    diaDe(c.criadoEm)>=per.de && diaDe(c.criadoEm)<=per.ate);
+
+  const cab = `
+    <div class="grid g4" style="padding:16px 18px">
+      <div class="kpi cia" style="box-shadow:none"><div class="k">Clientes que compraram</div><div class="v">${rank.length}</div>
+        <div class="s">${novos.length} cadastro(s) novo(s)</div></div>
+      <div class="kpi lar" style="box-shadow:none"><div class="k">Vendas identificadas</div><div class="v">${ident.length}</div>
+        <div class="s">${brl(recIdent)} · ${pct(recTotal?recIdent/recTotal:NaN)} do faturamento</div></div>
+      <div class="kpi cor" style="box-shadow:none"><div class="k">Vendas sem cliente</div><div class="v">${anon.length}</div>
+        <div class="s">${brl(recTotal-recIdent)}</div></div>
+      <div class="kpi ver" style="box-shadow:none"><div class="k">Gasto médio por cliente</div>
+        <div class="v" style="font-size:21px">${brl(rank.length?recIdent/rank.length:0)}</div>
+        <div class="s">${rank.length?nm(ident.length/rank.length,1):"0"} compra(s) por cliente</div></div>
+    </div>`;
+
+  if(!rank.length) return cab + `<div class="vazio"><b>Nenhuma venda vinculada a cliente no período</b>
+    Selecione o cliente no PDV, ou vincule depois pela tela de Vendas.</div>`;
+
+  return cab + `<div class="tw"><table><thead><tr>
+    <th>Cliente</th><th>Contato</th><th class="num">Compras</th><th class="num">Peças</th>
+    <th class="num">Faturamento</th><th class="num">Ticket médio</th><th class="num">Lucro gerado</th><th>Última compra</th><th></th>
+  </tr></thead><tbody>${rank.map(l=>{
+    const c = cliente(l.id);
+    return `<tr>
+      <td><b>${esc(c?c.nome:"(cliente excluído)")}</b></td>
+      <td class="hint">${esc(c?.telefone||"—")}</td>
+      <td class="num"><b>${l.compras}</b></td><td class="num">${l.pecas}</td>
+      <td class="num"><b>${brl(l.receita)}</b></td><td class="num">${brl(l.ticket)}</td>
+      <td class="num pos">${brl(l.lucro)}</td><td>${dataBR(l.ultima)}</td>
+      <td class="num noprint">${c?`<button class="btn gh sm" onclick="fichaCliente('${c.id}')">Ficha</button>`:""}</td>
+    </tr>`;}).join("")}</tbody>
+    <tfoot><tr style="border-top:2px solid var(--linha)">
+      <td colspan="2"><b>Total identificado</b></td>
+      <td class="num"><b>${rank.reduce((s,l)=>s+l.compras,0)}</b></td>
+      <td class="num"><b>${rank.reduce((s,l)=>s+l.pecas,0)}</b></td>
+      <td class="num"><b>${brl(recIdent)}</b></td><td></td>
+      <td class="num"><b>${brl(rank.reduce((s,l)=>s+l.lucro,0))}</b></td><td colspan="2"></td>
+    </tr></tfoot></table></div>`;
+}
+
+/** Aniversários que caem dentro do período do relatório (ignora o ano). */
+function aniversariantesEm(per){
+  const dentro = (nasc) => {
+    if(!nasc) return null;
+    const md = nasc.slice(5,10);
+    // percorre os anos cobertos pelo período e testa cada ocorrência
+    for(let ano = +per.de.slice(0,4); ano <= +per.ate.slice(0,4); ano++){
+      const iso = `${ano}-${md}`;
+      if(iso >= per.de && iso <= per.ate) return iso;
+    }
+    return null;
+  };
+  const out = [];
+  for(const c of DB.clientes.filter(c=>c.ativo!==false)){
+    const d1 = dentro(c.nascimento);
+    if(d1) out.push({cliente:c, quem:c.nome, tipo:"Comprador", iso:d1, nascimento:c.nascimento});
+    for(const k of c.criancas||[]){
+      const d2 = dentro(k.nascimento);
+      if(d2) out.push({cliente:c, quem:k.nome||"Criança", tipo:"Criança", iso:d2, nascimento:k.nascimento});
+    }
+  }
+  return out.sort((a,b)=>a.iso<b.iso?-1:1);
+}
+
+function htmlRelAniversarios(per){
+  const l = aniversariantesEm(per);
+  if(!l.length) return `<div class="vazio">Nenhum aniversário entre ${dataBR(per.de)} e ${dataBR(per.ate)}</div>`;
+  return `<div class="tw"><table><thead><tr>
+    <th>Quem</th><th>Tipo</th><th>Cliente</th><th>Data</th><th>Idade</th><th>Telefone</th><th class="noprint"></th>
+  </tr></thead><tbody>${l.map(a=>`<tr>
+    <td><b>${esc(a.quem)}</b></td>
+    <td><span class="tag ${a.tipo==="Criança"?"f":"m"}">${a.tipo}</span></td>
+    <td>${esc(a.cliente.nome)}</td><td>${dataBR(a.iso)}</td>
+    <td>${+a.iso.slice(0,4) - +a.nascimento.slice(0,4)} anos</td>
+    <td>${esc(a.cliente.telefone||"—")}</td>
+    <td class="num noprint">${htmlZap(a.cliente, a)}</td>
+  </tr>`).join("")}</tbody></table></div>`;
+}
+
+/** Agrupa vendas por dia/semana/mês/ano e devolve as linhas ordenadas. */
+function serie(vendas, granularidade){
+  const mapa = new Map();
+  for(const v of vendas){
+    const d = diaDe(v.data);
+    let chave, nome;
+    if(granularidade==="dia"){ chave = d; nome = dataBR(d); }
+    else if(granularidade==="mes"){ chave = d.slice(0,7); nome = chave.slice(5)+"/"+chave.slice(0,4); }
+    else if(granularidade==="ano"){ chave = d.slice(0,4); nome = chave; }
+    else { const s = isoLocal(segunda(new Date(d+"T12:00:00"))); chave = s; nome = "sem. "+dataBR(s).slice(0,5); }
+    if(!mapa.has(chave)) mapa.set(chave,{chave,nome,receita:0,custo:0,vendas:0,pecas:0});
+    const l = mapa.get(chave);
+    l.receita += v.total; l.vendas++;
+    for(const i of v.itens){ l.custo += i.custo*i.qtd; l.pecas += i.qtd; }
+  }
+  return [...mapa.values()].sort((a,b)=>a.chave<b.chave?-1:1)
+    .map(l=>({...l, lucro:l.receita-l.custo, margem:l.receita?(l.receita-l.custo)/l.receita:NaN}));
+}
+
+function htmlSerie(vendas, gran){
+  const linhas = serie(vendas, gran);
+  if(!linhas.length) return `<div class="vazio"><b>Sem vendas no período</b>Nada a exibir.</div>`;
+  const vis = linhas.slice(-24);
+  const max = Math.max(...vis.map(l=>l.receita), 1);
+  return `
+    <div class="bar">${vis.map(l=>`
+      <div class="b" title="${l.nome}: ${brl(l.receita)}">
+        <div class="vl">${l.receita>=1000?nm(l.receita/1000,1)+"k":nm(l.receita)}</div>
+        <div class="col" style="height:${Math.max(4, l.receita/max*130)}px"></div>
+        <div class="lb">${l.nome}</div>
+      </div>`).join("")}
+    </div>
+    <div class="sep"></div>
+    <div class="tw"><table><thead><tr>
+      <th>Período</th><th class="num">Vendas</th><th class="num">Peças</th>
+      <th class="num">Faturamento</th><th class="num">Custo</th><th class="num">Lucro</th><th class="num">Margem</th>
+    </tr></thead><tbody>${linhas.map(l=>`<tr>
+      <td><b>${l.nome}</b></td><td class="num">${l.vendas}</td><td class="num">${l.pecas}</td>
+      <td class="num"><b>${brl(l.receita)}</b></td><td class="num hint">${brl(l.custo)}</td>
+      <td class="num ${l.lucro>=0?"pos":"neg"}"><b>${brl(l.lucro)}</b></td><td class="num">${pct(l.margem)}</td>
+    </tr>`).join("")}</tbody>
+    <tfoot><tr style="border-top:2px solid var(--linha)">
+      <td><b>Total</b></td>
+      <td class="num"><b>${linhas.reduce((s,l)=>s+l.vendas,0)}</b></td>
+      <td class="num"><b>${linhas.reduce((s,l)=>s+l.pecas,0)}</b></td>
+      <td class="num"><b>${brl(linhas.reduce((s,l)=>s+l.receita,0))}</b></td>
+      <td class="num"><b>${brl(linhas.reduce((s,l)=>s+l.custo,0))}</b></td>
+      <td class="num"><b>${brl(linhas.reduce((s,l)=>s+l.lucro,0))}</b></td><td></td>
+    </tr></tfoot></table></div>`;
+}
+
+/** Quebra as vendas por atributo do produto (ou forma de pagamento). */
+function categorias(vendas, campo){
+  const mapa = new Map();
+  for(const v of vendas){
+    for(const i of v.itens){
+      const p = produto(i.produtoId);
+      let chave;
+      if(campo==="pagamento") chave = v.pagamento;
+      else chave = p ? (p[campo]||"—") : (campo==="modelo" ? i.desc : "(excluído)");
+      if(!mapa.has(chave)) mapa.set(chave,{chave, receita:0, custo:0, qtd:0});
+      const l = mapa.get(chave);
+      l.receita += i.preco*i.qtd; l.custo += i.custo*i.qtd; l.qtd += i.qtd;
+    }
+  }
+  return [...mapa.values()].map(l=>({...l, lucro:l.receita-l.custo,
+      margem:l.receita?(l.receita-l.custo)/l.receita:NaN, markup:l.custo?(l.receita-l.custo)/l.custo:NaN}))
+    .sort((a,b)=>b.receita-a.receita);
+}
+
+function htmlCategoria(vendas, campo){
+  const l = categorias(vendas, campo);
+  if(!l.length) return `<div class="vazio"><b>Sem vendas no período</b></div>`;
+  const tot = l.reduce((s,x)=>s+x.receita,0) || 1;
+  return `<div class="tw"><table><thead><tr>
+    <th>${({marca:"Marca",modelo:"Modelo",tamanho:"Tamanho",cor:"Cor",genero:"Gênero",pagamento:"Pagamento"})[campo]}</th>
+    <th class="num">Peças</th><th class="num">Faturamento</th><th class="num">%</th>
+    <th class="num">Custo</th><th class="num">Lucro</th><th class="num">Markup</th><th style="width:130px">Participação</th>
+  </tr></thead><tbody>${l.map(x=>`<tr>
+    <td><b>${campo==="genero"?tagGenero(x.chave):esc(x.chave)}</b></td>
+    <td class="num">${x.qtd}</td><td class="num"><b>${brl(x.receita)}</b></td>
+    <td class="num">${pct(x.receita/tot)}</td>
+    <td class="num hint">${brl(x.custo)}</td>
+    <td class="num ${x.lucro>=0?"pos":"neg"}"><b>${brl(x.lucro)}</b></td>
+    <td class="num">${pct(x.markup)}</td>
+    <td><div style="background:var(--linha-2);border-radius:5px;height:9px">
+      <div style="background:var(--laranja);height:9px;border-radius:5px;width:${(x.receita/tot*100).toFixed(1)}%"></div></div></td>
+  </tr>`).join("")}</tbody></table></div>`;
+}
+
+/* =======================================================================
+   TELA 6 — GESTÃO
+   ======================================================================= */
+function telaGestao(){
+  $("#tAcoes").innerHTML = `<button class="btn sec" onclick="imprimirRelatorio('gestao')">Imprimir relatório</button>`;
+  const pHoje=periodo("hoje"), pSem=periodo("semana"), pMes=periodo("mes"), pMesP=periodo("mespass"), pAno=periodo("ano");
+  const rHoje = resumo(vendasNo(pHoje.de,pHoje.ate));
+  const rSem  = resumo(vendasNo(pSem.de,pSem.ate));
+  const rMes  = resumo(vendasNo(pMes.de,pMes.ate));
+  const rMesP = resumo(vendasNo(pMesP.de,pMesP.ate));
+  const rAno  = resumo(vendasNo(pAno.de,pAno.ate));
+
+  const var_ = rMesP.receita ? (rMes.receita-rMesP.receita)/rMesP.receita : NaN;
+  const ativos = DB.produtos.filter(p=>p.ativo!==false);
+  const investido = ativos.reduce((s,p)=>s+Math.max(0,p.estoque||0)*(p.custo||0),0);
+  const potencial = ativos.reduce((s,p)=>s+Math.max(0,p.estoque||0)*(p.preco||0),0);
+
+  const linhas12 = serie(vendasNo(isoLocal(new Date(new Date().setMonth(new Date().getMonth()-11,1))), hoje()), "mes");
+  const maxRec = Math.max(...linhas12.map(l=>l.receita), 1);
+
+  // markup médio do catálogo (ponderado pelo estoque)
+  const comCusto = ativos.filter(p=>p.custo>0);
+  const mkCatalogo = comCusto.length
+    ? comCusto.reduce((s,p)=>s+(p.preco-p.custo)/p.custo,0)/comCusto.length : NaN;
+
+  const topProd = categorias(vendasNo(pMes.de,pMes.ate),"modelo").slice(0,8);
+
+  $("#view").innerHTML = `
+  <div class="grid">
+    <div class="grid g4">
+      <div class="kpi lar"><div class="k">Faturamento hoje</div><div class="v" style="font-size:23px">${brl(rHoje.receita)}</div>
+        <div class="s">${rHoje.vendas} venda(s) · lucro ${brl(rHoje.lucro)}</div></div>
+      <div class="kpi cia"><div class="k">Esta semana</div><div class="v" style="font-size:23px">${brl(rSem.receita)}</div>
+        <div class="s">${rSem.vendas} venda(s) · lucro ${brl(rSem.lucro)}</div></div>
+      <div class="kpi ama"><div class="k">Este mês</div><div class="v" style="font-size:23px">${brl(rMes.receita)}</div>
+        <div class="s">${Number.isFinite(var_)?`<span class="${var_>=0?"pos":"neg"}">${var_>=0?"▲":"▼"} ${pct(Math.abs(var_))} vs. mês passado</span>`:`${rMes.vendas} venda(s)`}</div></div>
+      <div class="kpi ver"><div class="k">Este ano</div><div class="v" style="font-size:23px">${brl(rAno.receita)}</div>
+        <div class="s">Lucro ${brl(rAno.lucro)} · margem ${pct(rAno.margem)}</div></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <div class="ch"><h3>Faturamento × custo de aquisição — 12 meses</h3></div>
+        <div class="cb">
+          ${ linhas12.length ? `
+          <div class="bar">${linhas12.map(l=>`
+            <div class="b" title="${l.nome} — fat. ${brl(l.receita)} / custo ${brl(l.custo)}">
+              <div class="vl">${l.receita>=1000?nm(l.receita/1000,1)+"k":nm(l.receita)}</div>
+              <div style="display:flex;gap:3px;align-items:flex-end;width:100%;justify-content:center">
+                <div class="col" style="height:${Math.max(3,l.receita/maxRec*120)}px;max-width:22px"></div>
+                <div class="col c2" style="height:${Math.max(3,l.custo/maxRec*120)}px;max-width:22px"></div>
+              </div>
+              <div class="lb">${l.nome}</div>
+            </div>`).join("")}</div>
+          <div class="leg"><span><i style="background:var(--laranja)"></i>Faturamento</span>
+                           <span><i style="background:var(--marrom)"></i>Custo de aquisição</span></div>`
+          : `<div class="vazio"><b>Ainda sem vendas</b>Registre a primeira venda no PDV.</div>` }
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="ch"><h3>Indicadores do mês</h3></div>
+        <div class="cb">
+          <table><tbody>
+            <tr><th>Faturamento bruto</th><td class="num"><b>${brl(rMes.receita + rMes.desconto)}</b></td></tr>
+            <tr><th>Descontos concedidos</th><td class="num neg">− ${brl(rMes.desconto)}</td></tr>
+            <tr><th>Faturamento líquido</th><td class="num"><b>${brl(rMes.receita)}</b></td></tr>
+            <tr><th>Custo de aquisição (CMV)</th><td class="num">${brl(rMes.custo)}</td></tr>
+            <tr style="background:var(--laranja-fraco)"><th>Lucro bruto</th>
+                <td class="num ${rMes.lucro>=0?"pos":"neg"}"><b>${brl(rMes.lucro)}</b></td></tr>
+            <tr><th>Margem sobre a venda</th><td class="num"><b>${pct(rMes.margem)}</b></td></tr>
+            <tr><th>Markup praticado</th><td class="num"><b>${pct(rMes.markup)}</b></td></tr>
+            <tr><th>Markup médio do catálogo</th><td class="num">${pct(mkCatalogo)}</td></tr>
+            <tr><th>Ticket médio</th><td class="num">${brl(rMes.ticket)}</td></tr>
+            <tr><th>Peças vendidas</th><td class="num">${rMes.pecas}</td></tr>
+          </tbody></table>
+          <p class="hint" style="margin:12px 0 0">
+            <b>Markup</b> = lucro ÷ custo (quanto você multiplica sobre o que pagou).<br>
+            <b>Margem</b> = lucro ÷ faturamento (quanto sobra de cada real vendido).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <div class="ch"><h3>Capital parado em estoque</h3></div>
+        <div class="cb">
+          <div class="grid g3">
+            <div class="kpi cor" style="box-shadow:none"><div class="k">Investido</div><div class="v" style="font-size:20px">${brl(investido)}</div></div>
+            <div class="kpi ver" style="box-shadow:none"><div class="k">Potencial</div><div class="v" style="font-size:20px">${brl(potencial)}</div></div>
+            <div class="kpi cia" style="box-shadow:none"><div class="k">Lucro a realizar</div><div class="v" style="font-size:20px">${brl(potencial-investido)}</div></div>
+          </div>
+          <p class="hint" style="margin:12px 0 0">Se todo o estoque atual for vendido pelo preço cadastrado, o lucro será de
+            <b>${brl(potencial-investido)}</b> (markup ${pct(investido?(potencial-investido)/investido:NaN)}).</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="ch"><h3>Mais vendidos no mês</h3></div>
+        <div class="cb" style="padding:0">
+          ${ topProd.length ? `<div class="tw"><table><thead><tr>
+            <th>Peça</th><th class="num">Qtd</th><th class="num">Faturamento</th><th class="num">Lucro</th></tr></thead>
+            <tbody>${topProd.map(x=>`<tr><td>${esc(x.chave)}</td><td class="num"><b>${x.qtd}</b></td>
+              <td class="num">${brl(x.receita)}</td><td class="num pos">${brl(x.lucro)}</td></tr>`).join("")}</tbody></table></div>`
+          : `<div class="vazio">Sem vendas neste mês</div>` }
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* =======================================================================
+   TELA 7 — CONFIGURAÇÕES E BACKUP
+   ======================================================================= */
+function telaConfig(){
+  $("#view").innerHTML = `
+  <div class="grid g2">
+    <div class="card">
+      <div class="ch"><h3>Backup dos dados</h3></div>
+      <div class="cb">
+        <p class="hint" style="margin-top:0">Os dados ficam salvos <b>neste computador e neste navegador</b>. Se o Windows for
+        formatado, o navegador reinstalado ou os dados de navegação limpos, tudo se perde. <b>Faça backup toda semana</b>
+        e guarde o arquivo em um pendrive ou no OneDrive.</p>
+        <div class="row" style="margin-top:14px">
+          <button class="btn" onclick="baixarBackup()">Baixar backup agora</button>
+          <button class="btn sec" onclick="$('#arqBackup').click()">Restaurar backup</button>
+          <input type="file" id="arqBackup" accept=".json" hidden onchange="restaurarBackup(this)">
+        </div>
+        <div class="sep"></div>
+        <div class="row">
+          <button class="btn sec sm" onclick="exportarCSV('produtos')">Exportar produtos (CSV)</button>
+          <button class="btn sec sm" onclick="exportarCSV('vendas')">Exportar vendas (CSV)</button>
+          <button class="btn sec sm" onclick="exportarCSV('clientes')">Exportar clientes (CSV)</button>
+          <button class="btn sec sm" onclick="exportarCSV('movimentos')">Exportar estoque (CSV)</button>
+        </div>
+        <p class="hint" style="margin-bottom:0">Os arquivos CSV abrem no Excel.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ch"><h3>Preferências</h3></div>
+      <div class="cb">
+        <label class="f">Nome da loja
+          <input value="${esc(DB.config.loja||"Kava Kids")}" onchange="DB.config.loja=this.value;salvar()">
+        </label>
+        <label class="f" style="margin-top:14px">Papel do cupom
+          <select onchange="DB.config.cupom=this.value; salvar(); aviso('Papel do cupom atualizado.','ok')">
+            ${Object.entries(CUPONS).map(([k,c])=>
+              `<option value="${k}" ${(DB.config.cupom||"80mm")===k?"selected":""}>${c.nome}</option>`).join("")}
+          </select>
+        </label>
+        <button class="btn sec sm" style="margin-top:8px" onclick="cupomTeste()">Imprimir cupom de teste</button>
+        <label class="f" style="margin-top:14px">Alerta de estoque baixo (peças ou menos)
+          <input type="number" min="0" step="1" value="${DB.config.estoqueMinimo??2}"
+            onchange="DB.config.estoqueMinimo=parseInt(this.value)||0;salvar();aviso('Alerta atualizado.','ok')">
+        </label>
+        <div class="sep"></div>
+        <h4 style="font-size:14px;color:var(--marrom);margin-bottom:8px">Situação atual</h4>
+        <table><tbody>
+          <tr><th>Produtos ativos</th><td class="num">${DB.produtos.filter(p=>p.ativo!==false).length}</td></tr>
+          <tr><th>Clientes cadastrados</th><td class="num">${DB.clientes.filter(c=>c.ativo!==false).length}</td></tr>
+          <tr><th>Vendas registradas</th><td class="num">${DB.vendas.filter(v=>!v.cancelada).length}</td></tr>
+          <tr><th>Vendas canceladas</th><td class="num">${DB.vendas.filter(v=>v.cancelada).length}</td></tr>
+          <tr><th>Movimentações</th><td class="num">${DB.movimentos.length}</td></tr>
+          <tr><th>Versão do sistema</th><td class="num"><b>${VERSAO}</b></td></tr>
+          <tr><th>Último backup</th><td class="num">${DB.config.ultimoBackup
+            ? dataBR(DB.config.ultimoBackup)+" ("+diasSemBackup()+" dia(s) atrás)"
+            : '<b class="neg">nunca</b>'}</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ch"><h3>Como usar o leitor de código de barras</h3></div>
+      <div class="cb">
+        <p class="hint" style="margin-top:0">Leitores USB comuns funcionam como teclado: basta o cursor estar no campo de código
+        (ele já entra focado nas telas de <b>Venda</b> e <b>Produtos</b>) e apertar o gatilho. O leitor digita o número e envia
+        o Enter sozinho.</p>
+        <ul class="hint" style="margin:10px 0 0;padding-left:18px">
+          <li><b>Produtos</b> — código novo abre o cadastro; código já existente abre a ficha da peça.</li>
+          <li><b>Venda</b> — cada leitura joga a peça no carrinho; ler duas vezes soma quantidade.</li>
+          <li>Se a peça não tiver etiqueta de fábrica, use etiquetas próprias com numeração sequencial (ex.: 1001, 1002…).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:#f0c9c5">
+      <div class="ch"><h3 style="color:var(--coral)">Zona de risco</h3></div>
+      <div class="cb">
+        <p class="hint" style="margin-top:0">Ações irreversíveis. Baixe um backup antes.</p>
+        <div class="row">
+          <button class="btn sec" onclick="dadosDemo()">Carregar dados de demonstração</button>
+          <button class="btn dan" onclick="apagarTudo()">Apagar todos os dados</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function baixarBackup(){
+  const nome = `kavakids-backup-${hoje()}.json`;
+  baixar(nome, JSON.stringify(DB,null,1), "application/json");
+  DB.config.ultimoBackup = new Date().toISOString();
+  salvar(); render();
+  aviso("Backup baixado. Guarde em local seguro.","ok");
+}
+function restaurarBackup(input){
+  const f = input.files[0]; if(!f) return;
+  const fr = new FileReader();
+  fr.onload = () => {
+    try{
+      const d = JSON.parse(fr.result);
+      if(!Array.isArray(d.produtos)) throw new Error("formato");
+      confirmar("Restaurar backup",
+        `O backup tem <b>${d.produtos.length} produtos</b> e <b>${(d.vendas||[]).length} vendas</b>.<br><br>
+         Isso <b>substitui</b> todos os dados atuais.`,
+        ()=>{ DB = Object.assign(structuredClone(VAZIO), d); salvar(); render(); aviso("Backup restaurado.","ok"); },
+        "Restaurar");
+    }catch(e){ aviso("Arquivo inválido.","err"); }
+  };
+  fr.readAsText(f); input.value = "";
+}
+function apagarTudo(){
+  confirmar("Apagar todos os dados",
+    "Isso apaga <b>produtos, vendas e estoque</b> definitivamente. Não há como desfazer sem um backup.",
+    ()=>{ DB = structuredClone(VAZIO); salvar(); carrinho=[]; render(); aviso("Tudo apagado.","ok"); },
+    "Apagar tudo");
+}
+
+function baixar(nome, conteudo, tipo){
+  const url = URL.createObjectURL(new Blob(["﻿"+conteudo],{type:tipo+";charset=utf-8"}));
+  const a = document.createElement("a"); a.href = url; a.download = nome;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1500);
+}
+const csvC = v => `"${String(v??"").replace(/"/g,'""')}"`;
+
+function exportarCSV(tipo){
+  let cab, linhas, nome;
+  if(tipo==="produtos"){
+    nome = "produtos"; cab = ["Codigo","Marca","Modelo","Tamanho","Cor","Genero","Custo","Venda","Markup %","Estoque"];
+    linhas = DB.produtos.filter(p=>p.ativo!==false).map(p=>[p.codigo,p.marca,p.modelo,p.tamanho,p.cor,p.genero,
+      nm(p.custo,2),nm(p.preco,2), markup(p)===null?"":nm(markup(p)*100,1), p.estoque||0]);
+  }else if(tipo==="clientes"){
+    nome = "clientes"; cab = ["Nome","Aniversario","Telefone","E-mail","CPF","Criancas","Compras","Total gasto","Ticket medio","Ultima compra","Observacoes"];
+    linhas = DB.clientes.filter(c=>c.ativo!==false).sort((a,b)=>a.nome.localeCompare(b.nome)).map(c=>{
+      const r = resumoCliente(c.id);
+      return [c.nome, c.nascimento?dataBR(c.nascimento):"", c.telefone, c.email, c.cpf,
+        (c.criancas||[]).map(k=>`${k.nome||"?"}${k.nascimento?" ("+dataBR(k.nascimento)+")":""}`).join(" | "),
+        r.vendas, nm(r.receita,2), nm(r.ticket,2), r.ultima?dataBR(r.ultima):"", c.obs];
+    });
+  }else if(tipo==="relclientes"){
+    const per = relPeriodo();
+    nome = "clientes-periodo"; cab = ["Cliente","Telefone","E-mail","Compras","Pecas","Faturamento","Ticket medio","Lucro gerado","Ultima compra"];
+    linhas = rankingClientes(vendasNo(per.de, per.ate)).map(l=>{ const c = cliente(l.id);
+      return [c?.nome||"(excluido)", c?.telefone||"", c?.email||"", l.compras, l.pecas,
+        nm(l.receita,2), nm(l.ticket,2), nm(l.lucro,2), dataBR(l.ultima)]; });
+  }else if(tipo==="movimentos"){
+    nome = "estoque"; cab = ["Data","Codigo","Peca","Movimento","Tipo","Qtd","Saldo","Observacao"];
+    linhas = DB.movimentos.map(m=>{ const p=produto(m.produtoId);
+      return [dataBR(m.data), m.codigo, p?descProduto(p):"", MOTIVOS[m.motivo].r, m.tipo, m.delta, m.saldo, m.obs]; });
+  }else{
+    const per = tipo==="relatorio" ? relPeriodo() : periodo(filtroVenda.periodo);
+    nome = "vendas"; cab = ["Venda","Data","Hora","Codigo","Peca","Marca","Tamanho","Cor","Genero","Qtd","Unitario","Custo unit","Total item","Pagamento","Desconto venda","Total venda"];
+    linhas = [];
+    for(const v of vendasNo(per.de, per.ate)){
+      for(const i of v.itens){ const p = produto(i.produtoId);
+        linhas.push([v.numero, dataBR(v.data), horaBR(v.data), i.codigo, i.desc, p?.marca||"", p?.tamanho||"", p?.cor||"", p?.genero||"",
+          i.qtd, nm(i.preco,2), nm(i.custo,2), nm(i.preco*i.qtd,2), v.pagamento, nm(v.desconto,2), nm(v.total,2)]);
+      }
+    }
+  }
+  if(!linhas.length) return aviso("Nada para exportar.","err");
+  baixar(`kavakids-${nome}-${hoje()}.csv`,
+    [cab, ...linhas].map(l=>l.map(csvC).join(";")).join("\r\n"), "text/csv");
+  aviso("CSV gerado.","ok");
+}
+
+/* ---------- Dados de demonstração ---------- */
+function dadosDemo(){
+  confirmar("Carregar demonstração",
+    "Isso <b>substitui</b> os dados atuais por um exemplo com produtos e vendas, para você testar o sistema.",
+    ()=>{
+      DB = structuredClone(VAZIO);
+      const base = [
+        ["7891000100011","Milon","Conjunto moletom","4","Azul","Menino",42,109.90],
+        ["7891000100028","Milon","Vestido floral","2","Rosa","Menina",38,99.90],
+        ["7891000100035","Kyly","Body manga longa","P","Branco","Unissex",19,54.90],
+        ["7891000100042","Kyly","Macacão plush","M","Cinza","Unissex",34,89.90],
+        ["7891000100059","Brandili","Calça jeans","6","Azul","Menino",45,119.90],
+        ["7891000100066","Brandili","Saia jeans","8","Azul","Menina",39,109.90],
+        ["7891000100073","Puc","Camiseta estampada","10","Verde","Menino",26,69.90],
+        ["7891000100080","Puc","Blusa tricot","6","Coral","Menina",41,114.90],
+        ["7891000100097","Alenice","Pijama flanela","4","Amarelo","Unissex",31,84.90],
+        ["7891000100103","Alenice","Conjunto praia","2","Ciano","Menina",28,74.90]
+      ];
+      const DIAS = 180;
+      const recuar = n => { const x = new Date(); x.setDate(x.getDate()-n); x.setHours(9,0,0,0); return x; };
+      for(const [cod,marca,modelo,tam,cor,gen,custo,preco] of base){
+        const p = {id:uid(), codigo:cod, marca, modelo, tamanho:tam, cor, genero:gen, custo, preco,
+                   estoque:0, ativo:true, criadoEm:recuar(DIAS).toISOString()};
+        DB.produtos.push(p);
+        movimentar(p.id,"compra", 14+Math.floor(Math.random()*8),
+          {custo, obs:"Estoque inicial (demonstração)", data:recuar(DIAS).toISOString()});
+      }
+      // clientes de exemplo — os primeiros têm aniversário perto de hoje, para demonstrar o aviso
+      const perto = n => { const d=new Date(); d.setDate(d.getDate()+n); return `${1990+Math.floor(Math.random()*15)}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; };
+      const pertoKid = n => { const d=new Date(); d.setDate(d.getDate()+n); return `${2017+Math.floor(Math.random()*6)}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`; };
+      const clis = [
+        ["Ana Paula Ribeiro","(11) 98812-4471","ana.ribeiro@email.com","111.444.777-35", perto(2), [["Lívia Ribeiro", pertoKid(30)]]],
+        ["Carla Menezes",    "(11) 99143-2280","carla.menezes@email.com","", perto(40), [["Theo Menezes", pertoKid(5)],["Bento Menezes", pertoKid(120)]]],
+        ["Juliana Prado",    "(11) 98330-1177","ju.prado@email.com","", perto(0), [["Manu Prado", pertoKid(200)]]],
+        ["Fernanda Lima",    "(11) 97744-9021","fe.lima@email.com","", perto(95), [["Alice Lima", pertoKid(60)]]],
+        ["Patrícia Souza",   "(11) 98219-3355","","", perto(150), [["Miguel Souza", pertoKid(15)]]],
+        ["Roberta Alves",    "(11) 99502-7788","roberta.alves@email.com","", perto(210), [["Cecília Alves", pertoKid(250)],["Pedro Alves", pertoKid(300)]]],
+        ["Marina Castro",    "(11) 98077-6612","","", perto(75), []],
+        ["Débora Nunes",     "(11) 99661-4433","debora.nunes@email.com","", perto(310), [["Isabela Nunes", pertoKid(90)]]]
+      ];
+      for(const [nome,tel,mail,cpf,nasc,kids] of clis){
+        DB.clientes.push({ id:uid(), nome, telefone:tel, email:mail, cpf, nascimento:nasc,
+          criancas: kids.map(([n,d])=>({nome:n, nascimento:d})),
+          obs:"", ativo:true, criadoEm: recuar(DIAS).toISOString() });
+      }
+
+      const pags = ["Dinheiro","PIX","Débito","Crédito","Crédito parcelado"];
+      for(let d=DIAS; d>=0; d--){
+        const dia = recuar(d);
+        // reposição de estoque a cada 30 dias, como acontece na loja
+        if(d < DIAS && d % 30 === 0){
+          for(const p of DB.produtos)
+            movimentar(p.id,"compra", 8+Math.floor(Math.random()*7),
+              {custo:p.custo, obs:"Reposição de estoque (demonstração)", data:dia.toISOString()});
+        }
+        const n = Math.floor(Math.random()*4) + (dia.getDay()===6?2:0);
+        for(let k=0;k<n;k++){
+          const itens = [];
+          const usados = new Set();
+          const qi = 1 + Math.floor(Math.random()*3);
+          for(let j=0;j<qi;j++){
+            const p = DB.produtos[Math.floor(Math.random()*DB.produtos.length)];
+            if(p.estoque < 1 || usados.has(p.id)) continue;
+            usados.add(p.id);
+            itens.push({produtoId:p.id, codigo:p.codigo, desc:descProduto(p), qtd:1, preco:p.preco, custo:p.custo});
+          }
+          if(!itens.length) continue;
+          const sub = itens.reduce((s,i)=>s+i.preco*i.qtd,0);
+          const des = Math.random()<.25 ? Math.round(sub*0.08) : 0;
+          dia.setHours(9+Math.floor(Math.random()*10), Math.floor(Math.random()*60), 0, 0);
+          const v = {id:uid(), numero:DB.seqVenda++, data:dia.toISOString(), itens,
+            subtotal:sub, desconto:des, total:sub-des,
+            custo:itens.reduce((s,i)=>s+i.custo*i.qtd,0), pagamento:pags[Math.floor(Math.random()*pags.length)],
+            obs:"", cancelada:false,
+            // ~65% das vendas saem identificadas, como acontece na prática
+            clienteId: Math.random()<.65 ? DB.clientes[Math.floor(Math.random()*DB.clientes.length)].id : null};
+          v.lucro = v.total - v.custo;
+          DB.vendas.push(v);
+          for(const i of itens) movimentar(i.produtoId,"venda",i.qtd,{vendaId:v.id, custo:i.custo, data:dia.toISOString()});
+        }
+
+        // de vez em quando alguém volta para trocar uma peça
+        if(d < DIAS-7 && Math.random() < .10){
+          const dev = DB.produtos[Math.floor(Math.random()*DB.produtos.length)];
+          const lev = DB.produtos.filter(x=>x.id!==dev.id && x.estoque>0)[0];
+          if(lev){
+            const itens = [
+              {produtoId:lev.id, codigo:lev.codigo, desc:descProduto(lev), qtd: 1, preco:lev.preco, custo:lev.custo},
+              {produtoId:dev.id, codigo:dev.codigo, desc:descProduto(dev), qtd:-1, preco:dev.preco, custo:dev.custo}
+            ];
+            const sub = itens.reduce((s,i)=>s+i.preco*i.qtd,0);
+            dia.setHours(14+Math.floor(Math.random()*4), Math.floor(Math.random()*60), 0, 0);
+            const t = {id:uid(), numero:DB.seqVenda++, data:dia.toISOString(), itens,
+              subtotal:sub, desconto:0, total:sub,
+              custo:itens.reduce((s,i)=>s+i.custo*i.qtd,0),
+              pagamento: sub>0 ? "PIX" : "Vale-compra", obs:"Tamanho não serviu",
+              tipo:"troca", cancelada:false,
+              clienteId: DB.clientes[Math.floor(Math.random()*DB.clientes.length)].id};
+            t.lucro = t.total - t.custo;
+            DB.vendas.push(t);
+            movimentar(lev.id,"venda",1,{vendaId:t.id, custo:lev.custo, data:dia.toISOString(), obs:`Peça levada na troca #${t.numero}`});
+            movimentar(dev.id,"troca_entrada",1,{vendaId:t.id, custo:dev.custo, data:dia.toISOString(), obs:`Peça devolvida na troca #${t.numero}`});
+          }
+        }
+      }
+      salvar(); irPara("gestao"); aviso("Dados de demonstração carregados.","ok");
+      setTimeout(()=>popupAniversarios(true), 400);
+    }, "Carregar demonstração");
+}
+
+/* =======================================================================
+   AVISO DE ANIVERSÁRIO — popup ao abrir, uma vez por dia
+   ======================================================================= */
+function popupAniversarios(forcar){
+  const lista = aniversarios(7);
+  if(!lista.length){ if(forcar) aviso("Nenhum aniversário nos próximos 7 dias.","ok"); return; }
+  if(!forcar && DB.config.ultimoAvisoAniv === hoje()) return;   // já avisou hoje
+
+  DB.config.ultimoAvisoAniv = hoje(); salvar();
+
+  const linha = a => `
+    <div style="display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:11px;
+                background:${a.dias===0?"#FFF3D6":"var(--laranja-fraco)"};margin-bottom:8px">
+      <div style="font-size:26px;line-height:1">${a.dias===0?"🎉":"🎂"}</div>
+      <div style="flex:1;min-width:0">
+        <b>${esc(a.quem)}</b> ${a.tipo==="Criança"?`<span class="tag f">Criança</span>`:`<span class="tag m">Comprador</span>`}
+        <div class="hint">Faz <b>${a.idade} anos</b> ${quandoAniv(a.dias)} — ${dataBR(a.iso)}</div>
+        ${a.tipo==="Criança"?`<div class="hint">Responsável: ${esc(a.cliente.nome)}</div>`:""}
+      </div>
+      <div style="flex:none;text-align:right">
+        <div class="hint">${esc(a.cliente.telefone||"sem telefone")}</div>
+        ${htmlZap(a.cliente, a)}
+        <button class="btn gh sm" onclick="fechar();fichaCliente('${a.cliente.id}')">Ficha</button>
+      </div>
+    </div>`;
+
+  const hj = lista.filter(a=>a.dias===0);
+  modal(`🎂 ${lista.length} aniversário${lista.length>1?"s":""} nos próximos 7 dias`,
+    (hj.length ? `<h4 style="font-size:14px;color:var(--marrom);margin:0 0 8px">Hoje</h4>${hj.map(linha).join("")}
+                  <h4 style="font-size:14px;color:var(--marrom);margin:16px 0 8px">Nos próximos dias</h4>` : "")
+    + lista.filter(a=>a.dias>0).map(linha).join("")
+    + `<p class="hint" style="margin:14px 0 0">Este aviso aparece uma vez por dia. Você pode revê-lo a
+       qualquer momento na tela de Clientes.</p>`,
+    `<button class="btn" onclick="fechar()">Entendi</button>`, true);
+}
+
+/* ---------- ATALHOS ---------- */
+document.addEventListener("keydown", e => {
+  if(tela==="troca" && (e.key==="F2" || e.key==="F3")){
+    e.preventDefault(); setModoTroca(e.key==="F2" ? "entrada" : "saida"); return;
+  }
+  // Os atalhos exigem Alt de propósito: um leitor de código de barras digita
+  // números muito rápido e, sem isso, o código trocaria de tela no meio da leitura.
+  if(!e.altKey || e.ctrlKey || e.metaKey) return;
+  if(typeof e.target?.matches === "function" && e.target.matches("input,select,textarea")) return;
+  const map = {"1":"pdv","2":"troca","3":"produtos","4":"clientes","5":"estoque","6":"vendas","7":"relatorios","8":"gestao"};
+  if(map[e.key]){ e.preventDefault(); irPara(map[e.key]); }
+});
+
+/* ---------- INÍCIO ---------- */
+try{ localStorage.setItem(CHAVE+"_teste","1"); localStorage.removeItem(CHAVE+"_teste"); }
+catch(e){ armazenamentoOk = false; }
+const pendentes = carregarEmAndamento();
+render();
+if(pendentes){
+  aviso(`Operação em andamento recuperada — ${pendentes} peça(s) continuam na tela.`,"ok");
+  irPara(carrinho.length ? "pdv" : "troca");
+}
+popupAniversarios();
+</script>
+</body>
+</html>

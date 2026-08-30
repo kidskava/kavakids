@@ -1,0 +1,571 @@
+========================================================
+  KAVA KIDS — SISTEMA DE VENDAS E GESTAO
+========================================================
+
+COMO ABRIR
+----------
+Clique duas vezes no arquivo "KavaKids-Sistema.html".
+Ele abre no navegador (Chrome ou Edge) e ja esta pronto para usar.
+Nao precisa instalar nada e funciona sem internet.
+
+Dica: com a pagina aberta no Chrome, va no menu (tres pontinhos)
+> Salvar e compartilhar > Criar atalho > marque "Abrir como janela".
+Assim o sistema ganha um icone na area de trabalho e abre em
+janela propria, com cara de programa.
+
+
+DEPOIS DE ATUALIZAR O SISTEMA
+-----------------------------
+Ao receber uma versao nova do arquivo, salve por cima da antiga e
+RECARREGUE A PAGINA com Ctrl+F5 (ou feche e abra de novo). Se voce
+so trocar o arquivo com a pagina aberta, o navegador continua
+rodando a versao antiga da memoria - e parece que a correcao nao
+funcionou.
+
+Para conferir qual versao esta rodando: canto inferior esquerdo da
+tela, embaixo do menu, ou em Configuracoes > "Versao do sistema".
+
+
+ONDE FICAM OS DADOS  (LEIA ISTO)
+--------------------------------
+Os dados ficam guardados NESTE COMPUTADOR, dentro do navegador.
+Eles NAO vao para a internet e ninguem mais tem acesso.
+
+Por isso, tres cuidados:
+
+ 1. Use sempre o MESMO navegador. Se cadastrar no Chrome e depois
+    abrir no Edge, o Edge estara vazio.
+
+ 2. BAIXE UM BACKUP TODA SEMANA.
+    Configuracoes > "Baixar backup agora".
+    Guarde o arquivo num pendrive ou no OneDrive/Google Drive.
+    O sistema avisa com uma faixa amarela quando o backup atrasa.
+
+ 3. Nunca use "Limpar dados de navegacao" marcando cookies e
+    dados de sites — isso apaga o sistema.
+
+Para levar os dados para outro computador: baixe o backup no
+computador antigo e use "Restaurar backup" no computador novo.
+
+
+LEITOR DE CODIGO DE BARRAS
+--------------------------
+Qualquer leitor USB comum serve (custa de R$ 80 a R$ 200).
+Ele funciona como um teclado: aponta, aperta o gatilho, e o numero
+e digitado sozinho com o Enter no final.
+
+O sistema ja deixa o cursor no campo certo nas telas "Venda (PDV)",
+"Troca", "Produtos" e "Estoque". Cada uma dessas telas tem a faixa
+laranja com o campo do leitor no alto.
+
+Nao precisa se preocupar com o cursor. Mesmo que voce tenha clicado
+em outro ponto da tela e o cursor tenha saido do campo, o sistema
+desvia a leitura para o leitor sozinho, sem perder digito. O cursor
+tambem volta para o campo do leitor sempre que voce fecha uma
+janela ou termina uma impressao.
+
+A unica excecao e proposital: enquanto voce estiver digitando em
+outro campo (observacao, busca, cadastro) ou com uma janela aberta,
+o leitor fica quieto para nao atrapalhar a digitacao.
+
+Se a roupa nao tiver etiqueta de fabrica, compre etiquetas de
+codigo de barras com numeracao sequencial (1001, 1002, 1003...)
+e cole na peca.
+
+
+AS 9 TELAS
+----------
+1. VENDA (PDV)   Passe o codigo de cada peca. Ler o mesmo codigo
+                 duas vezes soma a quantidade. Da para aplicar
+                 desconto e escolher a forma de pagamento.
+                 Tres botoes no fechamento, nessa ordem:
+                   FINALIZAR VENDA  - unica acao que grava a venda
+                                      e baixa o estoque.
+                   IMPRIMIR PREVIA  - imprime para conferencia SEM
+                                      registrar nada.
+                   DESCARTAR ESTA VENDA - la embaixo, separado dos
+                                      outros. Pede confirmacao.
+                 Se for uma troca, use o modulo proprio (tela 2).
+
+2. TROCA         Antes de bipar cada peca, escolha o lado:
+                   ENTRADA (F2) - peca que a cliente DEVOLVE.
+                                  Volta para o estoque e vira credito.
+                   SAIDA   (F3) - peca que a cliente LEVA, ou compra
+                                  a mais. Sai do estoque como venda.
+                 Da para bipar varias de um lado, trocar o modo e
+                 bipar varias do outro, na ordem que voce quiser.
+                 As compras avulsas do mesmo atendimento entram como
+                 SAIDA e funcionam igual a uma venda normal (preco
+                 editavel, quantidade, desconto, pagamento).
+                 No fim o sistema mostra a diferenca:
+                   positiva -> a cliente completa o valor;
+                   negativa -> a loja deve credito a ela;
+                   zero     -> troca sem diferenca.
+
+3. PRODUTOS      Passe o codigo de barras:
+                   - codigo novo    -> abre o cadastro
+                   - codigo ja usado -> abre a ficha da peca
+                 Campos: marca, modelo, tamanho, cor, genero,
+                 custo de compra e valor de venda. O markup e o
+                 lucro por peca aparecem enquanto voce digita.
+
+4. CLIENTES      Nome do comprador, aniversario dele, telefone,
+                 e-mail e CPF (o sistema confere se o CPF e valido
+                 e nao deixa cadastrar o mesmo duas vezes).
+                 Cada cliente pode ter VARIAS criancas, cada uma
+                 com nome e data de nascimento.
+                 A ficha do cliente mostra tudo que ele ja comprou,
+                 quanto gastou, ticket medio e as marcas preferidas.
+                 O botao WhatsApp abre a conversa com uma mensagem
+                 de parabens ja escrita.
+
+5. ESTOQUE       Tem campo de leitor no alto: bipe a peca e a janela
+                 de movimento abre ja com "Compra de estoque"
+                 escolhida e o cursor na quantidade. Digite quantas
+                 e tecle Enter. Ideal para conferir uma remessa
+                 nova, peca por peca.
+                 Entradas: compra, troca/devolucao do cliente,
+                 ajuste de inventario.
+                 Saidas: troca, perda/avaria, ajuste.
+                 Mostra quanto esta investido em estoque, quanto
+                 vale a preco de venda e quais pecas precisam
+                 de reposicao.
+
+6. VENDAS        Lista tudo que foi vendido. Da para ver o detalhe,
+                 imprimir o recibo (botao da impressora na propria
+                 linha, a qualquer momento), excluir a venda inteira
+                 ou excluir so um item dela. Em qualquer exclusao as
+                 pecas voltam automaticamente para o estoque.
+
+7. RELATORIOS    Diario, semanal, mensal, anual ou periodo
+                 escolhido a dedo. E por categoria: marca, modelo,
+                 tamanho, cor, genero ou forma de pagamento.
+                 Tem tambem o relatorio de CLIENTES do periodo:
+                 quem comprou, quanto gastou, ticket medio, lucro
+                 gerado e ultima compra, alem de quantas vendas
+                 sairam sem cliente identificado. E a lista de
+                 aniversariantes do periodo.
+                 Tudo pode ser impresso ou exportado para Excel.
+
+8. GESTAO        Faturamento do dia, da semana, do mes e do ano.
+                 Grafico de faturamento x custo de aquisicao nos
+                 ultimos 12 meses. Markup, margem, lucro, ticket
+                 medio, capital parado em estoque e as pecas
+                 mais vendidas.
+
+9. CONFIGURACOES Backup, exportacao para Excel, nome da loja e
+                 limite de alerta de estoque baixo.
+
+
+MARKUP x MARGEM
+---------------
+  Markup = lucro dividido pelo CUSTO
+           (quanto voce multiplica sobre o que pagou)
+  Margem = lucro dividido pelo FATURAMENTO
+           (quanto sobra de cada real vendido)
+
+  Exemplo: peca comprada por R$ 40 e vendida por R$ 100
+           Lucro  R$ 60
+           Markup 150%   (60 / 40)
+           Margem  60%   (60 / 100)
+
+
+CLIENTE NA VENDA
+----------------
+No PDV, o quadro "Cliente" fica no alto do Fechamento.
+Clique em "Selecionar cliente", busque por nome, telefone, CPF
+ou pelo nome da crianca. Se ele ainda nao existir, o proprio
+seletor tem o botao "+ Cadastrar novo" — voce cadastra na hora e
+ele ja entra na venda.
+
+Se a cliente foi embora e so depois voce cadastrou:
+va em VENDAS, ache a venda e clique em "+ vincular" na coluna
+Cliente (ou abra a venda e use "Vincular cliente"). A compra passa
+a contar no historico dela na hora. Da para trocar ou desvincular
+depois, quantas vezes precisar.
+
+Vender sem selecionar cliente continua funcionando normalmente —
+a venda fica como "sem cliente identificado".
+
+
+AVISO DE ANIVERSARIO
+--------------------
+Ao abrir o sistema, aparece uma janela com todos os aniversarios
+dos proximos 7 DIAS — do comprador e das criancas — mostrando
+quantos anos faz, a data, o telefone e um botao de WhatsApp com a
+mensagem de parabens pronta.
+
+O aviso aparece UMA VEZ POR DIA, para nao atrapalhar. Para rever a
+qualquer momento: tela CLIENTES > "Ver avisos de aniversario".
+Na mesma tela tem a lista dos proximos 30 dias, para voce se
+organizar com antecedencia.
+
+
+COMO FAZER UMA TROCA (passo a passo)
+------------------------------------
+ 1. Abra a tela TROCA.
+ 2. Se a cliente for cadastrada, clique em "Selecionar" no quadro
+    Cliente. Vale a pena: ao bipar a peca devolvida, o sistema
+    credita o preco que ELA PAGOU de verdade, e nao o preco de
+    tabela de hoje (util se ela comprou em promocao).
+ 3. Com o lado em ENTRADA, bipe a peca que ela esta devolvendo.
+ 4. Aperte F3 (ou clique em SAIDA) e bipe a peca que ela vai levar.
+ 5. Ainda em SAIDA, bipe qualquer outra coisa que ela quiser levar.
+ 6. Confira a diferenca, escolha a forma de pagamento e clique em
+    "Finalizar troca".
+
+Tudo em uma so operacao: o estoque sobe nas devolvidas, desce nas
+levadas, e a troca entra nos relatorios de vendas pelo valor
+LIQUIDO (o que a loja realmente faturou no atendimento).
+
+As trocas aparecem na tela VENDAS com a etiqueta laranja "troca",
+e o filtro no alto separa "So vendas" de "So trocas". Excluir uma
+troca desfaz os dois lados do estoque de uma vez.
+
+Os precos de cada linha sao editaveis, entao da para ajustar o
+credito quando for o caso.
+
+
+ATALHOS DE TECLADO
+------------------
+  Alt+1 Venda   Alt+2 Troca      Alt+3 Produtos   Alt+4 Clientes
+  Alt+5 Estoque Alt+6 Vendas     Alt+7 Relatorios Alt+8 Gestao
+  Esc fecha janelas
+
+  Dentro da tela TROCA:  F2 = ENTRADA    F3 = SAIDA
+
+  Os atalhos de tela usam Alt de proposito. Sem isso, os numeros do
+  codigo de barras trocariam de tela no meio da leitura.
+
+
+QUER TESTAR ANTES?
+------------------
+Configuracoes > "Carregar dados de demonstracao" cria produtos e
+6 meses de vendas de mentira, algumas trocas, mais 8 clientes com
+criancas — e um deles faz aniversario hoje, para voce ver o aviso
+funcionando.
+Depois use "Apagar todos os dados" para comecar do zero.
+
+
+DADOS PESSOAIS DOS CLIENTES (LGPD)
+----------------------------------
+O cadastro guarda dado pessoal: nome, CPF, telefone, e-mail e data
+de nascimento de criancas. Tudo fica so no seu computador e nao e
+enviado para lugar nenhum — o que ja ajuda bastante.
+
+Na pratica, vale:
+ - so pedir o CPF quando houver motivo (nota, troca, credito);
+ - avisar a cliente que o cadastro serve para trocas e para o
+   aviso de aniversario, e so mandar mensagem para quem topou;
+ - guardar o arquivo de backup em lugar protegido, porque ele
+   contem esses dados em texto aberto;
+ - apagar o cadastro se a cliente pedir (tela CLIENTES, botao da
+   lixeira).
+
+O CPF e sempre opcional no sistema.
+
+
+PREVIA x FINALIZAR
+------------------
+A venda SO e gravada, e o estoque SO e baixado, quando voce clica em
+"Finalizar venda". Nada antes disso mexe no sistema.
+
+Se quiser mostrar o valor para a cliente antes de fechar, use
+"Imprimir previa": sai um papel igual ao recibo, mas com uma tarja
+"PREVIA - VENDA NAO FINALIZADA" no alto e sem numero de venda.
+Pode imprimir quantas previas quiser; nenhuma delas registra a venda.
+
+FECHAR OU CANCELAR A JANELA DE IMPRESSAO NAO MEXE NO CARRINHO.
+Os itens, o desconto, o pagamento, a observacao e o cliente
+continuam exatamente como estavam. Imprimir nunca apaga nada.
+
+O unico botao que esvazia o carrinho e o "Descartar esta venda",
+que fica separado dos demais, la embaixo, e sempre pede
+confirmacao antes.
+
+A janela da venda NAO fecha quando voce manda imprimir. Se cancelar
+a impressao, ela continua ali, com a venda na tela, e voce pode
+mandar imprimir de novo.
+
+Depois de finalizada, o recibo definitivo pode ser impresso a
+QUALQUER MOMENTO, quantas vezes precisar. Tem o botao da impressora
+em tres lugares:
+  - na tela VENDAS, na linha da venda;
+  - dentro da venda, em "Imprimir recibo";
+  - na ficha do cliente, no historico de compras dele.
+
+A partir da segunda impressao o papel sai marcado como "2a via", e
+o nome do cliente aparece no recibo quando a venda estava vinculada
+a alguem. Venda cancelada tambem imprime, mas sai com a tarja
+"VENDA CANCELADA - este comprovante nao e valido".
+
+Imprimir nunca altera nada: nao mexe em estoque, nem em relatorio.
+
+O QUE SAI NO PAPEL
+------------------
+O cupom mostra as pecas, a quantidade, o preco de venda, o desconto,
+o total e a forma de pagamento. Nada mais.
+
+CUSTO, LUCRO, MARGEM E MARKUP NUNCA APARECEM NO CUPOM. Esse papel
+vai para a mao da cliente.
+
+Eles tambem NAO aparecem no fechamento da venda nem na janela que
+abre quando voce finaliza - as duas telas que ficam a vista com a
+cliente no balcao. La so tem pecas, subtotal, desconto e total.
+
+Esses numeros continuam onde voce os consulta de proposito:
+  GESTAO      faturamento, custo, lucro, margem, markup, ticket
+  RELATORIOS  o mesmo, por periodo e por categoria
+  VENDAS      colunas de custo e lucro por venda
+  ESTOQUE     investido, potencial e lucro a realizar
+  Ficha da peca (Produtos > Ficha): markup e lucro por peca
+
+Na folha sai SOMENTE o cupom, nunca a tela do sistema atras dele.
+
+Nas trocas o cupom separa os dois lados, para a cliente conferir:
+  1 peca levada       R$ 99,90
+  1 peca devolvida  - R$ 109,90
+  CREDITO             R$ 10,00
+Quando os valores empatam, sai "SEM DIFERENCA".
+
+IMPRESSORA TERMICA DE 80mm
+--------------------------
+O sistema ja vem configurado para impressora termica de cupom de
+80mm, que e o padrao do comercio. A bobina tem 80mm, mas a cabeca
+de impressao cobre 72mm - e essa a largura usada.
+
+O cupom foi feito pensando na termica: so preto (nada de cinza nem
+fundo colorido, que a termica nao imprime), linhas grossas o
+bastante para sair nitidas nos 203 dpi, altura de pagina automatica
+(o papel corta no fim do cupom, sem sobra) e uma folga no rodape
+para a lamina nao cortar a ultima linha.
+
+Em Configuracoes > "Papel do cupom" da para escolher:
+  - Termica 80mm (bobina)  <- padrao
+  - Termica 58mm (bobina)
+  - Folha A4 comum
+
+Ao lado tem o botao "Imprimir cupom de teste": sai um cupom de
+exemplo para voce acertar a impressora sem precisar fazer uma venda.
+
+Na primeira vez, nas propriedades da impressora no Windows, confira
+que o tamanho do papel esta em 80mm (ou "Roll Paper 80mm") e que as
+margens estao em zero. No Chrome, na janela de impressao, deixe
+"Margens: Nenhuma" e DESMARQUE "Cabecalhos e rodapes" - senao o
+Chrome imprime a data e o endereco do arquivo no cupom.
+
+
+RELATORIOS NA MESMA IMPRESSORA
+------------------------------
+Os relatorios tambem saem na termica de 80mm, em coluna unica.
+Cada tela tem seu botao:
+
+  RELATORIOS  "Imprimir vendas"    - resumo do periodo (faturamento,
+                                     custo, lucro, margem, markup,
+                                     ticket) + o corte por dia/semana/
+                                     mes/ano + o corte por categoria,
+                                     conforme o que estiver na tela.
+              "Imprimir clientes"  - ranking do periodo e
+                                     aniversariantes.
+
+  GESTAO      "Imprimir relatorio" - faturamento do dia, semana, mes,
+                                     mes passado e ano; comparacao com
+                                     o mes passado; resultado do mes
+                                     (bruto, descontos, liquido, custo
+                                     de aquisicao, lucro, margem,
+                                     markup, ticket); capital parado
+                                     em estoque; mais vendidos.
+
+  CLIENTES    "Imprimir relatorio" - o mesmo relatorio de clientes.
+
+  ESTOQUE     "Imprimir posicao"   - resumo, o que precisa repor e a
+                                     lista completa com saldo.
+
+ATENCAO: os relatorios saem com a tarja "DOCUMENTO INTERNO" no
+rodape, porque trazem CUSTO e LUCRO. Nao entregue ao cliente. O
+cupom de venda continua sem esses numeros.
+
+Se voce escolher "Folha A4 comum" em Configuracoes, os relatorios
+passam a sair na tela cheia, com as tabelas e os graficos.
+
+O mesmo vale na tela TROCA: "Imprimir previa" e "Cancelar troca".
+
+Ja finalizou e precisa desfazer? Va em VENDAS e use a lixeira. A
+venda fica marcada como cancelada, as pecas voltam ao estoque e ela
+sai dos relatorios. Da para excluir a venda inteira ou so um item.
+
+
+NADA SE PERDE
+-------------
+A venda ou a troca em andamento fica guardada no navegador a cada
+peca bipada. Se a pagina fechar, recarregar, faltar luz ou o
+computador desligar no meio do atendimento, e so abrir o sistema de
+novo: o carrinho volta como estava, com desconto, pagamento,
+observacao e cliente. Aparece um aviso verde confirmando.
+
+O pagamento e a observacao tambem nao somem mais quando voce bipa
+outra peca (antes eles eram apagados a cada leitura).
+
+
+PECAS EXCLUIDAS E O CODIGO RESERVADO
+------------------------------------
+Quando voce exclui uma peca que JA TEVE VENDA, ela nao e apagada de
+vez: sai da lista, mas continua no historico das vendas, para os
+relatorios do passado nao ficarem errados. Por isso o codigo de
+barras dela segue reservado.
+
+Se voce bipar uma peca assim, o sistema avisa "PECA EXCLUIDA DO
+CADASTRO", mostra qual era, e oferece "Reativar e vender" - um
+clique e ela volta com o historico e ja entra na venda.
+
+Se voce tentar CADASTRAR de novo um codigo assim, o sistema mostra
+de qual peca ele e e oferece reativar com os dados que voce acabou
+de preencher. O estoque dela volta como esta hoje (o sistema
+informa quantas pecas sao); se nao bater com a arara, corrija em
+Estoque > Movimentar > Ajuste de inventario.
+
+Para ver tudo que foi excluido: tela PRODUTOS, no ultimo filtro
+escolha "Pecas excluidas". Cada linha tem o botao "Restaurar".
+
+
+CODIGO NAO CADASTRADO
+---------------------
+Se voce bipar uma peca e aparecer a faixa vermelha "CODIGO NAO
+CADASTRADO", ela mostra EXATAMENTE o numero que o leitor mandou e
+quantos caracteres foram lidos. Confira contra a etiqueta:
+
+ - o numero bate com a etiqueta -> a peca nao esta cadastrada.
+   Clique em "Cadastrar esta peca" e preencha a ficha.
+
+ - o numero NAO bate, ou veio curto (3, 4 digitos em vez de 13) ->
+   o leitor nao leu direito. Bipe de novo, mais devagar e com a
+   etiqueta bem plana. Se repetir sempre, o leitor pode estar
+   configurado com sufixo diferente de Enter - vale conferir no
+   manual dele.
+
+O sistema NAO troca mais de tela sozinho nesse caso, justamente
+para voce conseguir ler o numero na hora.
+
+E ele ainda compara com o que esta cadastrado. Se achar uma peca
+com codigo parecido, mostra o codigo completo dela, o nome, o
+estoque, e diz o que aconteceu:
+
+  "a leitura perdeu o COMECO do codigo"  -> o leitor cortou o inicio
+  "a leitura perdeu o FIM do codigo"     -> o leitor cortou o final
+  "veio com caracteres a mais"           -> o leitor mandou sobra
+
+O botao "E esta" ao lado poe a peca certa na venda na hora, sem
+voce precisar procurar. O sistema nunca escolhe sozinho - a
+confirmacao e sempre sua, para nao vender a peca errada.
+
+Se isso acontecer sempre com as mesmas etiquetas, o ajuste e no
+leitor: procure no manual dele as opcoes de "prefixo/sufixo" e
+"truncar caracteres" e deixe sem truncamento, com sufixo Enter.
+
+A busca do codigo e tolerante: ignora espacos, pontos, tracos,
+maiusculas e zero a esquerda. Entao pequenas diferencas de
+digitacao entre o cadastro e a etiqueta nao impedem a venda.
+
+
+ESTOQUE NEGATIVO
+----------------
+Estoque negativo nao existe na pratica, e o sistema agora impede
+que apareca. Duas travas:
+
+ - Nao da para EXCLUIR uma movimentacao de entrada cujas pecas ja
+   sairam em vendas. O sistema explica e oferece o caminho certo:
+   Ajuste de inventario.
+ - Nao da para registrar saida (perda, ajuste, troca) maior que o
+   saldo disponivel.
+
+Se voce ja tem saldo negativo de antes, a tela de ESTOQUE mostra um
+aviso vermelho com o botao "Zerar os saldos negativos". Ele leva os
+saldos a zero deixando registro no historico. Depois e so dar
+entrada da quantidade que voce realmente tem na arara.
+
+Enquanto houver saldo negativo, essas pecas ficam FORA do calculo
+de investido, potencial de venda e lucro - assim os relatorios
+nunca mostram dinheiro negativo.
+
+EXCLUIR MOVIMENTACOES E LIMPAR TESTES
+-------------------------------------
+Na lista de Movimentacoes, cada linha tem um botao:
+
+  LIXEIRA  movimentacao que voce lancou (compra, ajuste, perda,
+           troca). Pode excluir. Se a exclusao for deixar o estoque
+           negativo, o sistema avisa e voce decide: excluir mesmo
+           assim, ou fazer um ajuste de inventario.
+
+  ELO      movimentacao que veio de uma venda ou troca. Nao sai
+           sozinha - clicando, o sistema abre a venda de origem,
+           que e por onde se desfaz (as pecas voltam ao estoque).
+
+APAGAR UMA PECA DE TESTE
+------------------------
+Na tela PRODUTOS (ou direto na linha do "precisa repor", pela
+lixeira), ao excluir uma peca que ja tem vendas o sistema oferece
+duas opcoes:
+
+  TIRAR DA LISTA         - recomendado no dia a dia. Ela some do
+                           cadastro e do "precisa repor", mas
+                           continua no historico: seus relatorios
+                           antigos de faturamento e lucro ficam
+                           iguais. Da para restaurar depois em
+                           Produtos > filtro "Pecas excluidas".
+
+  APAGAR DEFINITIVAMENTE - para cadastro que foi so teste. Some
+                           tudo: a peca, as movimentacoes dela e a
+                           participacao dela nas vendas. Venda que
+                           ficar sem nenhum item e removida. Os
+                           numeros do passado mudam e NAO ha como
+                           desfazer sem backup.
+
+Peca que nunca teve venda e sempre apagada de vez, direto.
+
+DICA: para corrigir quantidade no dia a dia, prefira
+Estoque > Movimentar > "Ajuste / inventario". O ajuste deixa
+rastro; apagar movimentacao, nao.
+
+
+SEM ESTOQUE
+-----------
+Peca com estoque zerado NAO pode ser vendida. Ao bipar, aparece uma
+faixa vermelha "SEM ESTOQUE" com o nome e o codigo da peca, e ela
+nao entra no carrinho. O mesmo acontece se voce tentar bipar mais
+pecas do que existem: o sistema avisa quantas restam.
+
+Isso vale para a VENDA e para o lado SAIDA da TROCA. O lado ENTRADA
+da troca continua aceitando qualquer peca, porque ali ela esta
+voltando para o estoque.
+
+Se a peca esta na arara mas o sistema diz que acabou, o estoque esta
+desatualizado. Corrija em ESTOQUE > "Movimentar estoque" > "Ajuste /
+inventario (+)" e a venda passa a ser permitida.
+
+Na lista de PRODUTOS, quem esta zerado aparece com a etiqueta
+vermelha "sem estoque".
+
+
+WHATSAPP DO CLIENTE
+-------------------
+Onde aparece um cliente com telefone, aparece o botao WhatsApp.
+Ele abre a conversa direto com aquele numero, no formato
+wa.me/55DDDNUMERO (55 e o codigo do Brasil), ja com uma mensagem
+escrita — de parabens, quando vem do aviso de aniversario.
+
+O botao esta em: lista de CLIENTES, ficha do cliente, popup de
+aniversario, aniversariantes do relatorio, seletor de cliente,
+quadro do cliente no PDV e na TROCA, lista de VENDAS e detalhe da
+venda.
+
+Pode digitar o telefone como preferir — com ou sem +55, com ou sem
+parenteses e traco. O sistema arruma. Aceita celular (11 digitos)
+e fixo (10 digitos). Se o numero estiver incompleto, o botao
+simplesmente nao aparece, em vez de abrir uma conversa errada.
+
+
+OBSERVACAO FISCAL
+-----------------
+O recibo impresso e um comprovante simples, SEM valor fiscal.
+Ele nao substitui NFC-e / cupom fiscal. Para emissao fiscal e
+preciso contratar um emissor autorizado pela Sefaz do seu estado.
